@@ -6,7 +6,7 @@
 #    By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/24 15:23:58 by digoncal          #+#    #+#              #
-#    Updated: 2023/05/24 16:07:11 by digoncal         ###   ########.fr        #
+#    Updated: 2023/05/24 15:24:26 by digoncal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ DEPS = libs/libft/libft.a
 
 NAME = minishell
 
-SRC = src/main.c
+SRC =
 OBJ = $(SRC:.c=.o)
 
 LIBFT = libs/libft/libft.a
