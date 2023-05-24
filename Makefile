@@ -14,7 +14,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 DEPS = libs/libft/libft.a
 
-NAME = mini_shell
+NAME = minishell
 
 SRC =
 OBJ = $(SRC:.c=.o)
