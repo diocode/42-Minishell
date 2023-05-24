@@ -16,7 +16,7 @@ DEPS = libs/libft/libft.a
 
 NAME = minishell
 
-SRC =
+SRC = src/main.c
 OBJ = $(SRC:.c=.o)
 
 LIBFT = libs/libft/libft.a
