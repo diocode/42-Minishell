@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:52:23 by digoncal          #+#    #+#             */
-/*   Updated: 2023/04/21 16:00:50 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/05/26 14:35:13 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdarg.h>
+# include <stdio.h>
 
 /*------------- Strutures ---------------*/
 
