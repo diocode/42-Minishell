@@ -6,67 +6,75 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:59:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/05/29 16:57:24 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/05/31 16:05:33 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ms_loop(t_info *info)
-{
-	char	*tmp;
+extern int	g_status;
 
-	info->args = readline("minishell$ ");
-	tmp = ft_strtrim(info->args, " ");
-	free(info->args);
-	info->args = tmp;
-	if (!info->args)
-		return (1);
-	if (!info->args[0])
-		reset_env(info);
-	return (0);
+static void	ms_getpid(t_prompt *prompt)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0 || !pid)
+	{
+		if (pid < 0)
+			ms_error(FORKERR, 1, NULL);
+		free_array(prompt->env);
+		exit(1);
+	}
+	waitpid(pid, NULL, 0);
+	prompt->pid = pid - 1;
 }
 
-t_info	*init_info(char **ev)
+static t_prompt	*init_vars(t_prompt *prompt, char **av, char *path)
 {
-	t_info	*info;
+	path = getcwd(NULL, 0);
+	(void)av;
+	(void)path;
+	//DO: fully init prompt and variables
+	return (prompt);
+}
 
-	info = malloc(sizeof(t_info));
-	if (!info)
+static t_prompt	*init_prompt(char **av, char **ev)
+{
+	t_prompt	*prompt;
+	char		*path;
+
+	prompt = malloc(sizeof(t_prompt));
+	if (!prompt)
 		return (NULL);
-	info->env = dup_arr(ev);
-	find_pwd(info);
-	info->args = NULL;
-	setup_env(info);
-	return (info);
+	g_status = 0;
+	path = NULL;
+	prompt->cmds = NULL;
+	prompt->env = dup_arr(ev);
+	ms_getpid(prompt);
+	prompt = init_vars(prompt, av, path);
+	return (prompt);
 }
 
 int	main(int ac, char **av, char **ev)
 {
-	t_info	*info;
+	t_prompt	*prompt;
+	char		*input;
 
 	if (ac > 1 || av[1])
 	{
 		printf("No arguments are accepted\n");
 		exit(0);
 	}
-	info = init_info(ev);
-	if (!info)
+	prompt = init_prompt(av, ev);
+	while (prompt)
 	{
-		free_info(info);
-		return (0);
+		signal(SIGINT, handle_sign);
+		signal(SIGQUIT, handle_sign);
+		input = readline("minishell$ ");
+		if (check_prompt(prompt, input))
+			break ;
 	}
-	ms_loop(info);
-	/*while (1)
-	{
-		// Display prompt and read user input
-
-		// Parse user input
-
-		// Execute command
-
-		// Cleanup and error handling
-	}*/
-	free_info(info);
-	return (0);
+	free_data(prompt);
+	exit(g_status);
 }

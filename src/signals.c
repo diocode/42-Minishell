@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   enviornment.c                                      :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/29 16:52:50 by digoncal          #+#    #+#             */
-/*   Updated: 2023/05/29 17:11:04 by digoncal         ###   ########.fr       */
+/*   Created: 2023/05/31 15:46:45 by digoncal          #+#    #+#             */
+/*   Updated: 2023/05/31 16:13:26 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	setup_env(t_info *info)
-{
-	info->pid = NULL;
-}
+int	g_status;
 
-void	reset_env(t_info *info)
+void	handle_sign(int sig)
 {
-	/*Do: clear simple cmds*/
-	free(info->args);
-	if (info->pid)
-		free(info->pid);
-	/*Do: clear paths's array?*/
-	setup_env(info);
-	/*tools reset? TBD */
-	ms_loop(info);
+	if (sig == SIGINT)
+	{
+		g_status = 130;
+		ft_putchar_fd('\n', 1);
+		ft_putstr_fd("minishell$ ", 1);
+	}
+	else if (sig == SIGQUIT)
+	{
+		g_status = 131;
+		ft_putchar_fd('\n', 1);
+		ft_putstr_fd("Quit\n", 1);
+		ft_putstr_fd("minishell$ ", 1);
+	}
 }
