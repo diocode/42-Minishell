@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:29:47 by digoncal          #+#    #+#             */
-/*   Updated: 2023/05/29 16:20:26 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/05/31 14:38:13 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,13 @@ void	free_array(char **arr)
 	free(arr);
 }
 
-void	free_info(t_info *info)
+void	free_data(t_prompt *prompt)
 {
-	if (!info)
+	if (!prompt)
 		return ;
-	if (info->env)
-		free_array(info->env);
-	if (info->pwd)
-		free (info->pwd);
-	if (info->old_pwd)
-		free (info->old_pwd);
-	if (info->args || !info->args[0])
-		free(info->args);
-	if (info->pid)
-		free(info->pid);
-	free(info);
+	if (prompt->cmds->content)
+		ft_lstclear(&prompt->cmds, free);
+	if (prompt->env)
+		free_array(prompt->env);
+	free(prompt);
 }

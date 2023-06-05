@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:52:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/05/29 19:13:00 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/05/31 16:06:27 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,39 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <sys/ioctl.h>
 
 /*------------- Strutures ---------------*/
 
-typedef struct s_info
+typedef struct s_prompt
 {
+	t_list	*cmds;
 	char	**env;
-	char	*args;
-	char	*pwd;
-	char	*old_pwd;
-	int		*pid;
-}	t_info;
+	pid_t	pid;
+}			t_prompt;
+
+enum	e_errors
+{
+	FORKERR = 8,
+};
 
 /*---------- FUNCTIONS ----------*/
 
-void	find_pwd(t_info *info);
-t_info	*init_info(char **ev);
-void	reset_env(t_info *info);
-void	setup_env(t_info *info);
-int		ms_loop(t_info *info);
+//parser
+int		check_prompt(t_prompt *prompt, char *input);
 
 //utils
 char	**dup_arr(char **arr);
+void	ms_error(int err, int status, char *param);
+void	handle_sigint(int sig);
 
+//signal
+void	handle_sign(int sig);
 
 //free
-void	free_info(t_info *info);
+void	free_data(t_prompt *prompt);
 void	free_array(char **arr);
 
 #endif
