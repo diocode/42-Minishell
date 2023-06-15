@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:21:20 by digoncal          #+#    #+#             */
-/*   Updated: 2023/05/31 15:48:05 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/06/14 15:09:47 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,32 @@ char	**dup_arr(char **arr)
 		}
 	}
 	return (dup);
+}
+
+char	**extend_arr(char **arr, char *new)
+{
+	char	**new_arr;
+	int		len;
+	int		i;
+
+	if (!new)
+		return (arr);
+	len = 0;
+	while (arr[len])
+		len++;
+	new_arr = ft_calloc(sizeof(char *), len + 2);
+	if (!new_arr)
+		return (arr);
+	i = -1;
+	while (len > ++i)
+	{
+		new_arr[i] = ft_strdup(arr[i]);
+		if (!new_arr[i])
+		{
+			free_array(arr);
+			free_array(new_arr);
+		}
+	}
+	new_arr[i] = ft_strdup(new);
+	return (new_arr);
 }

@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:52:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/05/31 16:06:27 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/06/14 17:19:20 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,18 @@
 
 typedef struct s_prompt
 {
-	t_list	*cmds;
+	char	*cmds;
 	char	**env;
 	pid_t	pid;
 }			t_prompt;
+
+typedef struct s_data
+{
+	char	**full_cmd;
+	char	*full_path;
+	int		infile;
+	int		outfile;
+}			t_data;
 
 enum	e_errors
 {
@@ -40,18 +48,26 @@ enum	e_errors
 /*---------- FUNCTIONS ----------*/
 
 //parser
-int		check_prompt(t_prompt *prompt, char *input);
+int			check_prompt(t_prompt *prompt, char *input);
+
+//init
+t_prompt	*init_prompt(char **av, char **ev);
+
+//env
+char		**ms_setenv(char *var, char *value, char **env);
+char		*ms_getenv(char *var, char **env);
 
 //utils
-char	**dup_arr(char **arr);
-void	ms_error(int err, int status, char *param);
-void	handle_sigint(int sig);
+char		**dup_arr(char **arr);
+char		**extend_arr(char **arr, char *new);
+void		ms_error(int err, int status, char *param);
 
 //signal
-void	handle_sign(int sig);
+void		handle_sign(int sig, siginfo_t *info, void *c);
+void		set_sign(void);
 
 //free
-void	free_data(t_prompt *prompt);
-void	free_array(char **arr);
+void		free_data(t_prompt *prompt);
+void		free_array(char **arr);
 
 #endif

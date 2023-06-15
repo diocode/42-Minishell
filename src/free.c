@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:29:47 by digoncal          #+#    #+#             */
-/*   Updated: 2023/05/31 14:38:13 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/06/14 11:39:27 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	free_data(t_prompt *prompt)
 {
 	if (!prompt)
 		return ;
-	if (prompt->cmds->content)
-		ft_lstclear(&prompt->cmds, free);
+	if (prompt->cmds)
+		free(prompt->cmds);
 	if (prompt->env)
 		free_array(prompt->env);
 	free(prompt);
