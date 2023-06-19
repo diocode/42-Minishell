@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:52:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/14 17:19:20 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/06/19 20:07:16 by rpaiva-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <sys/wait.h>
 # include <sys/ioctl.h>
 
-/*------------- Strutures ---------------*/
+/*------------- Structures ---------------*/
 
 typedef struct s_prompt
 {
@@ -69,5 +69,15 @@ void		set_sign(void);
 //free
 void		free_data(t_prompt *prompt);
 void		free_array(char **arr);
+
+//builtins
+void		execute_builtin(t_prompt *prompt);
+void		ms_env(t_prompt *prompt);
+void		ms_pwd(t_prompt *prompt);
+void		ms_cd(t_prompt *prompt);
+/*void		ms_echo(t_prompt *prompt);
+void		ms_export(t_prompt *prompt);
+int			ms_unset(t_prompt *prompt);
+void		ms_exit_builtins(t_prompt *prompt);*/
 
 #endif

@@ -17,7 +17,8 @@ DEPS = libs/libft/libft.a
 NAME = minishell
 
 SRC = src/main.c src/utils.c src/free.c src/parser.c src/signals.c src/init.c \
-	src/env.c
+	src/env.c \
+	src/builtins/builtins.c
 OBJ = $(SRC:.c=.o)
 
 LIBFT = libs/libft/libft.a

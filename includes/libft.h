@@ -25,7 +25,7 @@
 # include <stdarg.h>
 # include <stdio.h>
 
-/*------------- Strutures ---------------*/
+/*------------- Structures ---------------*/
 
 typedef struct s_list
 {
