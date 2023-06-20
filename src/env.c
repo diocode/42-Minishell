@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:05:12 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/15 14:55:16 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/06/20 13:06:26 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,25 @@ static int	ft_strnlen(const char *str, int c)
 /*Modify or add a variables to env (var - variable / value - variable value)*/
 char	**ms_setenv(char *var, char *value, char **env)
 {
+	char	*str;
 	char	*tmp;
 	int		i;
 
 	i = -1;
 	tmp = ft_strjoin(var, "=");
-	tmp = ft_strjoin(tmp, value);
+	str = ft_strjoin(tmp, value);
+	free(tmp);
 	while (env && env[++i])
 	{
 		if (!ft_strncmp(var, env[i], ft_strnlen(env[i], '=')))
 		{
-			env[i] = ft_strdup(tmp);
-			free(tmp);
+			env[i] = ft_strdup(str);
+			free(str);
 			return (env);
 		}
 	}
-	env = extend_arr(env, tmp);
-	free(tmp);
+	env = extend_arr(env, str);
+	free(str);
 	return (env);
 }
 

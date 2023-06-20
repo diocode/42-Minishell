@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:21:20 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/14 15:09:47 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/06/20 13:08:53 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ extern int	g_status;
 void	ms_error(int err, int status, char *param)
 {
 	g_status = status;
-
 	if (FORKERR == err)
 		ft_putstr_fd("minishell: fork failed\n", 2);
 	ft_putendl_fd(param, 2);

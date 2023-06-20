@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 18:35:48 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/15 14:54:02 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:19:33 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,9 @@ t_prompt	*init_prompt(char **av, char **ev)
 		return (NULL);
 	g_status = 0;
 	path = NULL;
-	prompt->cmds = NULL;
+	prompt->lexer = NULL;
 	prompt->env = dup_arr(ev);
 	ms_getpid(prompt);
 	prompt = init_vars(prompt, av, path);
 	return (prompt);
 }
-
-/*static t_data	*init_data(void)
-{
-	t_data		*data;
-
-	data = malloc(sizeof(t_data));
-	if (!data)
-		return (0);
-	data->full_cmd = NULL;
-	data->full_path = NULL;
-	return (data);
-}*/
