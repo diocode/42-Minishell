@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/26 16:02:19 by digoncal          #+#    #+#             */
-/*   Updated: 2023/05/31 15:11:54 by digoncal         ###   ########.fr       */
+/*   Created: 2023/06/19 18:14:26 by digoncal          #+#    #+#             */
+/*   Updated: 2023/06/20 12:31:12 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	check_prompt(t_prompt *prompt, char *input)
+/*
+1. Get first word from input;
+2. Determine if it's a word or token;
+3. Add word to prompt->lexer using ms_lstnew();
+4. Add new node to the end of the list using ms_lstadd();
+*/
+
+void	lexer(t_prompt *prompt, char *input)
 {
-	if (!input)
-	{
-		printf("exit\n");
-		return (1);
-	}
-	if (input[0] != '\0')
-		add_history(input);
+	(void)input;
 	(void)prompt;
-	//DO: create array with all the cmds from input divided
-	//DO: set enviornment??
-	return (0);
 }
