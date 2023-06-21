@@ -57,6 +57,9 @@ char		*ms_getenv(char *var, char **env);
 //lexer
 void		lexer(t_prompt *prompt, char *input);
 
+//cdmtrim
+char		**cdmtrim(char *input);
+
 //utils
 char		**dup_arr(char **arr);
 char		**extend_arr(char **arr, char *new);
