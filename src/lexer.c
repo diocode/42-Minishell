@@ -23,7 +23,7 @@ void	lexer(t_prompt *prompt, char *input)
 {
 	char	**cmds;
 
-	cmds = cdmtrim(input);
+	cmds = trim_input(input);
 	printf("LEXER:");
 	for (int i = 0; cmds[i]; i++)
 		printf(" [%s] ", cmds[i]);

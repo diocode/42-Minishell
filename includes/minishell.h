@@ -58,14 +58,12 @@ char		*ms_getenv(char *var, char **env);
 void		lexer(t_prompt *prompt, char *input);
 
 //cdmtrim
-char		**cdmtrim(char *input);
+char		**trim_input(char *input);
 
 //utils
 char		**dup_arr(char **arr);
 char		**extend_arr(char **arr, char *new);
 void		ms_error(int err, int status, char *param);
-int			count_quotes(char const *str, int i);
-int			total_quotes(char const *str);
 
 //signal
 void		handle_sign(int sig, siginfo_t *info, void *c);

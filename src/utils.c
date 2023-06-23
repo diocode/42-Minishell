@@ -22,46 +22,6 @@ void	ms_error(int err, int status, char *param)
 	ft_putendl_fd(param, 2);
 }
 
-int	count_quotes(char const *str, int i)
-{
-	int	quotes;
-	int	start;
-
-	quotes = 0;
-	start = i - 1;
-	while (str[++start])
-	{
-		if (str[start] == '"')
-		{
-			quotes++;
-			if (str[start + 1] == ' ' || (str[start + 1] >= 9
-					&& str[start + 1] <= 13))
-				if (quotes == 2
-					|| ((str[start + 1] == ' ' || (str[start + 1] >= 9 && str[start + 1] <= 13))
-					&& (str[start - 1] != ' ' && (str[start - 1] < 9 || str[start - 1] > 13))))
-					return (quotes);
-		}
-		if (!quotes && str[start] == ' ')
-			break ;
-	}
-	return (quotes);
-}
-
-int	total_quotes(char const *str)
-{
-	int	i;
-	int	quotes;
-
-	i = 0;
-	quotes = 0;
-	while (str[i])
-	{
-		if (str[i++] == '"')
-			quotes++;
-	}
-	return (quotes);
-}
-
 char	**dup_arr(char **arr)
 {
 	char	**dup;
