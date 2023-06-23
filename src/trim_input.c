@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:03:44 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/23 17:20:47 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/06/23 20:15:05 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ static int	word_size(char *str, int i)
 	int	size;
 
 	size = 0;
-	printf("=%c=  ", str[i]);
 	while (str[i])
 	{
 		if (str[i] == '"' && prev_quotes(str, i) % 2 != 0)
@@ -96,7 +95,6 @@ static int	word_size(char *str, int i)
 				size++;
 				i++;
 			}
-			printf("1-WORD : %d size\n", size);
 			return (size);
 		}
 		if (!is_whitespace(str[i]))
@@ -106,21 +104,22 @@ static int	word_size(char *str, int i)
 		i++;
 	}
 	if (!size)
-	{
-		printf("2-WORD : 1 size\n");
 		return (1);
-	}
-	printf("3-WORD : %d size\n", size);
 	return (size);
 }
 
-/*static char	*get_word(char *str, int i)
+static char	*get_word(char *str, int i)
 {
-	char	*word;
+	int		size;
 
-	word = ft_substr(str, i, word_size(str, i));
-	return (word);
-}*/
+	size = word_size (str, i);
+	if (is_whitespace(str[i + size])
+		&& (prev_quotes(str, i + size) % 2 != 0
+			|| !prev_quotes(str, i + size)))
+		return (ft_substr(str, i, size));
+	else
+		return (ft_substr(str, i + 1, size));
+}
 
 char	**trim_input(char *input)
 {
@@ -146,6 +145,7 @@ char	**trim_input(char *input)
 	{
 		while (is_whitespace(input[i]))
 			i++;
+		arr[w] = get_word(input, i);
 		size = word_size(input, i);
 		if (is_whitespace(input[i + size])
 			&& (prev_quotes(input, i + size) % 2 != 0
@@ -153,12 +153,12 @@ char	**trim_input(char *input)
 			i += size;
 		else
 			i += size + 2;
-		//arr[w] = get_word(input, i);
 	}
+	arr[w] = 0;
 	return (arr);
 }
 
-/* - CHECK FOR BUGS
+/* - CHECK FOR BUGS / FIX BUGS!!
  * - USE THE STR IN THE NOTES
  * - WORD_SIZE SHOULD BE WORKING
  * - FINISH UP TRIM_INPUT
