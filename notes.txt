@@ -1,0 +1,20 @@
+1 -Scan the str and count nbr quote:
+2 - If quotes < 2  just ft_split(str)
+
+3 - Scan the str if a quote is found enter {quote state}
+	else stay in {normal state}
+
+Normal state:
+	- A word is a group of any char different from "white space"
+
+Quote state:
+	- If the quote is surrounded by chars return to {normal state}
+	- 
+
+
+INPUT:       test0 test" "test2" "  test3 test4 " "   " "test5 "" "
+
+switch {quote state} if '"' found
+During {quote state} if '"' found check if all previous '"' are odd or even
+	- if odd: enter {quote state}
+	- if even: leave {quote state}
