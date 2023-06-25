@@ -18,3 +18,5 @@ switch {quote state} if '"' found
 During {quote state} if '"' found check if all previous '"' are odd or even
 	- if odd: enter {quote state}
 	- if even: leave {quote state}
+
+syntax error: looking for matching `"'\n

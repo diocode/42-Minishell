@@ -6,27 +6,68 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:14:26 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/22 16:42:55 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/06/25 22:45:51 by logname          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/*
-1. Get array with all words split from input;
-2. Determine if it's a word or token;
-3. Add word to prompt->lexer using ms_lstnew();
-4. Add new node to the end of the list using ms_lstadd();
-*/
+static int	check_quotes(char const *str)
+{
+	int	i;
+	int	total_quotes;
+
+	i = -1;
+	total_quotes = 0;
+	while (str[++i])
+		if (str[i] == '"')
+			total_quotes++;
+	if (total_quotes % 2 != 0)
+	{
+		printf("syntax error: looking for matching \'\"\'\n");
+		return (1);
+	}
+	return (0);
+}
+
+static int	is_token(char *str)
+{
+	if (!str)
+		return (0);
+	if ((str[0] == '|' || str[0] == '<' || str[0] == '>')
+		&& ft_strlen(str) == 1)
+		return (1);
+	if ((ft_strncmp(str, "<<", 2) == 0 || ft_strncmp(str, ">>", 2) == 0)
+		&& ft_strlen(str) == 2)
+		return (1);
+	return (0);
+}
 
 void	lexer(t_prompt *prompt, char *input)
 {
-	char	**cmds;
+	char		**cmds;
+	int			i;
 
+	if (!input[0])
+	{
+		*prompt->lexer = NULL;
+		return ;
+	}
+	if (check_quotes(input))
+		return ;
 	cmds = trim_input(input);
-	printf("LEXER:");
-	for (int i = 0; cmds[i]; i++)
-		printf(" [%s] ", cmds[i]);
-	printf("\n");
-	(void)prompt;
+	if (!cmds)
+		return ;
+	if (is_token(cmds[0]))
+		*prompt->lexer = ms_lstnew(cmds[0], 't');
+	else
+		*prompt->lexer = ms_lstnew(cmds[0], 'w');
+	i = 0;
+	while (cmds[++i])
+	{
+		if (is_token(cmds[i]))
+			ms_lstadd(prompt->lexer, ms_lstnew(cmds[i], 't'));
+		else
+			ms_lstadd(prompt->lexer, ms_lstnew(cmds[i], 'w'));
+	}
 }

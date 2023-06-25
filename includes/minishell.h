@@ -72,6 +72,7 @@ void		set_sign(void);
 //lists
 t_lexer		*ms_lstnew(char *content, char type);
 void		ms_lstadd(t_lexer **lst, t_lexer *new);
+void		reset_lexer(t_prompt *prompt);
 
 //free
 void		free_data(t_prompt *prompt);
