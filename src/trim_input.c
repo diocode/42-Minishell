@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:03:44 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/23 20:15:05 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/06/25 18:35:08 by logname          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	check_quotes(char const *str)
 		if (str[i] == '"')
 		{
 			total_quotes++;
-			if (str[i + 1] == ' ' || str[i - 1] == ' ' || str[i + 1])
+			if (str[i + 1] == ' ' || str[i - 1] == ' ')
 				flg++;
 		}
 	}
@@ -56,30 +56,6 @@ static int	prev_quotes(char const *str, int end)
 	return (quotes);
 }
 
-static int	count_words(char const *str)
-{
-	int	i;
-	int	words;
-
-	words = 0;
-	i = -1;
-	while (str[++i])
-	{
-		if (!is_whitespace(str[i]))
-		{
-			words++;
-			if (str[i] == '"')
-			{
-				if (prev_quotes(str, i) % 2 != 0)
-					words--;
-			}
-			while (str[i] && !is_whitespace(str[i]))
-				i++;
-		}
-	}
-	return (words);
-}
-
 static int	word_size(char *str, int i)
 {
 	int	size;
@@ -87,7 +63,8 @@ static int	word_size(char *str, int i)
 	size = 0;
 	while (str[i])
 	{
-		if (str[i] == '"' && prev_quotes(str, i) % 2 != 0)
+		if (str[i] == '"' && (prev_quotes(str, i) % 2 != 0
+				|| !prev_quotes(str, i + size)))
 		{
 			i++;
 			while (str[i] != '"')
@@ -108,13 +85,41 @@ static int	word_size(char *str, int i)
 	return (size);
 }
 
+static int	count_words(char const *str)
+{
+	int	i;
+	int	words;
+
+	words = 0;
+	i = -1;
+	while (str[++i])
+	{
+		if (!is_whitespace(str[i]))
+		{
+			words++;
+			if (str[i] == '"')
+			{
+				if (prev_quotes(str, i) % 2 != 0)
+					words--;
+			}
+			while (!is_whitespace(str[i]) && str[i])
+			{
+				i++;
+			}
+		}
+		if (!str[i])
+			break ;
+	}
+	return (words);
+}
+
 static char	*get_word(char *str, int i)
 {
 	int		size;
 
-	size = word_size (str, i);
+	size = word_size(str, i);
 	if (is_whitespace(str[i + size])
-		&& (prev_quotes(str, i + size) % 2 != 0
+		&& str[i + size + 1] != '"' && (prev_quotes(str, i + size) % 2 != 0
 			|| !prev_quotes(str, i + size)))
 		return (ft_substr(str, i, size));
 	else
@@ -133,7 +138,14 @@ char	**trim_input(char *input)
 	arr = NULL;
 	if (check_quotes(input))
 	{
-		arr = ft_split(input, ' ');
+		if (!ft_strncmp(input, "\"\"", 4))
+		{
+			arr = ft_calloc(sizeof(char *), 1);
+			if (!arr)
+				return (NULL);
+		}
+		else
+			arr = ft_split(input, ' ');
 		return (arr);
 	}
 	arr = (char **) malloc((count_words(input) + 1) * sizeof(char *));
