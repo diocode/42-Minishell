@@ -11,13 +11,13 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 DEPS = libs/libft/libft.a
 
 NAME = minishell
 
 SRC = src/main.c src/utils.c src/free.c src/lexer.c src/signals.c src/init.c \
-	src/env.c src/builtins/builtins.c
+	src/env.c src/builtins/builtins.c src/cmdtrim.c
 OBJ = $(SRC:.c=.o)
 
 LIBFT = libs/libft/libft.a
