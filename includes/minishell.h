@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/13 17:52:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/20 13:12:40 by digoncal         ###   ########.fr       */
+/*   Created: 2023/06/26 16:19:08 by digoncal          #+#    #+#             */
+/*   Updated: 2023/06/26 16:19:08 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char		*ms_getenv(char *var, char **env);
 void		lexer(t_prompt *prompt, char *input);
 
 //cdmtrim
-char		**cdmtrim(char *input);
+char		**trim_input(char *input);
 
 //utils
 char		**dup_arr(char **arr);
@@ -72,6 +72,7 @@ void		set_sign(void);
 //lists
 t_lexer		*ms_lstnew(char *content, char type);
 void		ms_lstadd(t_lexer **lst, t_lexer *new);
+void		reset_lexer(t_prompt *prompt);
 
 //free
 void		free_data(t_prompt *prompt);
@@ -86,6 +87,5 @@ void		ms_cd(t_prompt *prompt);
 /*void		ms_echo(t_prompt *prompt);
 void		ms_export(t_prompt *prompt);
 int			ms_unset(t_prompt *prompt);
-void		ms_exit_builtins(t_prompt *prompt);*/
-
+*/
 #endif
