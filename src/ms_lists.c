@@ -26,6 +26,7 @@ void	reset_lexer(t_prompt *prompt)
 	}
 	prompt->lexer = malloc(sizeof(t_lexer));
 }
+
 static t_lexer	*ms_lstlast(t_lexer *lst)
 {
 	while (lst)

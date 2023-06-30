@@ -12,6 +12,15 @@
 
 #include "../includes/minishell.h"
 
+extern int	g_status;
+
+void	ms_exit(t_prompt *prompt)
+{
+	printf("exit\n");
+	free_data(prompt);
+	exit(g_status);
+}
+
 void	free_lexer(t_lexer **lst)
 {
 	t_lexer	*tmp;

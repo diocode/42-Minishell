@@ -6,29 +6,12 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:14:26 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/25 22:45:51 by logname          ###   ########.fr       */
+/*   Updated: 2023/06/22 16:42:55 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	check_quotes(char const *str)
-{
-	int	i;
-	int	total_quotes;
-
-	i = -1;
-	total_quotes = 0;
-	while (str[++i])
-		if (str[i] == '"')
-			total_quotes++;
-	if (total_quotes % 2 != 0)
-	{
-		printf("syntax error: looking for matching \'\"\'\n");
-		return (1);
-	}
-	return (0);
-}
 
 static int	is_token(char *str)
 {
@@ -53,8 +36,6 @@ void	lexer(t_prompt *prompt, char *input)
 		*prompt->lexer = NULL;
 		return ;
 	}
-	if (check_quotes(input))
-		return ;
 	cmds = trim_input(input);
 	if (!cmds)
 		return ;
