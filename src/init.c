@@ -77,5 +77,7 @@ t_prompt	*init_prompt(char **av, char **ev)
 	prompt->env = dup_arr(ev);
 	ms_getpid(prompt);
 	prompt = init_vars(prompt, av, path);
+	prompt->flg[0] = 0;
+	prompt->flg[1] = 0;
 	return (prompt);
 }

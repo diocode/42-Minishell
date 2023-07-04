@@ -44,7 +44,7 @@ static char	*ft_nbtchr(char *str, int n)
 	}
 	tmp = -n;
 	while (n < 0 && i > 0)
-	{		
+	{
 		str[i--] = (tmp % 10) + '0';
 		tmp = tmp / 10;
 		str[0] = '-';

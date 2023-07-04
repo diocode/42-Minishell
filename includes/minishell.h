@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:19:08 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/26 18:49:10 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/04 17:57:16 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_prompt
 	t_simple_cmds	**simple_cmds;
 	char			**env;
 	pid_t			pid;
+	int				flg[2];
 }	t_prompt;
 
 enum	e_errors
@@ -72,8 +73,13 @@ void		lexer(t_prompt *prompt, char *input);
 //parser
 void		parser(t_prompt *prompt);
 
-//cdmtrim
-char		**trim_input(char *input);
+//trim_input
+char		**trim_input(t_prompt *prompt, char *input);
+
+//trim_input
+void		check_flg(t_prompt *p, char const *str, int i);
+int			qts_nbr(t_prompt *prompt, char const *str, int i, int size);
+int			skip_word(t_prompt *prompt, char const *str, int i);
 
 //utils
 char		**dup_arr(char **arr);

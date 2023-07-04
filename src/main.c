@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:59:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/27 13:52:50 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/04 18:19:39 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	main(int ac, char **av, char **ev)
 			input = "exit";
 		}
 		lexer(prompt, input);
-		// TESTING:
+		//parser(prompt);
+		/*//=========================== TESTING ===============================
 		printf("LEXER: ");
 		for (t_lexer *node = *prompt->lexer; node; node = node->next)
 		{
@@ -46,6 +47,7 @@ int	main(int ac, char **av, char **ev)
 				printf("[%s] ", node->str);
 		}
 		printf("\n");
+		//=========================== TESTING ===============================*/
 		reset_lexer(prompt);
 	}
 	free_data(prompt);
