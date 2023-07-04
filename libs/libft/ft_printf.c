@@ -18,7 +18,7 @@ int	print_adress(unsigned long p)
 
 	len = 0;
 	if (p < 16)
-			len += write(1, &"0123456789abcdef"[p], 1);
+		len += write(1, &"0123456789abcdef"[p], 1);
 	if (p >= 16)
 	{
 		len += print_adress(p / 16);

@@ -14,6 +14,11 @@
 
 extern int	g_status;
 
+int	is_whitespace(char c)
+{
+	return (c == ' ' || (c > 8 && c < 14));
+}
+
 void	ms_error(int err, int status, char *param)
 {
 	g_status = status;
