@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/13 17:52:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/20 13:12:40 by digoncal         ###   ########.fr       */
+/*   Created: 2023/06/26 16:19:08 by digoncal          #+#    #+#             */
+/*   Updated: 2023/07/04 17:57:16 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,25 @@ typedef struct s_lexer
 	struct s_lexer	*prev;
 }	t_lexer;
 
+typedef struct s_simple_cmds
+{
+	char					**str;
+	char					*builtin;
+	int						num_redirct;
+	char					*file;
+	t_lexer					*redirct;
+	struct s_simple_cmds	*next;
+	struct s_simple_cmds	*prev;
+}	t_simple_cmds;
+
 typedef struct s_prompt
 {
-	t_lexer	**lexer;
-	char	**env;
-	pid_t	pid;
-}			t_prompt;
+	t_lexer			**lexer;
+	t_simple_cmds	**simple_cmds;
+	char			**env;
+	pid_t			pid;
+	int				flg[2];
+}	t_prompt;
 
 enum	e_errors
 {
@@ -57,13 +70,22 @@ char		*ms_getenv(char *var, char **env);
 //lexer
 void		lexer(t_prompt *prompt, char *input);
 
-//cdmtrim
-char		**cdmtrim(char *input);
+//parser
+void		parser(t_prompt *prompt);
+
+//trim_input
+char		**trim_input(t_prompt *prompt, char *input);
+
+//trim_input
+void		check_flg(t_prompt *p, char const *str, int i);
+int			qts_nbr(t_prompt *prompt, char const *str, int i, int size);
+int			skip_word(t_prompt *prompt, char const *str, int i);
 
 //utils
 char		**dup_arr(char **arr);
 char		**extend_arr(char **arr, char *new);
 void		ms_error(int err, int status, char *param);
+int			is_whitespace(char c);
 
 //signal
 void		handle_sign(int sig, siginfo_t *info, void *c);
@@ -72,11 +94,13 @@ void		set_sign(void);
 //lists
 t_lexer		*ms_lstnew(char *content, char type);
 void		ms_lstadd(t_lexer **lst, t_lexer *new);
+void		reset_lexer(t_prompt *prompt);
 
 //free
 void		free_data(t_prompt *prompt);
 void		free_array(char **arr);
 void		free_lexer(t_lexer **lst);
+void		ms_exit(t_prompt *prompt);
 
 //builtins
 void		execute_builtin(t_prompt *prompt);
@@ -86,6 +110,5 @@ void		ms_cd(t_prompt *prompt);
 /*void		ms_echo(t_prompt *prompt);
 void		ms_export(t_prompt *prompt);
 int			ms_unset(t_prompt *prompt);
-void		ms_exit_builtins(t_prompt *prompt);*/
-
+*/
 #endif

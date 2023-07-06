@@ -6,13 +6,18 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:21:20 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/20 18:10:57 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/06/23 12:24:54 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 extern int	g_status;
+
+int	is_whitespace(char c)
+{
+	return (c == ' ' || (c > 8 && c < 14));
+}
 
 void	ms_error(int err, int status, char *param)
 {

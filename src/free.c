@@ -6,11 +6,20 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:29:47 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/20 12:12:48 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/03 15:28:21 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+extern int	g_status;
+
+void	ms_exit(t_prompt *prompt)
+{
+	printf("exit\n");
+	free_data(prompt);
+	exit(g_status);
+}
 
 void	free_lexer(t_lexer **lst)
 {

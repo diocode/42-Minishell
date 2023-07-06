@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:59:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/20 18:11:05 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/04 18:19:39 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ int	main(int ac, char **av, char **ev)
 		if (input == NULL)
 		{
 			g_status = 6;
-			printf("exit\n");
-			break ;
+			free(input);
+			input = "exit";
 		}
 		lexer(prompt, input);
+		reset_lexer(prompt);
 	}
 	free_data(prompt);
 	exit(g_status);
