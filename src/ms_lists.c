@@ -12,19 +12,26 @@
 
 #include "../includes/minishell.h"
 
-void	reset_lexer(t_prompt *prompt)
+t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev)
+{
+	free_data(prompt);
+	return (init_prompt(av, ev));
+}
+
+void	ms_delnode(t_lexer *node)
 {
 	t_lexer	*tmp;
-	t_lexer	*node;
 
-	node = (*prompt->lexer);
-	while (node)
-	{
-		tmp = node;
-		node = node->next;
-		free(tmp);
-	}
-	prompt->lexer = malloc(sizeof(t_lexer));
+	if (!node)
+		return ;
+	tmp = node;
+	node->prev->next = node->next;
+	node->next->prev = node ->prev;
+	if (tmp->str)
+		free(tmp->str);
+	if (tmp->token)
+		free(tmp->token);
+	free(tmp);
 }
 
 static t_lexer	*ms_lstlast(t_lexer *lst)

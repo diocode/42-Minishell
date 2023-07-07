@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:19:08 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/04 17:57:16 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/06 12:46:22 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_simple_cmds
 	char					*builtin;
 	int						num_redirct;
 	char					*file;
-	t_lexer					*redirct;
+	t_lexer					**redirct;
 	struct s_simple_cmds	*next;
 	struct s_simple_cmds	*prev;
 }	t_simple_cmds;
@@ -94,13 +94,14 @@ void		set_sign(void);
 //lists
 t_lexer		*ms_lstnew(char *content, char type);
 void		ms_lstadd(t_lexer **lst, t_lexer *new);
-void		reset_lexer(t_prompt *prompt);
+void		ms_delnode(t_lexer *node);
+t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev);
 
 //free
 void		free_data(t_prompt *prompt);
 void		free_array(char **arr);
 void		free_lexer(t_lexer **lst);
-void		ms_exit(t_prompt *prompt);
+void		free_parser(t_simple_cmds **simple_cmds);
 
 //builtins
 void		execute_builtin(t_prompt *prompt);

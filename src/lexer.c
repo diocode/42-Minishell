@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:14:26 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/04 17:35:12 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/06 12:49:01 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	lexer(t_prompt *prompt, char *input)
 		return ;
 	}
 	input = check_quotes(input);
-	printf("INPUT: %s\n", input);
 	cmds = trim_input(prompt, input);
 	if (!cmds)
 		return ;

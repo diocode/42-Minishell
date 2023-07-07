@@ -36,19 +36,8 @@ int	main(int ac, char **av, char **ev)
 			input = "exit";
 		}
 		lexer(prompt, input);
-		//parser(prompt);
-		/*//=========================== TESTING ===============================
-		printf("LEXER: ");
-		for (t_lexer *node = *prompt->lexer; node; node = node->next)
-		{
-			if (!node->str)
-				printf("[%s] ", node->token);
-			else
-				printf("[%s] ", node->str);
-		}
-		printf("\n");
-		//=========================== TESTING ===============================*/
-		reset_lexer(prompt);
+		parser(prompt);
+		prompt = reset_prompt(prompt, av, ev);
 	}
 	free_data(prompt);
 	exit(g_status);
