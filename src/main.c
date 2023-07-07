@@ -36,7 +36,8 @@ int	main(int ac, char **av, char **ev)
 			input = "exit";
 		}
 		lexer(prompt, input);
-		reset_lexer(prompt);
+		parser(prompt);
+		prompt = reset_prompt(prompt, av, ev);
 	}
 	free_data(prompt);
 	exit(g_status);
