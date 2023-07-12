@@ -58,12 +58,12 @@ static int	init_lst(t_prompt *prompt, char **cmds, int i)
 	{
 		if (is_token(cmds[i]))
 		{
-			*prompt->lexer = ms_lstnew(cmds[i], 't');
+			prompt->lexer = ms_lstnew(cmds[i], 't');
 			break ;
 		}
 		else if (cmds[i][0])
 		{
-			*prompt->lexer = ms_lstnew(cmds[i], 'w');
+			prompt->lexer = ms_lstnew(cmds[i], 'w');
 			break ;
 		}
 	}
@@ -77,7 +77,7 @@ void	lexer(t_prompt *prompt, char *input)
 
 	if (!input[0])
 	{
-		*prompt->lexer = NULL;
+		prompt->lexer = NULL;
 		return ;
 	}
 	input = check_quotes(input);

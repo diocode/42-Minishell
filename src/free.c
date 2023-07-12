@@ -14,42 +14,41 @@
 
 extern int	g_status;
 
-void	free_lexer(t_lexer **lst)
+void	free_lexer(t_lexer *lst)
 {
 	t_lexer	*tmp;
-	t_lexer	*node;
 
-	node = (*lst);
-	while (node)
+	if (!lst)
+		return ;
+	while (lst)
 	{
-		tmp = node;
-		node = node->next;
+		tmp = lst;
+		lst = lst->next;
 		free(tmp);
 	}
 	free(lst);
 }
 
-void	free_parser(t_simple_cmds **simple_cmds)
+void	free_parser(t_simple_cmds *simple_cmds)
 {
-	t_simple_cmds	*cmds;
+	t_simple_cmds	*tmp;
 
 	if (!simple_cmds)
 		return ;
-	cmds = (*simple_cmds);
-	while (cmds)
+	while (simple_cmds)
 	{
-		if (cmds->str)
-			free_array(cmds->str);
-		if (cmds->builtin)
-			free(cmds->builtin);
-		if (cmds->file)
-			free(cmds->file);
-		if (cmds->redirct)
-			free_lexer(cmds->redirct);
-		cmds = cmds->next;
-		free(cmds->prev);
+		if (simple_cmds->str)
+			free_array(simple_cmds->str);
+		if (simple_cmds->builtin)
+			free(simple_cmds->builtin);
+		if (simple_cmds->file)
+			free(simple_cmds->file);
+		if (simple_cmds->redirct)
+			free(simple_cmds->redirct);
+		tmp = simple_cmds;
+		simple_cmds = simple_cmds->next;
+		free(tmp);
 	}
-	free(simple_cmds);
 }
 
 void	free_array(char **arr)
