@@ -14,6 +14,12 @@
 
 extern int	g_status;
 
+t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev)
+{
+	free_data(prompt);
+	return (init_prompt(av, ev));
+}
+
 void	free_lexer(t_lexer *lst)
 {
 	t_lexer	*tmp;
@@ -26,7 +32,6 @@ void	free_lexer(t_lexer *lst)
 		lst = lst->next;
 		free(tmp);
 	}
-	free(lst);
 }
 
 void	free_parser(t_simple_cmds *simple_cmds)

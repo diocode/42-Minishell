@@ -85,9 +85,7 @@ t_prompt	*init_prompt(char **av, char **ev)
 		return (NULL);
 	g_status = 0;
 	path = NULL;
-	prompt->lexer = malloc(sizeof(t_lexer));
-	if (!prompt->lexer)
-		return (NULL);
+	prompt->lexer = NULL;
 	prompt->simple_cmds = init_simple_cmds();
 	prompt->env = dup_arr(ev);
 	ms_getpid(prompt);

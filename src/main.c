@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:59:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/12 15:03:48 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:40:50 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,9 @@ int	main(int ac, char **av, char **ev)
 			free_data(prompt);
 			exit(6);
 		}
-		lexer(prompt, input);
-		if (prompt->lexer)
-			parser(prompt); //BUGS: {"" INPUT} {multiple builtins}
-		else if (prompt->simple_cmds)
-			prompt = reset_prompt(prompt, av, ev);
+		if (lexer(prompt, input) && prompt->lexer)
+			parser(prompt); //BUGS: { > INPUT}
+		prompt = reset_prompt(prompt, av, ev);
 	}
 	free_data(prompt);
 	exit(g_status);

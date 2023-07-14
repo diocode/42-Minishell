@@ -12,12 +12,6 @@
 
 #include "../includes/minishell.h"
 
-t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev)
-{
-	free_data(prompt);
-	return (init_prompt(av, ev));
-}
-
 void	ms_delnode(t_lexer *node)
 {
 	t_lexer	*tmp;

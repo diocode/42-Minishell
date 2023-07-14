@@ -98,7 +98,7 @@ static void	get_simple_cmds(t_prompt *prompt, int pipes)
 				ms_delnode(tmp);
 			}
 		}
-		if (lexer && is_builtin(lexer->str))
+		if (lexer && is_builtin(lexer->str) && !cmds->builtin)
 			cmds->builtin = ft_strdup(lexer->str);
 		if (lexer && lexer->str)
 		{

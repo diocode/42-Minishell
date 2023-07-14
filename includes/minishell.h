@@ -69,7 +69,7 @@ char			**ms_setenv(char *var, char *value, char **env);
 char			*ms_getenv(char *var, char **env);
 
 //lexer
-void			lexer(t_prompt *prompt, char *input);
+int			lexer(t_prompt *prompt, char *input);
 
 //parser
 void			parser(t_prompt *prompt);
