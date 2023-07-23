@@ -14,10 +14,9 @@
 
 extern int	g_status;
 
-static void	exit_env(t_prompt *prompt, char *input)
+void	exit_env(t_prompt *prompt)
 {
 	g_status = 6;
-	free(input);
 	printf("exit\n");
 	free_data(prompt);
 	exit(g_status);
@@ -39,11 +38,11 @@ int	main(int ac, char **av, char **ev)
 		set_sign();
 		input = readline("minishell$ ");
 		if (input == NULL)
-			exit_env(prompt, input);
+			exit_env(prompt);
 		if (lexer(prompt, input) && prompt->lexer)
 			parser(prompt);
 		if (prompt->simple_cmds)
-			continue ;
+			execute(prompt);
 		prompt = reset_prompt(prompt, av, ev);
 	}
 	free_data(prompt);

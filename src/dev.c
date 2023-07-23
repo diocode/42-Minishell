@@ -14,6 +14,14 @@
 
 extern int	g_status;
 
+void	exit_env(t_prompt *prompt)
+{
+	g_status = 6;
+	printf("exit\n");
+	free_data(prompt);
+	exit(g_status);
+}
+
 static void	dev_mod0(t_prompt *prompt, char *input)
 {
 	int				i;
@@ -80,13 +88,7 @@ int	main(int ac, char **av, char **ev)
 		set_sign();
 		input = readline("minishell@dev$ ");
 		if (input == NULL)
-		{
-			g_status = 6;
-			free(input);
-			printf("exit\n");
-			free_data(prompt);
-			exit(g_status);
-		}
+			exit_env(prompt);
 		dev_mod0(prompt, input);
 		lexer(prompt, input);
 		dev_mod1(prompt);
@@ -94,7 +96,10 @@ int	main(int ac, char **av, char **ev)
 		{
 			parser(prompt);
 			if (prompt->simple_cmds)
+			{
 				dev_mod2(prompt);
+				execute(prompt);
+			}
 		}
 		prompt = reset_prompt(prompt, av, ev);
 	}

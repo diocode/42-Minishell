@@ -77,6 +77,9 @@ int				is_redirct(char *str);
 int				is_builtin(char const *str);
 int				nbr_nodes(t_lexer *lexer);
 
+//execute
+void			execute(t_prompt *prompt);
+
 //trim_input
 char			**trim_input(t_prompt *prompt, char *input);
 void			check_flg(t_prompt *p, char const *str, int i);
@@ -97,13 +100,14 @@ void			set_sign(void);
 t_lexer			*ms_lstnew(char *content, char type);
 void			ms_lstadd(t_lexer *lst, t_lexer *new);
 void			ms_delnode(t_lexer *node);
-t_prompt		*reset_prompt(t_prompt *prompt, char **av, char **ev);
 
 //free
+t_prompt		*reset_prompt(t_prompt *prompt, char **av, char **ev);
 void			free_data(t_prompt *prompt);
 void			free_array(char **arr);
 void			free_lexer(t_lexer *lst);
 void			free_parser(t_simple_cmds *simple_cmds);
+void			exit_env(t_prompt *prompt);
 
 //builtins
 void			execute_builtin(t_prompt *prompt);
