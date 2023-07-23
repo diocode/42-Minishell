@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:29:47 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/18 16:25:50 by logname          ###   ########.fr       */
+/*   Updated: 2023/07/23 12:43:27 by logname          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,12 @@ void	free_lexer(t_lexer *lst)
 		return ;
 	while (lst)
 	{
+		if (lst->str)
+			free(lst->str);
+		if (lst->token)
+			free(lst->token);
 		tmp = lst;
 		lst = lst->next;
-		//printf("%s\n", tmp->token);
 		free(tmp);
 	}
 }

@@ -18,13 +18,13 @@ static void	dev_mod0(t_prompt *prompt, char *input)
 {
 	int				i;
 
-	printf("\n====================== TESTING (PID: %d) ==========================\n", prompt->pid);
-	printf("\n* ENVIRONMENT *");
-	printf("\n--------------------------------------\n\n");
+	printf("\n\033[1;32m====================== TESTING (PID: %d) ==========================\033[0m\n", prompt->pid);
+	printf("\n\033[1;32m* ENVIRONMENT *\033[0m");
+	printf("\n\033[1;32m--------------------------------------\033[0m\n\n");
 	i = -1;
 	while (prompt->env[++i])
-		printf("[%d] %s\n", i, prompt->env[i]);
-	printf("\n\nINPUT: %s\n\nLEXER: ", input);
+		printf("\033[0;34m[%d]\033[0m %s\n", i, prompt->env[i]);
+	printf("\n\n\033[1;32mINPUT:\033[0m %s\n\n\033[1;32mLEXER:\033[0m ", input);
 }
 
 static void	dev_mod1(t_prompt *prompt)
@@ -44,24 +44,24 @@ static void	dev_mod2(t_prompt *prompt)
 	int				j;
 	int				i;
 
-	printf("\n\n\n* PARSER *");
-	printf("\n--------------------------------------\n");
+	printf("\n\n\n\033[1;32m* PARSER *\033[0m");
+	printf("\n\033[1;32m--------------------------------------\033[0m\n");
 	cmds = prompt->simple_cmds;
 	j = 0;
 	while (cmds)
 	{
 		printf("\nPROCESS[%d]:\n", ++j);
-		printf("\n  STR: ");
+		printf("\n  \033[0;34mSTR:\033[0m ");
 		i = -1;
 		while (cmds->str && cmds->str[++i])
 			printf("[%s] ", cmds->str[i]);
-		printf("\n  BUILTIN: %s\n", cmds->builtin);
-		printf("  REDIRCT NUMBER: %d\n", cmds->num_redirct);
-		printf("  REDIRCT: %s\n", cmds->redirct);
-		printf("  FILE: %s\n\n", cmds->file);
+		printf("\n  \033[0;34mBUILTIN:\033[0m %s\n", cmds->builtin);
+		printf("  \033[0;34mREDIRCT NUMBER:\033[0m %d\n", cmds->num_redirct);
+		printf("  \033[0;34mREDIRCT:\033[0m %s\n", cmds->redirct);
+		printf("  \033[0;34mFILE:\033[0m %s\n\n", cmds->file);
 		cmds = cmds->next;
 	}
-	printf("\n====================== TESTING (PID: %d) ==========================\n\n", prompt->pid);
+	printf("\n\033[1;32m====================== TESTING (PID: %d) ==========================\033[0m\n\n", prompt->pid);
 }
 
 int	main(int ac, char **av, char **ev)
@@ -110,5 +110,9 @@ int	main(int ac, char **av, char **ev)
 
  = BUGS =
  	->
+
+ = NOTES =
+ 	-> run valgrind without readline leaks:
+ 	   valgrind -s --suppressions=readline_leaks.txt --leak-check=full --show-leak-kinds=all ./minishell
 
 */

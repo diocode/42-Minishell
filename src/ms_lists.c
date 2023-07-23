@@ -14,20 +14,17 @@
 
 void	ms_delnode(t_lexer *node)
 {
-	t_lexer	*tmp;
-
 	if (!node)
 		return ;
-	tmp = node;
+	if (node->str)
+		free(node->str);
+	if (node->token)
+		free(node->token);
 	if (node->prev)
 		node->prev->next = node->next;
 	if (node->next)
 		node->next->prev = node ->prev;
-	if (tmp->str)
-		free(tmp->str);
-	if (tmp->token)
-		free(tmp->token);
-	//free(tmp);
+	free(node);
 }
 
 static t_lexer	*ms_lstlast(t_lexer *lst)

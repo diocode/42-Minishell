@@ -73,11 +73,12 @@ int				lexer(t_prompt *prompt, char *input);
 
 //parser
 void			parser(t_prompt *prompt);
+int				is_redirct(char *str);
+int				is_builtin(char const *str);
+int				nbr_nodes(t_lexer *lexer);
 
 //trim_input
 char			**trim_input(t_prompt *prompt, char *input);
-
-//trim_input
 void			check_flg(t_prompt *p, char const *str, int i);
 int				qts_nbr(t_prompt *prompt, char const *str, int i, int size);
 int				skip_word(t_prompt *prompt, char const *str, int i);
