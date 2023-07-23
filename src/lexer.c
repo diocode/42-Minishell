@@ -84,5 +84,6 @@ int	lexer(t_prompt *prompt, char *input)
 	i = -1;
 	while (cmds[++i])
 		gen_lexer(prompt, cmds[i]);
+	free_array(cmds);
 	return (1);
 }

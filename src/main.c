@@ -6,13 +6,22 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:59:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/14 16:40:50 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/22 18:49:28 by logname          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 extern int	g_status;
+
+static void	exit_env(t_prompt *prompt, char *input)
+{
+	g_status = 6;
+	free(input);
+	printf("exit\n");
+	free_data(prompt);
+	exit(g_status);
+}
 
 int	main(int ac, char **av, char **ev)
 {
@@ -30,17 +39,14 @@ int	main(int ac, char **av, char **ev)
 		set_sign();
 		input = readline("minishell$ ");
 		if (input == NULL)
-		{
-			g_status = 6;
-			free(input);
-			printf("exit\n");
-			free_data(prompt);
-			exit(6);
-		}
+			exit_env(prompt, input);
 		if (lexer(prompt, input) && prompt->lexer)
-			parser(prompt); //BUGS: { > INPUT}
+			parser(prompt);
+		if (prompt->simple_cmds)
+			continue ;
 		prompt = reset_prompt(prompt, av, ev);
 	}
 	free_data(prompt);
+	free(input);
 	exit(g_status);
 }

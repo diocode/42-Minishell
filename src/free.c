@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:29:47 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/07 13:30:29 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/18 16:25:50 by logname          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	free_lexer(t_lexer *lst)
 	{
 		tmp = lst;
 		lst = lst->next;
+		//printf("%s\n", tmp->token);
 		free(tmp);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 14:07:35 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/12 18:56:31 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/22 19:11:47 by logname          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,26 @@ static int	nbr_nodes(t_lexer *lexer)
 
 	nodes = 0;
 	node = lexer;
-	while (node && node->str && !is_redirct(node->str))
+	while (node && (node->str || node->token))
 	{
 		if (node->token && !ft_strncmp(node->token, "|", 1))
 			return (nodes);
-		nodes++;
-		node = node->next;
+		if (is_redirct(node->token))
+		{
+			if (node->next && (node->next->str || node->next->token))
+				node = node->next->next;
+			else
+				node = node->next;
+		}
+		else
+		{
+			nodes++;
+			node = node->next;
+		}
 	}
 	return (nodes);
 }
+
 /* i[0] - index | i[1] - flag for 1st pipe */
 static void	get_simple_cmds(t_prompt *prompt, int pipes)
 {
@@ -59,29 +70,22 @@ static void	get_simple_cmds(t_prompt *prompt, int pipes)
 	t_lexer			*lexer;
 	t_simple_cmds	*cmds;
 	t_simple_cmds	*tmp_cmds;
-	int				i[2];
+	int				i;
 
 	lexer = prompt->lexer;
 	cmds = prompt->simple_cmds;
-	i[0] = 0;
-	i[1] = 1;
 	while (lexer && pipes >= 0)
 	{
 		if (lexer->token && !ft_strncmp(lexer->token, "|", 1))
 		{
-			if (i[1])
-				i[1] = 0;
-			else
-			{
-				pipes--;
-				lexer = lexer->next;
-				tmp_cmds = init_simple_cmds();
-				if (!tmp_cmds)
-					return ;
-				cmds->next = tmp_cmds;
-				tmp_cmds->prev = cmds;
-				cmds = cmds->next;
-			}
+			pipes--;
+			lexer = lexer->next;
+			tmp_cmds = init_simple_cmds();
+			if (!tmp_cmds)
+				return ;
+			cmds->next = tmp_cmds;
+			tmp_cmds->prev = cmds;
+			cmds = cmds->next;
 		}
 		if (lexer && is_redirct(lexer->token))
 		{
@@ -104,14 +108,16 @@ static void	get_simple_cmds(t_prompt *prompt, int pipes)
 		{
 			if (!cmds->str)
 			{
+				i = 0;
 				cmds->str = malloc((nbr_nodes(lexer) + 1) * sizeof(char *));
 				cmds->str[nbr_nodes(lexer)] = NULL;
-				cmds->str[0] = ft_strdup(lexer->str);
+				cmds->str[i] = ft_strdup(lexer->str);
+
 			}
 			else
-				cmds->str[i[0]] = ft_strdup(lexer->str);
+				cmds->str[i] = ft_strdup(lexer->str);
 			lexer = lexer->next;
-			i[0]++;
+			i++;
 		}
 	}
 }
@@ -132,17 +138,4 @@ void	parser(t_prompt *prompt)
 	get_simple_cmds(prompt, pipes);
 	if (!prompt->simple_cmds)
 		return ;
-	//test
-	t_simple_cmds	*cmds = prompt->simple_cmds;
-	while (cmds)
-	{
-		printf("-----------\n\nSTR: ");
-		for (int i = 0; cmds->str && cmds->str[i]; i++)
-			printf("[%s] ", cmds->str[i]);
-		printf("\nBUILTIN: %s\n", cmds->builtin);
-		printf("REDIRCT NUMBER: %d\n", cmds->num_redirct);
-		printf("REDIRCT: %s\n", cmds->redirct);
-		printf("FILE: %s\n\n", cmds->file);
-		cmds = cmds->next;
-	}
 }

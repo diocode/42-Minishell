@@ -27,7 +27,7 @@ void	ms_delnode(t_lexer *node)
 		free(tmp->str);
 	if (tmp->token)
 		free(tmp->token);
-	free(tmp);
+	//free(tmp);
 }
 
 static t_lexer	*ms_lstlast(t_lexer *lst)
