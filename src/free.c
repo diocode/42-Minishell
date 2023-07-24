@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:29:47 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/07 13:30:29 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/23 12:43:27 by logname          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,50 @@
 
 extern int	g_status;
 
-void	free_lexer(t_lexer **lst)
+t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev)
 {
-	t_lexer	*tmp;
-	t_lexer	*node;
-
-	node = (*lst);
-	while (node)
-	{
-		tmp = node;
-		node = node->next;
-		free(tmp);
-	}
-	free(lst);
+	free_data(prompt);
+	return (init_prompt(av, ev));
 }
 
-void	free_parser(t_simple_cmds **simple_cmds)
+void	free_lexer(t_lexer *lst)
 {
-	t_simple_cmds	*cmds;
+	t_lexer	*tmp;
+
+	if (!lst)
+		return ;
+	while (lst)
+	{
+		if (lst->str)
+			free(lst->str);
+		if (lst->token)
+			free(lst->token);
+		tmp = lst;
+		lst = lst->next;
+		free(tmp);
+	}
+}
+
+void	free_parser(t_simple_cmds *simple_cmds)
+{
+	t_simple_cmds	*tmp;
 
 	if (!simple_cmds)
 		return ;
-	cmds = (*simple_cmds);
-	while (cmds)
+	while (simple_cmds)
 	{
-		if (cmds->str)
-			free_array(cmds->str);
-		if (cmds->builtin)
-			free(cmds->builtin);
-		if (cmds->file)
-			free(cmds->file);
-		if (cmds->redirct)
-			free_lexer(cmds->redirct);
-		cmds = cmds->next;
-		free(cmds->prev);
+		if (simple_cmds->str)
+			free_array(simple_cmds->str);
+		if (simple_cmds->builtin)
+			free(simple_cmds->builtin);
+		if (simple_cmds->file)
+			free(simple_cmds->file);
+		if (simple_cmds->redirct)
+			free(simple_cmds->redirct);
+		tmp = simple_cmds;
+		simple_cmds = simple_cmds->next;
+		free(tmp);
 	}
-	free(simple_cmds);
 }
 
 void	free_array(char **arr)

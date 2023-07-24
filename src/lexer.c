@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:14:26 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/06 12:49:01 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/14 16:34:15 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*check_quotes(char *str)
 
 static int	is_token(char *str)
 {
-	if (!str)
+	if (!str || !str[0])
 		return (0);
 	if ((str[0] == '|' || str[0] == '<' || str[0] == '>')
 		&& ft_strlen(str) == 1)
@@ -52,44 +52,38 @@ static int	is_token(char *str)
 	return (0);
 }
 
-static int	init_lst(t_prompt *prompt, char **cmds, int i)
+static void	gen_lexer(t_prompt *prompt, char *cmd)
 {
-	while (cmds[++i])
+	if (is_token(cmd))
 	{
-		if (is_token(cmds[i]))
-		{
-			*prompt->lexer = ms_lstnew(cmds[i], 't');
-			break ;
-		}
-		else if (cmds[i][0])
-		{
-			*prompt->lexer = ms_lstnew(cmds[i], 'w');
-			break ;
-		}
+		if (!prompt->lexer)
+			prompt->lexer = ms_lstnew(cmd, 't');
+		else
+			ms_lstadd(prompt->lexer, ms_lstnew(cmd, 't'));
 	}
-	return (i);
+	else if (cmd[0])
+	{
+		if (!prompt->lexer)
+			prompt->lexer = ms_lstnew(cmd, 'w');
+		else
+			ms_lstadd(prompt->lexer, ms_lstnew(cmd, 'w'));
+	}
 }
 
-void	lexer(t_prompt *prompt, char *input)
+int	lexer(t_prompt *prompt, char *input)
 {
 	char		**cmds;
 	int			i;
 
 	if (!input[0])
-	{
-		*prompt->lexer = NULL;
-		return ;
-	}
+		return (0);
 	input = check_quotes(input);
 	cmds = trim_input(prompt, input);
 	if (!cmds)
-		return ;
-	i = init_lst(prompt, cmds, -1);
+		return (0);
+	i = -1;
 	while (cmds[++i])
-	{
-		if (is_token(cmds[i]))
-			ms_lstadd(prompt->lexer, ms_lstnew(cmds[i], 't'));
-		else if (cmds[i][0])
-			ms_lstadd(prompt->lexer, ms_lstnew(cmds[i], 'w'));
-	}
+		gen_lexer(prompt, cmds[i]);
+	free_array(cmds);
+	return (1);
 }
