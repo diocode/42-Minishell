@@ -6,13 +6,30 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 18:35:48 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/27 16:06:17 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/12 18:24:33 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 extern int	g_status;
+
+t_simple_cmds	*init_simple_cmds(void)
+{
+	t_simple_cmds	*cmds;
+
+	cmds = malloc(sizeof(t_simple_cmds));
+	if (!cmds)
+		return (NULL);
+	cmds->str = NULL;
+	cmds->builtin = NULL;
+	cmds->file = NULL;
+	cmds->redirct = NULL;
+	cmds->num_redirct = 0;
+	cmds->next = NULL;
+	cmds->prev = NULL;
+	return (cmds);
+}
 
 static void	ms_getpid(t_prompt *prompt)
 {
@@ -68,12 +85,8 @@ t_prompt	*init_prompt(char **av, char **ev)
 		return (NULL);
 	g_status = 0;
 	path = NULL;
-	prompt->lexer = malloc(sizeof(t_lexer));
-	if (!prompt->lexer)
-		return (NULL);
-	prompt->simple_cmds = malloc(sizeof(t_simple_cmds));
-	if (!prompt->simple_cmds)
-		return (NULL);
+	prompt->lexer = NULL;
+	prompt->simple_cmds = init_simple_cmds();
 	prompt->env = dup_arr(ev);
 	ms_getpid(prompt);
 	prompt = init_vars(prompt, av, path);

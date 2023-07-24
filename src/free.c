@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:29:47 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/03 15:28:21 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/23 12:43:27 by logname          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,50 @@
 
 extern int	g_status;
 
-void	ms_exit(t_prompt *prompt)
+t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev)
 {
-	printf("exit\n");
 	free_data(prompt);
-	exit(g_status);
+	return (init_prompt(av, ev));
 }
 
-void	free_lexer(t_lexer **lst)
+void	free_lexer(t_lexer *lst)
 {
 	t_lexer	*tmp;
-	t_lexer	*node;
 
-	node = (*lst);
-	while (node)
+	if (!lst)
+		return ;
+	while (lst)
 	{
-		tmp = node;
-		node = node->next;
+		if (lst->str)
+			free(lst->str);
+		if (lst->token)
+			free(lst->token);
+		tmp = lst;
+		lst = lst->next;
 		free(tmp);
 	}
-	free(lst);
+}
+
+void	free_parser(t_simple_cmds *simple_cmds)
+{
+	t_simple_cmds	*tmp;
+
+	if (!simple_cmds)
+		return ;
+	while (simple_cmds)
+	{
+		if (simple_cmds->str)
+			free_array(simple_cmds->str);
+		if (simple_cmds->builtin)
+			free(simple_cmds->builtin);
+		if (simple_cmds->file)
+			free(simple_cmds->file);
+		if (simple_cmds->redirct)
+			free(simple_cmds->redirct);
+		tmp = simple_cmds;
+		simple_cmds = simple_cmds->next;
+		free(tmp);
+	}
 }
 
 void	free_array(char **arr)
@@ -52,6 +76,8 @@ void	free_data(t_prompt *prompt)
 		return ;
 	if (prompt->lexer)
 		free_lexer(prompt->lexer);
+	if (prompt->simple_cmds)
+		free_parser(prompt->simple_cmds);
 	if (prompt->env)
 		free_array(prompt->env);
 	free(prompt);

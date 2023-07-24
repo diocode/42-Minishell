@@ -38,8 +38,8 @@ char	**dup_arr(char **arr)
 	dup = ft_calloc(sizeof(char *), i + 1);
 	if (!dup)
 		return (NULL);
-	i = -1;
-	while (arr[++i])
+	i = 0;
+	while (arr[i])
 	{
 		dup[i] = ft_strdup(arr[i]);
 		if (!dup[i])
@@ -47,6 +47,7 @@ char	**dup_arr(char **arr)
 			free_array(dup);
 			return (NULL);
 		}
+		i++;
 	}
 	return (dup);
 }
