@@ -14,14 +14,6 @@
 
 extern int	g_status;
 
-void	exit_env(t_prompt *prompt)
-{
-	g_status = 6;
-	printf("exit\n");
-	free_data(prompt);
-	exit(g_status);
-}
-
 int	main(int ac, char **av, char **ev)
 {
 	t_prompt	*prompt;

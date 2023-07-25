@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:19:08 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/12 18:23:35 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:29:59 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int				nbr_nodes(t_lexer *lexer);
 
 //execute
 void			execute(t_prompt *prompt);
+void			replace_variables(t_prompt *prompt, t_simple_cmds *process);
 
 //trim_input
 char			**trim_input(t_prompt *prompt, char *input);
@@ -107,13 +108,12 @@ void			free_data(t_prompt *prompt);
 void			free_array(char **arr);
 void			free_lexer(t_lexer *lst);
 void			free_parser(t_simple_cmds *simple_cmds);
-void			exit_env(t_prompt *prompt);
 
 //builtins
-void			execute_builtin(t_prompt *prompt);
 void			ms_env(t_prompt *prompt);
 void			ms_pwd(t_prompt *prompt);
 void			ms_cd(t_prompt *prompt);
+void			exit_env(t_prompt *prompt);
 /*void			ms_echo(t_prompt *prompt);
 void			ms_export(t_prompt *prompt);
 int				ms_unset(t_prompt *prompt);

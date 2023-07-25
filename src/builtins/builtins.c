@@ -12,23 +12,14 @@
 
 #include "../../includes/minishell.h"
 
-void	execute_builtin(t_prompt *prompt)
+extern int	g_status;
+
+void	exit_env(t_prompt *prompt)
 {
-	if (!(ft_strncmp(prompt->env[0], "env\0", 4)))
-		ms_env(prompt);
-	if (!(ft_strncmp(prompt->env[0], "pwd\0", 4)))
-		ms_pwd(prompt);
-	if (!(ft_strncmp(prompt->env[0], "cd\0", 3)))
-		ms_cd(prompt);
-	/*if (!ft_strncmp(prompt->env[0], "echo\0", 5))
-		ms_echo(prompt);
-	if (!(ft_strncmp(prompt->env[0], "export\0", 7)))
-		ms_export(prompt);
-	if (!(ft_strncmp(prompt->env[0], "unset\0", 6)))
-		ms_unset(prompt);
-	if (!(ft_strncmp(prompt->env[0], "exit\0", 5)))
-		ms_exit_builtins(prompt);
-*/
+	g_status = 6;
+	printf("exit\n");
+	free_data(prompt);
+	exit(g_status);
 }
 
 void	ms_env(t_prompt *prompt)

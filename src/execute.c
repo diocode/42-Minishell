@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 19:11:30 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/23 20:08:25 by logname          ###   ########.fr       */
+/*   Updated: 2023/07/25 14:18:42 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	execute(t_prompt *prompt)
 	process = prompt->simple_cmds;
 	while (process)
 	{
+		replace_variables(prompt, process);
 		//create child process for each process (expander->heredoc->fork->set env->handle cmd)
 		process = process->next;
 	}
