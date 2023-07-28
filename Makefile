@@ -20,13 +20,13 @@ DEV = dev
 SRC = src/main.c src/utils.c src/free.c src/lexer.c src/signals.c src/init.c \
 	src/env.c src/builtins/builtins.c src/trim_input.c src/ms_lists.c \
 	src/parser.c src/trim_input_utils.c src/parser_utils.c src/execute.c \
-	src/replace_variables.c
+	src/replace_variables.c src/pipes.c
 OBJ = $(SRC:.c=.o)
 
 SRC_DEV = src/dev.c src/utils.c src/free.c src/lexer.c src/signals.c src/init.c \
     src/env.c src/builtins/builtins.c src/trim_input.c src/ms_lists.c \
     src/parser.c src/trim_input_utils.c src/parser_utils.c src/execute.c \
-    src/replace_variables.c
+    src/replace_variables.c src/pipes.c
 OBJ_DEV = $(SRC_DEV:.c=.o)
 
 LIBFT = libs/libft/libft.a

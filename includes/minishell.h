@@ -79,7 +79,9 @@ int				nbr_nodes(t_lexer *lexer);
 
 //execute
 void			execute(t_prompt *prompt);
+void			handle_cmd(t_prompt *prompt, int process);
 void			replace_variables(t_prompt *prompt, t_simple_cmds *process);
+int				handle_pipes(t_prompt *prompt, int n_pipes);
 
 //trim_input
 char			**trim_input(t_prompt *prompt, char *input);
