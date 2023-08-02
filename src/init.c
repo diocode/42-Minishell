@@ -23,7 +23,6 @@ t_simple_cmds	*init_simple_cmds(void)
 		return (NULL);
 	cmds->str = NULL;
 	cmds->builtin = NULL;
-	cmds->file = NULL;
 	cmds->redirct = NULL;
 	cmds->num_redirct = 0;
 	cmds->next = NULL;

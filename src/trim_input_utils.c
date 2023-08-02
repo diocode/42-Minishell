@@ -28,8 +28,10 @@ int	qts_nbr(t_prompt *prompt, char const *str, int i, int size)
 				|| (str[i + j] == '\'' && prompt->flg[0]))
 				j++;
 			else
+			{
 				quotes++;
-			i++;
+				i++;
+			}
 		}
 		else
 			j++;

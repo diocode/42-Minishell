@@ -33,35 +33,37 @@ static void	if_words(t_prompt *prompt, t_simple_cmds *cmds)
 	}
 }
 
-static void	if_redirct(t_prompt *prompt, t_simple_cmds *cmds)
+static void	if_redirct_builtin(t_prompt *prompt, t_simple_cmds *cmds)
 {
-	t_lexer			*tmp;
+	t_lexer	*tmp;
 
 	if (prompt->lexer && is_redirct(prompt->lexer->token))
 	{
 		cmds->num_redirct++;
-		cmds->redirct = ft_strdup(prompt->lexer->token);
-		tmp = prompt->lexer;
+		if (!cmds->redirct)
+			cmds->redirct = ms_lstnew(prompt->lexer->token, 't');
+		else
+			ms_lstadd(cmds->redirct, ms_lstnew(prompt->lexer->token, 't'));
 		prompt->lexer = prompt->lexer->next;
-		ms_delnode(tmp);
 		if (prompt->lexer && prompt->lexer->str)
 		{
-			cmds->file = ft_strdup(prompt->lexer->str);
-			tmp = prompt->lexer;
+			tmp = ms_lstlast(cmds->redirct);
+			tmp->str = ft_strdup(prompt->lexer->str);
 			prompt->lexer = prompt->lexer->next;
-			ms_delnode(tmp);
 		}
 	}
+	if (prompt->lexer && is_builtin(prompt->lexer->str) && !cmds->builtin)
+		cmds->builtin = ft_strdup(prompt->lexer->str);
 }
 
 static void	get_simple_cmds(t_prompt *prompt, int pipes)
 {
 	t_simple_cmds	*cmds;
 	t_simple_cmds	*tmp_cmds;
-	t_lexer			*tmp;
+	t_lexer			*tmp_lexer;
 
 	cmds = prompt->simple_cmds;
-	tmp = prompt->lexer;
+	tmp_lexer = prompt->lexer;
 	while (prompt->lexer && pipes >= 0)
 	{
 		if (prompt->lexer->token && !ft_strncmp(prompt->lexer->token, "|", 1))
@@ -75,12 +77,10 @@ static void	get_simple_cmds(t_prompt *prompt, int pipes)
 			tmp_cmds->prev = cmds;
 			cmds = cmds->next;
 		}
-		if_redirct(prompt, cmds);
-		if (prompt->lexer && is_builtin(prompt->lexer->str) && !cmds->builtin)
-			cmds->builtin = ft_strdup(prompt->lexer->str);
+		if_redirct_builtin(prompt, cmds);
 		if_words(prompt, cmds);
 	}
-	prompt->lexer = tmp;
+	prompt->lexer = tmp_lexer;
 }
 
 void	parser(t_prompt *prompt)
@@ -90,6 +90,7 @@ void	parser(t_prompt *prompt)
 
 	lexer = prompt->lexer;
 	pipes = 0;
+	prompt->flg[1] = 0;
 	while (lexer)
 	{
 		if (lexer->token && !ft_strncmp(lexer->token, "|", 1))

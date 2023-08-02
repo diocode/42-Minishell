@@ -27,7 +27,7 @@ void	ms_delnode(t_lexer *node)
 	free(node);
 }
 
-static t_lexer	*ms_lstlast(t_lexer *lst)
+t_lexer	*ms_lstlast(t_lexer *lst)
 {
 	while (lst)
 	{
