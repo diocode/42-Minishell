@@ -50,10 +50,8 @@ void	free_parser(t_simple_cmds *simple_cmds)
 			free_array(simple_cmds->str);
 		if (simple_cmds->builtin)
 			free(simple_cmds->builtin);
-		if (simple_cmds->file)
-			free(simple_cmds->file);
 		if (simple_cmds->redirct)
-			free(simple_cmds->redirct);
+			free_lexer(simple_cmds->redirct);
 		tmp = simple_cmds;
 		simple_cmds = simple_cmds->next;
 		free(tmp);

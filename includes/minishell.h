@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:19:08 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/12 18:23:35 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:29:59 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/ioctl.h>
+# include <fcntl.h>
 
 /*------------- Structures ---------------*/
 
@@ -38,8 +39,7 @@ typedef struct s_simple_cmds
 	char					**str;
 	char					*builtin;
 	int						num_redirct;
-	char					*file;
-	char					*redirct;
+	t_lexer					*redirct;
 	struct s_simple_cmds	*next;
 	struct s_simple_cmds	*prev;
 }	t_simple_cmds;
@@ -79,6 +79,8 @@ int				nbr_nodes(t_lexer *lexer);
 
 //execute
 void			execute(t_prompt *prompt);
+void			handle_cmd(t_prompt *prompt, int process);
+void			replace_variables(t_prompt *prompt, t_simple_cmds *process);
 
 //trim_input
 char			**trim_input(t_prompt *prompt, char *input);
@@ -100,6 +102,7 @@ void			set_sign(void);
 t_lexer			*ms_lstnew(char *content, char type);
 void			ms_lstadd(t_lexer *lst, t_lexer *new);
 void			ms_delnode(t_lexer *node);
+t_lexer			*ms_lstlast(t_lexer *lst);
 
 //free
 t_prompt		*reset_prompt(t_prompt *prompt, char **av, char **ev);
@@ -107,15 +110,11 @@ void			free_data(t_prompt *prompt);
 void			free_array(char **arr);
 void			free_lexer(t_lexer *lst);
 void			free_parser(t_simple_cmds *simple_cmds);
-void			exit_env(t_prompt *prompt);
 
 //builtins
-void			execute_builtin(t_prompt *prompt);
+void			add_new_path(t_prompt *prompt);
 void			ms_env(t_prompt *prompt);
-void			ms_pwd(t_prompt *prompt);
-void			ms_cd(t_prompt *prompt);
-/*void			ms_echo(t_prompt *prompt);
-void			ms_export(t_prompt *prompt);
-int				ms_unset(t_prompt *prompt);
-*/
+int				ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds);
+void			exit_env(t_prompt *prompt);
+
 #endif
