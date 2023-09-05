@@ -107,6 +107,7 @@ char			**dup_arr(char **arr);
 char			**extend_arr(char **arr, char *new);
 void			ms_error(int err, int status, char *param);
 int				is_whitespace(char c);
+char			*delquotes(char *str, char c);
 
 //signal
 void			handle_sign(int sig, siginfo_t *info, void *c);

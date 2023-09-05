@@ -14,6 +14,27 @@
 
 extern int	g_status;
 
+char	*delquotes(char *str, char c)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+		{
+			j = 0;
+			while (str[i + j] == c)
+				j++;
+			ft_strlcpy(&str[i], &str[i + j], strlen(str) - i);
+		}
+		i++;
+	}
+	printf("%s\n", str);
+	return (str);
+}
+
 int	is_whitespace(char c)
 {
 	return (c == ' ' || (c > 8 && c < 14));
