@@ -71,15 +71,16 @@ void	replace_variables(t_prompt *prompt, t_simple_cmds *process)
 	while (process->str[++i])
 	{
 		j = -1;
-		while (process->str[i][++j])
+		while (process->str[i] && process->str[i][++j])
 		{
-			if (process->str[i][j] == '$')
+			if (process->str[i][j] && process->str[i][j] == '$')
 			{
 				val = get_env(prompt, get_variable(process, i, j + 1));
 				if (val)
 				{
 					free(process->str[i]);
 					process->str[i] = val;
+					return ;
 				}
 			}
 		}

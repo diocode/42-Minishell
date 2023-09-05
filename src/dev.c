@@ -41,6 +41,7 @@ static void	dev_mod1(t_prompt *prompt)
 static void	dev_mod2(t_prompt *prompt)
 {
 	t_simple_cmds	*cmds;
+	t_lexer			*node;
 	int				j;
 	int				i;
 
@@ -57,8 +58,17 @@ static void	dev_mod2(t_prompt *prompt)
 			printf("[%s] ", cmds->str[i]);
 		printf("\n  \033[0;34mBUILTIN:\033[0m %s\n", cmds->builtin);
 		printf("  \033[0;34mREDIRCT NUMBER:\033[0m %d\n", cmds->num_redirct);
-		printf("  \033[0;34mREDIRCT:\033[0m %s\n", cmds->redirct);
-		printf("  \033[0;34mFILE:\033[0m %s\n\n", cmds->file);
+		printf("  \033[0;34mREDIRCT:\033[0m ");
+		node = cmds->redirct;
+		while (node)
+		{
+			if (node->token)
+				printf("[%s]", node->token);
+			if (node->str)
+				printf("[%s]", node->str);
+			printf("  ");
+			node = node->next;
+		}
 		cmds = cmds->next;
 	}
 }
@@ -66,6 +76,7 @@ static void	dev_mod2(t_prompt *prompt)
 static void	dev_mod3(t_prompt *prompt)
 {
 	t_simple_cmds	*cmds;
+	t_lexer			*node;
 	int				j;
 	int				i;
 
@@ -82,8 +93,17 @@ static void	dev_mod3(t_prompt *prompt)
 			printf("[%s] ", cmds->str[i]);
 		printf("\n  \033[0;34mBUILTIN:\033[0m %s\n", cmds->builtin);
 		printf("  \033[0;34mREDIRCT NUMBER:\033[0m %d\n", cmds->num_redirct);
-		printf("  \033[0;34mREDIRCT:\033[0m %s\n", cmds->redirct);
-		printf("  \033[0;34mFILE:\033[0m %s\n\n", cmds->file);
+		printf("  \033[0;34mREDIRCT:\033[0m ");
+		node = cmds->redirct;
+		while (node)
+		{
+			if (node->token)
+				printf("[%s]", node->token);
+			if (node->str)
+				printf("[%s]", node->str);
+			printf("  ");
+			node = node->next;
+		}
 		cmds = cmds->next;
 	}
 	printf("\n\033[1;32m====================== TESTING (PID: %d) ==========================\033[0m\n\n", prompt->pid);
@@ -129,10 +149,9 @@ int	main(int ac, char **av, char **ev)
 /*
 
  = TEST =
- 	-> echo "testy test" >> note.txt -l | cat "Diogo Silva" env -n >> t1 | 'work"please' pwd cd ok? < file.file
+ 	echo "'test'" >> note.txt -l | cat $USER echo -n << t1 > lol | pwd 'workpls' cd ok? < test.txt
 
  = BUGS =
- 	->
 
  = NOTES =
  	-> run valgrind without readline leaks:

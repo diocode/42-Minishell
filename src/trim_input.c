@@ -12,9 +12,9 @@
 
 #include "../includes/minishell.h"
 
-static int	next_quote(char const *str, int i, char c, int flg)
+static int	next_quote(char const *str, int i, char c)
 {
-	while (str[i] && !(is_whitespace(str[i]) && !flg))
+	while (str[i] && !is_whitespace(str[i]))
 	{
 		if (str[i] == c)
 			return (1);
@@ -45,14 +45,15 @@ static int	wd_size(t_prompt *p, char const *str, int i)
 			i++;
 			len++;
 		}
-		if ((p->flg[0] && !next_quote(str, i, '"', p->flg[0])))
+		if ((p->flg[0] && !next_quote(str, i, '"')))
 			p->flg[0] = 0;
-		if ((p->flg[1] && !next_quote(str, i, '\'', p->flg[1])))
+		if ((p->flg[1] && !next_quote(str, i, '\'')))
 			p->flg[1] = 0;
 	}
 	return (len);
 }
 
+/* flg[0] = '"' | flg[1] = '\'' */
 static char	*get_word(t_prompt *p, char *str, int i, int size)
 {
 	char	*word;
@@ -73,9 +74,9 @@ static char	*get_word(t_prompt *p, char *str, int i, int size)
 		}
 		else
 			word[j++] = str[i++];
-		if ((p->flg[0] && !next_quote(str, i, '"', p->flg[0])))
+		if ((p->flg[0] && !next_quote(str, i, '"')))
 			p->flg[0] = 0;
-		if ((p->flg[1] && !next_quote(str, i, '\'', p->flg[1])))
+		if ((p->flg[1] && !next_quote(str, i, '\'')))
 			p->flg[1] = 0;
 	}
 	return (word);

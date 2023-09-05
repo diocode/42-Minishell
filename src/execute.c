@@ -28,12 +28,12 @@ void	handle_cmd(t_prompt *prompt, int id)
 		if (!ft_strncmp(process->builtin, "env", 3))
 			ms_env(prompt);
 		if (!ft_strncmp(process->builtin, "pwd", 3))
-			printf("\033[0;32mPWD STILL LOADING\033[0m\n");
+			ft_printf("%s\n", ms_getenv("PWD", prompt->env));
 		return ;
 	}
 }
 
-//Handle single cmds that cannot be run in a separate process
+//Handle single cmds that cannot be run in a child process
 static int	single_cmd(t_prompt *prompt)
 {
 	char	*cmd;
@@ -44,7 +44,7 @@ static int	single_cmd(t_prompt *prompt)
 		if (!ft_strncmp(cmd, "exit", 4))
 			exit_env(prompt);
 		if (!ft_strncmp(cmd, "cd", 2))
-			ms_cd(prompt);
+			ms_cd(prompt, prompt->simple_cmds);
 		if (!ft_strncmp(cmd, "export", 6))
 			printf("\033[0;32mEXPORT STILL LOADING\033[0m\n");
 		if (!ft_strncmp(cmd, "unset", 5))
@@ -59,6 +59,7 @@ void	execute(t_prompt *prompt)
 {
 	t_simple_cmds	*process;
 	int				n_pipes;
+	int				end[2];
 
 	if (!prompt->simple_cmds->next && single_cmd(prompt))
 		return ;
@@ -68,9 +69,10 @@ void	execute(t_prompt *prompt)
 	{
 		n_pipes++;
 		replace_variables(prompt, process);
+		if (process->next)
+			pipe(end);
+		if (send_heredoc(prompt, process))
+			return ;
 		process = process->next;
 	}
-	handle_pipes(prompt, n_pipes - 1);
-	//create child process for each process (expander->heredoc->fork->set env->handle cmd)
-
 }

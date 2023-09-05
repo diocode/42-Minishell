@@ -23,9 +23,9 @@ t_simple_cmds	*init_simple_cmds(void)
 		return (NULL);
 	cmds->str = NULL;
 	cmds->builtin = NULL;
-	cmds->file = NULL;
 	cmds->redirct = NULL;
 	cmds->num_redirct = 0;
+	cmds->hd_file = NULL;
 	cmds->next = NULL;
 	cmds->prev = NULL;
 	return (cmds);
@@ -87,6 +87,13 @@ t_prompt	*init_prompt(char **av, char **ev)
 	path = NULL;
 	prompt->lexer = NULL;
 	prompt->simple_cmds = init_simple_cmds();
+	prompt->heredoc = malloc(sizeof(t_heredoc));
+	if (!prompt->heredoc)
+		return (NULL);
+	prompt->heredoc->error_num = 0;
+	prompt->heredoc->in_heredoc = 0;
+	prompt->heredoc->in_process = 0;
+	prompt->heredoc->stop_heredoc = 0;
 	prompt->env = dup_arr(ev);
 	ms_getpid(prompt);
 	prompt = init_vars(prompt, av, path);

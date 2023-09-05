@@ -22,8 +22,17 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/ioctl.h>
+# include <fcntl.h>
 
 /*------------- Structures ---------------*/
+
+typedef struct s_heredoc
+{
+	int	error_num;
+	int	stop_heredoc;
+	int	in_process;
+	int	in_heredoc;
+}	t_heredoc;
 
 typedef struct s_lexer
 {
@@ -38,8 +47,8 @@ typedef struct s_simple_cmds
 	char					**str;
 	char					*builtin;
 	int						num_redirct;
-	char					*file;
-	char					*redirct;
+	t_lexer					*redirct;
+	char					*hd_file;
 	struct s_simple_cmds	*next;
 	struct s_simple_cmds	*prev;
 }	t_simple_cmds;
@@ -48,9 +57,11 @@ typedef struct s_prompt
 {
 	t_lexer			*lexer;
 	t_simple_cmds	*simple_cmds;
+	t_heredoc		*heredoc;
 	char			**env;
 	pid_t			pid;
 	int				flg[2];
+	int
 }	t_prompt;
 
 enum	e_errors
@@ -81,7 +92,9 @@ int				nbr_nodes(t_lexer *lexer);
 void			execute(t_prompt *prompt);
 void			handle_cmd(t_prompt *prompt, int process);
 void			replace_variables(t_prompt *prompt, t_simple_cmds *process);
-int				handle_pipes(t_prompt *prompt, int n_pipes);
+
+//heredoc
+int				send_heredoc(t_prompt *prompt, t_simple_cmds *process);
 
 //trim_input
 char			**trim_input(t_prompt *prompt, char *input);
@@ -103,6 +116,7 @@ void			set_sign(void);
 t_lexer			*ms_lstnew(char *content, char type);
 void			ms_lstadd(t_lexer *lst, t_lexer *new);
 void			ms_delnode(t_lexer *node);
+t_lexer			*ms_lstlast(t_lexer *lst);
 
 //free
 t_prompt		*reset_prompt(t_prompt *prompt, char **av, char **ev);
@@ -112,12 +126,9 @@ void			free_lexer(t_lexer *lst);
 void			free_parser(t_simple_cmds *simple_cmds);
 
 //builtins
+void			add_new_path(t_prompt *prompt);
 void			ms_env(t_prompt *prompt);
-void			ms_pwd(t_prompt *prompt);
-void			ms_cd(t_prompt *prompt);
+int				ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds);
 void			exit_env(t_prompt *prompt);
-/*void			ms_echo(t_prompt *prompt);
-void			ms_export(t_prompt *prompt);
-int				ms_unset(t_prompt *prompt);
-*/
+
 #endif
