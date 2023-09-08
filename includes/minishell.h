@@ -28,10 +28,11 @@
 
 typedef struct s_heredoc
 {
-	int	error_num;
-	int	stop_heredoc;
-	int	in_process;
-	int	in_heredoc;
+	bool	status;
+	int		error_num;
+	int		stop_heredoc;
+	int		in_process;
+	int		in_heredoc;
 }	t_heredoc;
 
 typedef struct s_lexer
@@ -61,7 +62,6 @@ typedef struct s_prompt
 	char			**env;
 	pid_t			pid;
 	int				flg[2];
-	int
 }	t_prompt;
 
 enum	e_errors

@@ -31,7 +31,6 @@ char	*delquotes(char *str, char c)
 		}
 		i++;
 	}
-	printf("%s\n", str);
 	return (str);
 }
 

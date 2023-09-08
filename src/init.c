@@ -94,6 +94,7 @@ t_prompt	*init_prompt(char **av, char **ev)
 	prompt->heredoc->in_heredoc = 0;
 	prompt->heredoc->in_process = 0;
 	prompt->heredoc->stop_heredoc = 0;
+	prompt->heredoc->status = false;
 	prompt->env = dup_arr(ev);
 	ms_getpid(prompt);
 	prompt = init_vars(prompt, av, path);
