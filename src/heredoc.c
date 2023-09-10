@@ -23,7 +23,7 @@ static int	create_heredoc(t_prompt *prompt, t_lexer *redirct,
 	fd = open(hd_file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	input = readline("> ");
 	while (input && ft_strncmp(redirct->str, input, ft_strlen(redirct->str))
-		&& !prompt->heredoc->stop_heredoc)
+		&& g_status != 2)
 	{
 		if (quotes == false)
 			input = str_expander(prompt, input);
@@ -33,7 +33,7 @@ static int	create_heredoc(t_prompt *prompt, t_lexer *redirct,
 		input = readline("> ");
 	}
 	free(input);
-	if (prompt->heredoc->stop_heredoc)
+	if (g_status == 2)
 		return (1);
 	close(fd);
 	return (0);
@@ -54,7 +54,6 @@ static int	setup_heredoc(t_prompt *prompt, t_lexer *redirct, char *hd_file)
 		quotes = false;
 	delquotes(redirct->str, '\"');
 	delquotes(redirct->str, '\'');
-	prompt->heredoc->stop_heredoc = 0;
 	prompt->heredoc->in_heredoc = 1;
 	flg = create_heredoc(prompt, redirct, quotes, hd_file);
 	prompt->heredoc->in_heredoc = 0;
@@ -76,24 +75,39 @@ static char	*gen_hd_filename(void)
 
 int	send_heredoc(t_prompt *prompt, t_simple_cmds *process)
 {
-	t_lexer	*tmp;
+	t_lexer	*redirct;
 
-	tmp = process->redirct;
-	while (process->redirct)
+	redirct = process->redirct;
+	while (redirct)
 	{
-		if (ft_strncmp(process->redirct->token, "<<", 2))
+		if (!ft_strncmp(redirct->token, "<<", 2))
 		{
 			if (process->hd_file)
 				free(process->hd_file);
 			process->hd_file = gen_hd_filename();
-			if (setup_heredoc(prompt, process->redirct, process->hd_file))
+			if (setup_heredoc(prompt, redirct, process->hd_file))
 			{
 				prompt->heredoc->error_num = 1;
 				return (1);
 			}
 		}
-		process->redirct = process->redirct->next;
+		redirct = redirct->next;
 	}
-	process->redirct = tmp;
 	return (0);
+}
+
+t_simple_cmds	*single_cmd_heredoc(t_prompt *prompt, t_simple_cmds *p)
+{
+	t_lexer	*redirct;
+
+	p->str = single_cmd_expander(prompt, p->str);
+	redirct = p->redirct;
+	while (p->redirct)
+	{
+		if (ft_strncmp(p->redirct->token, "<<", 2))
+			p->redirct->str = str_expander(prompt, p->redirct->str);
+		redirct = redirct->next;
+	}
+	p->redirct = redirct;
+	return (p);
 }

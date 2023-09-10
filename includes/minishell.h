@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 16:19:08 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/24 12:29:59 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/09/09 13:01:07 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_heredoc
 {
 	bool	status;
 	int		error_num;
-	int		stop_heredoc;
 	int		in_process;
 	int		in_heredoc;
 }	t_heredoc;
@@ -60,7 +59,8 @@ typedef struct s_prompt
 	t_simple_cmds	*simple_cmds;
 	t_heredoc		*heredoc;
 	char			**env;
-	pid_t			pid;
+	int				*pid;
+	bool			reset;
 	int				flg[2];
 }	t_prompt;
 
@@ -74,6 +74,7 @@ enum	e_errors
 //init
 t_prompt		*init_prompt(char **av, char **ev);
 t_simple_cmds	*init_simple_cmds(void);
+int				init_pid(t_prompt *prompt);
 
 //env
 char			**ms_setenv(char *var, char *value, char **env);
@@ -89,12 +90,26 @@ int				is_builtin(char const *str);
 int				nbr_nodes(t_lexer *lexer);
 
 //execute
-void			execute(t_prompt *prompt);
-void			handle_cmd(t_prompt *prompt, int process);
+int				execute(t_prompt *prompt);
+int				handle_cmd(t_prompt *prompt, t_simple_cmds *cmd);
+int				single_cmd(t_prompt *prompt, t_simple_cmds *process);
 void			replace_variables(t_prompt *prompt, t_simple_cmds *process);
 
 //heredoc
 int				send_heredoc(t_prompt *prompt, t_simple_cmds *process);
+t_simple_cmds	*single_cmd_heredoc(t_prompt *prompt, t_simple_cmds *process);
+
+//redircts
+int				setup_redirct(t_simple_cmds *process);
+
+//str_expander
+char			**single_cmd_expander(t_prompt *prompt, char **str);
+char			*str_expander(t_prompt *prompt, char *str);
+int				dollar_sign(char *str);
+int				equal_sign(char *str);
+char			*char_to_str(char c);
+int				if_digit(char *str, int i);
+int				if_question_mark(t_prompt *prompt, char **tmp);
 
 //trim_input
 char			**trim_input(t_prompt *prompt, char *input);
@@ -105,9 +120,9 @@ int				skip_word(t_prompt *prompt, char const *str, int i);
 //utils
 char			**dup_arr(char **arr);
 char			**extend_arr(char **arr, char *new);
-void			ms_error(int err, int status, char *param);
 int				is_whitespace(char c);
 char			*delquotes(char *str, char c);
+int				ms_error(int error);
 
 //signal
 void			handle_sign(int sig, siginfo_t *info, void *c);

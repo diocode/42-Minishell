@@ -14,64 +14,66 @@
 
 extern int	g_status;
 
-int	loop_if_dollar_sign(t_tools *tools, char *str, char **tmp, int j)
+static int	var_len_after_dol(char *str, int j)
 {
-	int		k;
-	int		ret;
+	int	i;
+
+	i = j + 1;
+	while (str[i] != '\0' && str[i] != '$' && str[i] != ' '
+		&& str[i] != '\"' && str[i] != '\'' && str[i] != '=' && str[i] != '-'
+		&& str[i] != ':')
+		i++;
+	return (i);
+}
+
+static int	replace_var(t_prompt *prompt, char *str, char **tmp, int i)
+{
+	int		j;
+	int		len;
 	char	*tmp2;
 	char	*tmp3;
 
-	k = 0;
-	ret = 0;
-	while (tools->envp[k])
+	j = -1;
+	len = 0;
+	while (prompt->env[++j])
 	{
-		if (ft_strncmp(str + j + 1, tools->envp[k],
-					   equal_sign(tools->envp[k]) - 1) == 0
-			&& after_dol_lenght(str, j) - j == (int)equal_sign(tools->envp[k]))
+		if (!ft_strncmp(str + i + 1, prompt->env[j],
+				equal_sign(prompt->env[j]) - 1)
+			&& var_len_after_dol(str, i) - i == equal_sign(prompt->env[j]))
 		{
-			tmp2 = ft_strdup(tools->envp[k] + equal_sign(tools->envp[k]));
+			tmp2 = ft_strdup(prompt->env[j] + equal_sign(prompt->env[j]));
 			tmp3 = ft_strjoin(*tmp, tmp2);
 			free(*tmp);
 			*tmp = tmp3;
 			free(tmp2);
-			ret = equal_sign(tools->envp[k]);
+			len = equal_sign(prompt->env[j]);
 		}
-		k++;
 	}
-	if (ret == 0)
-		ret = after_dol_lenght(str, j) - j;
-	return (ret);
+	if (len == 0)
+		len = var_len_after_dol(str, i) - i;
+	return (len);
 }
 
-static char	*detect_dollar_sign(t_prompt *prompt, char *str)
+static char	*expand(t_prompt *prompt, char *str)
 {
 	int		i;
-	int		j;
 	char	*tmp;
 	char	*tmp2;
 	char	*tmp3;
 
 	tmp = ft_strdup("\0");
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
-		j = i;
-		if (str[j] == '$')
-			if (ft_isdigit(str[j + 1]) == 1)
-				j += 2;
-		i += j - i;
+		i += if_digit(str, i);
 		if (str[i] == '$' && str[i + 1] == '?')
-		{
-			free(tmp);
-			tmp = ft_itoa(prompt->heredoc->error_num);
-			i += ft_strlen(tmp) + 1;
-		}
+			i += if_question_mark(prompt, &tmp);
 		else if (str[i] == '$' && (str[i + 1] != ' ' && (str[i + 1] != '"'
 					|| str[i + 2] != '\0')) && str[i + 1] != '\0')
-			i += loop_if_dollar_sign(tools, str, &tmp, i);
+			i += replace_var(prompt, str, &tmp, i);
 		else
 		{
-			tmp2 = char_to_str(str[i++]);
+			tmp2 = char_to_str(str[i]);
 			tmp3 = ft_strjoin(tmp, tmp2);
 			free(tmp);
 			tmp = tmp3;
@@ -79,20 +81,6 @@ static char	*detect_dollar_sign(t_prompt *prompt, char *str)
 		}
 	}
 	return (tmp);
-}
-
-static size_t	dollar_sign(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-			return (i + 1);
-		i++;
-	}
-	return (0);
 }
 
 char	*str_expander(t_prompt *prompt, char *str)
@@ -103,11 +91,36 @@ char	*str_expander(t_prompt *prompt, char *str)
 	if (str[dollar_sign(str) - 2] != '\'' && dollar_sign(str) != 0
 		&& str[dollar_sign(str)] != '\0')
 	{
-		tmp = detect_dollar_sign(prompt, str);
+		tmp = expand(prompt, str);
 		free(str);
 		str = tmp;
 	}
 	str = delquotes(str, '\"');
 	str = delquotes(str, '\'');
+	return (str);
+}
+
+char	**single_cmd_expander(t_prompt *prompt, char **str)
+{
+	char	*tmp;
+	int		i;
+
+	i = -1;
+	tmp = NULL;
+	while (str[++i])
+	{
+		if (str[i][dollar_sign(str[i]) - 2] != '\'' && dollar_sign(str[i]) != 0
+			&& str[i][dollar_sign(str[i])] != '\0')
+		{
+			tmp = expand(prompt, str[i]);
+			free(str[i]);
+			str[i] = tmp;
+		}
+		if (ft_strncmp(str[0], "export", ft_strlen(str[0]) - 1))
+		{
+			str[i] = delquotes(str[i], '\"');
+			str[i] = delquotes(str[i], '\'');
+		}
+	}
 	return (str);
 }

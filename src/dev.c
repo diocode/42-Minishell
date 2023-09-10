@@ -18,7 +18,7 @@ static void	dev_mod0(t_prompt *prompt, char *input)
 {
 	int				i;
 
-	printf("\n\033[1;32m====================== TESTING (PID: %d) ==========================\033[0m\n", prompt->pid);
+	printf("\n\033[1;32m====================== TESTING ==========================\033[0m\n");
 	printf("\n\033[1;32m* ENVIRONMENT *\033[0m");
 	printf("\n\033[1;32m--------------------------------------\033[0m\n\n");
 	i = -1;
@@ -106,7 +106,7 @@ static void	dev_mod3(t_prompt *prompt)
 		}
 		cmds = cmds->next;
 	}
-	printf("\n\033[1;32m====================== TESTING (PID: %d) ==========================\033[0m\n\n", prompt->pid);
+	printf("\n\033[1;32m====================== TESTING ==========================\033[0m\n\n");
 }
 
 int	main(int ac, char **av, char **ev)
