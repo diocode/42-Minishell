@@ -52,7 +52,7 @@ static int	system_cmd(t_prompt *prompt, t_simple_cmds *process)
 		free(path);
 	}
 	free_array(paths);
-	return (ms_error(0));
+	return (error_cmd_not_found(prompt));
 }
 
 static int	builtin(t_prompt *prompt, t_simple_cmds *process)
@@ -108,8 +108,8 @@ int	single_cmd(t_prompt *prompt, t_simple_cmds *process)
 	status = 0;
 	prompt->simple_cmds = single_cmd_heredoc(prompt, process);
 	cmd = process->builtin;
-	if (!ft_strncmp(cmd, "exit", 4) || !ft_strncmp(cmd, "cd", 2)
-		|| !ft_strncmp(cmd, "export", 6) || !ft_strncmp(cmd, "unset", 5))
+	if (cmd && (!ft_strncmp(cmd, "exit", 4) || !ft_strncmp(cmd, "cd", 2)
+			|| !ft_strncmp(cmd, "export", 6) || !ft_strncmp(cmd, "unset", 5)))
 	{
 		prompt->heredoc->error_num += builtin(prompt, prompt->simple_cmds);
 		return (0);

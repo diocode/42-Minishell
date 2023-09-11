@@ -123,6 +123,7 @@ char			**extend_arr(char **arr, char *new);
 int				is_whitespace(char c);
 char			*delquotes(char *str, char c);
 int				ms_error(int error);
+int				error_cmd_not_found(t_prompt *prompt);
 
 //signal
 void			handle_sign(int sig, siginfo_t *info, void *c);
