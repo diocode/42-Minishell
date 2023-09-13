@@ -69,7 +69,7 @@ static int	builtin(t_prompt *prompt, t_simple_cmds *process)
 	else if (!ft_strncmp(cmd, "unset", 5))
 		printf("\033[0;32mUNSET STILL LOADING\033[0m\n");
 	else if (!ft_strncmp(process->builtin, "echo", 4))
-		printf("\033[0;32mECHO STILL LOADING\033[0m\n");
+		ms_echo(process);
 	else if (!ft_strncmp(process->builtin, "env", 3))
 		ms_env(prompt);
 	else if (!ft_strncmp(process->builtin, "pwd", 3))

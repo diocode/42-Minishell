@@ -69,6 +69,7 @@ static void	dev_mod2(t_prompt *prompt)
 			printf("  ");
 			node = node->next;
 		}
+		printf("\n");
 		cmds = cmds->next;
 	}
 }
@@ -104,9 +105,11 @@ static void	dev_mod3(t_prompt *prompt)
 			printf("  ");
 			node = node->next;
 		}
+		printf("\n");
 		cmds = cmds->next;
 	}
 	printf("\n\033[1;32m====================== TESTING ==========================\033[0m\n\n");
+	printf("\n\033[1;32mOUTPUT:\033[0m\n\n");
 }
 
 int	main(int ac, char **av, char **ev)
@@ -135,8 +138,10 @@ int	main(int ac, char **av, char **ev)
 			if (prompt->simple_cmds)
 			{
 				dev_mod2(prompt);
-				execute(prompt);
+				replace_variables(prompt, prompt->simple_cmds);
 				dev_mod3(prompt);
+				execute(prompt);
+				printf("\n");
 			}
 		}
 		prompt = reset_prompt(prompt, av, ev);

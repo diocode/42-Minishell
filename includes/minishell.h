@@ -143,7 +143,7 @@ void			free_lexer(t_lexer *lst);
 void			free_parser(t_simple_cmds *simple_cmds);
 
 //builtins
-void			add_new_path(t_prompt *prompt);
+int				ms_echo(t_simple_cmds *process);
 void			ms_env(t_prompt *prompt);
 int				ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds);
 void			exit_env(t_prompt *prompt);

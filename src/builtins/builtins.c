@@ -14,12 +14,42 @@
 
 extern int	g_status;
 
-void	exit_env(t_prompt *prompt)
+static void	ft_print(char **str, int i)
 {
-	g_status = 6;
-	printf("exit\n");
-	free_data(prompt);
-	exit(g_status);
+	while (str[i])
+	{
+		ft_putstr_fd(str[i], STDOUT_FILENO);
+		i++;
+		if (str[i])
+			ft_putchar_fd(' ', STDOUT_FILENO);
+	}
+}
+
+int	ms_echo(t_simple_cmds *process)
+{
+	float	flg;
+	char	**cmd;
+	int		i;
+	int		j;
+
+	cmd = process->str;
+	flg = false;
+	i = 1;
+	while (cmd[i] && cmd[i][0] == '-' && cmd[i][1] == 'n')
+	{
+		j = 1;
+		while (cmd[i][j] == 'n')
+			j++;
+		if (cmd[i][j] == '\0')
+			flg = true;
+		else
+			break ;
+		i++;
+	}
+	ft_print(cmd, i);
+	if (flg == false)
+		ft_putchar_fd('\n', STDOUT_FILENO);
+	return (0);
 }
 
 void	ms_env(t_prompt *prompt)
@@ -29,4 +59,12 @@ void	ms_env(t_prompt *prompt)
 	i = -1;
 	while (prompt->env[++i])
 		ft_putendl_fd(prompt->env[i], STDOUT_FILENO);
+}
+
+void	exit_env(t_prompt *prompt)
+{
+	g_status = 6;
+	printf("exit\n");
+	free_data(prompt);
+	exit(g_status);
 }
