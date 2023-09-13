@@ -20,7 +20,7 @@ void	handle_sign(int sig, siginfo_t *info, void *c)
 	(void)c;
 	if (sig == SIGINT)
 	{
-		g_status = 2;
+		g_status = 1;
 		printf("\b\b  \b\b");
 		printf("\n");
 		rl_on_new_line();

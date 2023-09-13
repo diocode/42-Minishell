@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 19:11:30 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/25 14:18:42 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/09/10 18:44:26 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,60 +14,102 @@
 
 extern int	g_status;
 
-void	handle_cmd(t_prompt *prompt, int id)
+static int	dup_process(t_prompt *p, t_simple_cmds *cmd, int fd_in, int end[2])
 {
-	t_simple_cmds	*process;
-
-	process = prompt->simple_cmds;
-	while (id--)
-		process = prompt->simple_cmds->next;
-	if (process->builtin)
-	{
-		if (!ft_strncmp(process->builtin, "echo", 4))
-			printf("\033[0;32mECHO STILL LOADING\033[0m\n");
-		if (!ft_strncmp(process->builtin, "env", 3))
-			ms_env(prompt);
-		if (!ft_strncmp(process->builtin, "pwd", 3))
-			ft_printf("%s\n", ms_getenv("PWD", prompt->env));
-		return ;
-	}
+	if (cmd->prev && dup2(fd_in, STDIN_FILENO) < 0)
+		return (1);
+	close(end[0]);
+	if (cmd->next && dup2(end[1], STDOUT_FILENO) < 0)
+		return (1);
+	close(end[1]);
+	if (cmd->prev)
+		close(fd_in);
+	handle_cmd(p, cmd);
+	return (0);
 }
 
-//Handle single cmds that cannot be run in a child process
-static int	single_cmd(t_prompt *prompt)
+static int	check_fd(t_prompt *prompt, t_simple_cmds *process, int end[2])
 {
-	char	*cmd;
+	int	fd_in;
 
-	if (prompt->simple_cmds->builtin)
+	if (prompt->heredoc)
 	{
-		cmd = prompt->simple_cmds->builtin;
-		if (!ft_strncmp(cmd, "exit", 4))
-			exit_env(prompt);
-		if (!ft_strncmp(cmd, "cd", 2))
-			ms_cd(prompt, prompt->simple_cmds);
-		if (!ft_strncmp(cmd, "export", 6))
-			printf("\033[0;32mEXPORT STILL LOADING\033[0m\n");
-		if (!ft_strncmp(cmd, "unset", 5))
-			printf("\033[0;32mUNSET STILL LOADING\033[0m\n");
-		handle_cmd(prompt, 0);
-		return (0);
+		close(end[0]);
+		fd_in = open(process->hd_file, O_RDONLY);
 	}
-	return (1);
+	else
+		fd_in = end[0];
+	return (fd_in);
 }
 
-void	execute(t_prompt *prompt)
+static int	fork_process(t_prompt *p, t_simple_cmds *cmd, int fd_in, int end[2])
+{
+	static int	i;
+
+	if (!i)
+		i = 0;
+	if (p->reset == true)
+	{
+		i = 0;
+		p->reset = false;
+	}
+	p->pid[i] = fork();
+	if (p->pid[i] < 0)
+		return (ms_error(5));
+	if (p->pid[i] == 0)
+		if (dup_process(p, cmd, fd_in, end))
+			return (ms_error(4));
+	i++;
+	return (0);
+}
+
+static void	wait_pipe(t_prompt *prompt, int *pid)
 {
 	t_simple_cmds	*process;
 	int				n_pipes;
+	int				i;
+	int				status;
 
-	if (!prompt->simple_cmds->next && single_cmd(prompt))
-		return ;
 	process = prompt->simple_cmds;
 	n_pipes = 0;
 	while (process)
 	{
 		n_pipes++;
-		replace_variables(prompt, process);
 		process = process->next;
 	}
+	i = -1;
+	while (++i < n_pipes - 1)
+		waitpid(pid[i], &status, 0);
+	waitpid(pid[i], &status, 0);
+	if (WIFEXITED(status))
+		prompt->heredoc->error_num += WEXITSTATUS(status);
+}
+
+int	execute(t_prompt *prompt)
+{
+	t_simple_cmds	*process;
+	int				end[2];
+	int				fd_in;
+
+	fd_in = STDIN_FILENO;
+	process = prompt->simple_cmds;
+	if (!process->next)
+		return (single_cmd(prompt, process));
+	while (process)
+	{
+		replace_variables(prompt, process);
+		if (process->next)
+			pipe(end);
+		if (send_heredoc(prompt, process))
+			return (1);
+		if (fork_process(prompt, process, fd_in, end))
+			return (1);
+		close(end[1]);
+		if (process->prev)
+			close(fd_in);
+		fd_in = check_fd(prompt, process, end);
+		process = process->next;
+	}
+	wait_pipe(prompt, prompt->pid);
+	return (0);
 }

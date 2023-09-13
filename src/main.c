@@ -31,9 +31,11 @@ int	main(int ac, char **av, char **ev)
 		input = readline("minishell$ ");
 		if (input == NULL)
 			exit_env(prompt);
+		else
+			add_history(input);
 		if (lexer(prompt, input) && prompt->lexer)
 			parser(prompt);
-		if (prompt->simple_cmds)
+		if (input[0] && prompt->simple_cmds && !init_pid(prompt))
 			execute(prompt);
 		prompt = reset_prompt(prompt, av, ev);
 	}

@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:29:47 by digoncal          #+#    #+#             */
-/*   Updated: 2023/07/23 12:43:27 by logname          ###   ########.fr       */
+/*   Updated: 2023/09/10 16:05:08 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@ extern int	g_status;
 
 t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev)
 {
+	t_prompt	*reset;
+
 	free_data(prompt);
-	return (init_prompt(av, ev));
+	reset = init_prompt(av, ev);
+	reset->reset = true;
+	return (reset);
 }
 
 void	free_lexer(t_lexer *lst)
@@ -50,6 +54,8 @@ void	free_parser(t_simple_cmds *simple_cmds)
 			free_array(simple_cmds->str);
 		if (simple_cmds->builtin)
 			free(simple_cmds->builtin);
+		if (simple_cmds->hd_file)
+			free(simple_cmds->hd_file);
 		if (simple_cmds->redirct)
 			free_lexer(simple_cmds->redirct);
 		tmp = simple_cmds;
@@ -78,5 +84,7 @@ void	free_data(t_prompt *prompt)
 		free_parser(prompt->simple_cmds);
 	if (prompt->env)
 		free_array(prompt->env);
+	if (prompt->pid)
+		free(prompt->pid);
 	free(prompt);
 }

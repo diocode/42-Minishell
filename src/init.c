@@ -14,6 +14,24 @@
 
 extern int	g_status;
 
+int	init_pid(t_prompt *prompt)
+{
+	t_simple_cmds	*process;
+	int				n_processes;
+
+	process = prompt->simple_cmds;
+	n_processes = 0;
+	while (process)
+	{
+		n_processes++;
+		process = process->next;
+	}
+	prompt->pid = ft_calloc(sizeof(int), n_processes);
+	if (!prompt->pid)
+		return (ms_error(1));
+	return (0);
+}
+
 t_simple_cmds	*init_simple_cmds(void)
 {
 	t_simple_cmds	*cmds;
@@ -25,25 +43,10 @@ t_simple_cmds	*init_simple_cmds(void)
 	cmds->builtin = NULL;
 	cmds->redirct = NULL;
 	cmds->num_redirct = 0;
+	cmds->hd_file = NULL;
 	cmds->next = NULL;
 	cmds->prev = NULL;
 	return (cmds);
-}
-
-static void	ms_getpid(t_prompt *prompt)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0 || !pid)
-	{
-		if (pid < 0)
-			ms_error(FORKERR, 1, NULL);
-		free_array(prompt->env);
-		exit(1);
-	}
-	waitpid(pid, NULL, 0);
-	prompt->pid = pid - 1;
 }
 
 static t_prompt	*init_vars(t_prompt *prompt, char **av, char *value)
@@ -86,8 +89,16 @@ t_prompt	*init_prompt(char **av, char **ev)
 	path = NULL;
 	prompt->lexer = NULL;
 	prompt->simple_cmds = init_simple_cmds();
+	prompt->heredoc = malloc(sizeof(t_heredoc));
+	if (!prompt->heredoc)
+		return (NULL);
+	prompt->heredoc->error_num = 0;
+	prompt->heredoc->in_heredoc = 0;
+	prompt->heredoc->in_process = 0;
+	prompt->heredoc->status = false;
 	prompt->env = dup_arr(ev);
-	ms_getpid(prompt);
+	prompt->reset = false;
+	prompt->pid = NULL;
 	prompt = init_vars(prompt, av, path);
 	prompt->flg[0] = 0;
 	prompt->flg[1] = 0;

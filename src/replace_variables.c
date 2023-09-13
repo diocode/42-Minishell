@@ -14,7 +14,7 @@
 
 extern int	g_status;
 
-static char	*get_env(t_prompt *prompt, char *val)
+char	*get_env(t_prompt *prompt, char *val)
 {
 	int		i[3];
 
