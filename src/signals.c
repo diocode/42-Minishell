@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 15:46:45 by digoncal          #+#    #+#             */
-/*   Updated: 2023/06/13 12:28:23 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/09/13 14:20:16 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ void	handle_sign(int sig, siginfo_t *info, void *c)
 	(void)c;
 	if (sig == SIGINT)
 	{
-		g_status = 1;
-		printf("\b\b  \b\b");
+		//g_status = 1;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -30,7 +29,6 @@ void	handle_sign(int sig, siginfo_t *info, void *c)
 	else if (sig == SIGQUIT)
 	{
 		g_status = 3;
-		printf("\b\b  \b\b");
 		rl_redisplay();
 	}
 }
