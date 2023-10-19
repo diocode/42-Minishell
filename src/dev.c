@@ -157,6 +157,13 @@ int	main(int ac, char **av, char **ev)
  	echo "'test'" >> note.txt -l | cat $USER echo -n << t1 > lol | pwd 'workpls' cd ok? < test.txt
 
  = BUGS =
+	. minishell$ export AAA="test"
+	  minishell$ echo AAA -----> Should print the first time
+	  minishell$ echo AAA
+	  AAA
+	  minishell$
+
+
 
  = NOTES =
  	-> run valgrind without readline leaks:

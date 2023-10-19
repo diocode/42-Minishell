@@ -14,9 +14,7 @@
 
 extern int	g_status;
 
-/*NOT MY CODE: USE THIS JUST FOR TESTING*/
-
-static int	variable_exist(t_prompt *prompt, char *str)
+static int	is_variable(t_prompt *prompt, char *str)
 {
 	int	i;
 
@@ -38,7 +36,7 @@ static int	variable_exist(t_prompt *prompt, char *str)
 	return (0);
 }
 
-static int	check_parameter(char *str)
+static int	check_param(char *str)
 {
 	int	i;
 
@@ -51,14 +49,14 @@ static int	check_parameter(char *str)
 		return (export_error(str));
 	while (str[i] != '=')
 	{
-		if (check_valid_identifier(str[i]))
+		if (is_identifier(str[i]))
 			return (export_error(str));
 		i++;
 	}
 	return (EXIT_SUCCESS);
 }
 
-static char	**whileloop_add_var(char **arr, char **rtn, char *str)
+static char	**add_var_2(char **arr, char **res, char *str)
 {
 	int	i;
 
@@ -67,24 +65,24 @@ static char	**whileloop_add_var(char **arr, char **rtn, char *str)
 	{
 		if (arr[i + 1] == NULL)
 		{
-			rtn[i] = ft_strdup(str);
-			rtn[i + 1] = ft_strdup(arr[i]);
+			res[i] = ft_strdup(str);
+			res[i + 1] = ft_strdup(arr[i]);
 		}
 		else
-			rtn[i] = ft_strdup(arr[i]);
-		if (rtn[i] == NULL)
+			res[i] = ft_strdup(arr[i]);
+		if (res[i] == NULL)
 		{
-			free_array(rtn);
-			return (rtn);
+			free_array(res);
+			return (res);
 		}
 		i++;
 	}
-	return (rtn);
+	return (res);
 }
 
 static char	**add_var(char **arr, char *str)
 {
-	char	**rtn;
+	char	**res;
 	size_t	i;
 
 	i = 0;
@@ -94,11 +92,11 @@ static char	**add_var(char **arr, char *str)
 		delquotes(str, '\'');
 	while (arr[i] != NULL)
 		i++;
-	rtn = ft_calloc(sizeof(char *), i + 2);
-	if (!rtn)
+	res = ft_calloc(sizeof(char *), i + 2);
+	if (!res)
 		return (NULL);
-	rtn = whileloop_add_var(arr, rtn, str);
-	return (rtn);
+	res = add_var_2(arr, res, str);
+	return (res);
 }
 
 int	ms_export(t_prompt *prompt, t_simple_cmds *simple_cmds)
@@ -113,8 +111,8 @@ int	ms_export(t_prompt *prompt, t_simple_cmds *simple_cmds)
 	{
 		while (simple_cmds->str[i])
 		{
-			if (check_parameter(simple_cmds->str[i]) == 0
-				&& variable_exist(prompt, simple_cmds->str[i]) == 0)
+			if (check_param(simple_cmds->str[i]) == 0
+				&& is_variable(prompt, simple_cmds->str[i]) == 0)
 			{
 				if (simple_cmds->str[i])
 				{

@@ -14,7 +14,7 @@
 
 extern int	g_status;
 
-int	check_valid_identifier(char c)
+int	is_identifier(char c)
 {
 	return (c == '|' || c == '<' || c == '>' || c == '[' || c == ']'
 		|| c == '\'' || c == '\"' || c == ' ' || c == ',' || c == '.'
@@ -26,7 +26,7 @@ int	check_valid_identifier(char c)
 
 int	export_error(char *c)
 {
-	ft_putstr_fd("minishell: export: ", STDERR_FILENO);
+	ft_putstr_fd("export: ", STDERR_FILENO);
 	if (c)
 	{
 		ft_putchar_fd('\'', STDERR_FILENO);

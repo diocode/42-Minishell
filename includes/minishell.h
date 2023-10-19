@@ -151,6 +151,6 @@ void			exit_env(t_prompt *prompt);
 int				ms_unset(t_prompt *prompt, t_simple_cmds *simple_cmds);
 int				ms_export(t_prompt *prompt, t_simple_cmds *simple_cmds);
 int				export_error(char *c);
-int				check_valid_identifier(char c);
+int				is_identifier(char c);
 
 #endif
