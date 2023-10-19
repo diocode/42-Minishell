@@ -17,10 +17,20 @@ extern int	g_status;
 t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev)
 {
 	t_prompt	*reset;
+	char		**old_env;
+	int			i;
 
+	old_env = dup_arr(prompt->env);
 	free_data(prompt);
 	reset = init_prompt(av, ev);
 	reset->reset = true;
+	i = 0;
+	if (reset->env)
+	{
+		while (reset->env[i])
+			free(reset->env[i++]);
+		reset->env = old_env;
+	}
 	return (reset);
 }
 

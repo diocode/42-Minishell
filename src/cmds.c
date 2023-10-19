@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:55:51 by digoncal          #+#    #+#             */
-/*   Updated: 2023/09/13 16:31:50 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/10/17 15:17:33 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,13 @@ static int	builtin(t_prompt *prompt, t_simple_cmds *process)
 	else if (!ft_strncmp(cmd, "cd", 2))
 		ms_cd(prompt, process);
 	else if (!ft_strncmp(cmd, "export", 6))
-		printf("\033[0;32mEXPORT STILL LOADING\033[0m\n");
+		ms_export(prompt, process);
 	else if (!ft_strncmp(cmd, "unset", 5))
-		printf("\033[0;32mUNSET STILL LOADING\033[0m\n");
+		ms_unset(prompt, process);
 	else if (!ft_strncmp(process->builtin, "echo", 4))
 		ms_echo(process);
 	else if (!ft_strncmp(process->builtin, "env", 3))
-		ms_env(prompt);
+		ms_env(prompt, 0);
 	else if (!ft_strncmp(process->builtin, "pwd", 3))
 		ft_printf("%s\n", ms_getenv("PWD", prompt->env));
 	else

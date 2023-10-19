@@ -52,15 +52,6 @@ int	ms_echo(t_simple_cmds *process)
 	return (0);
 }
 
-void	ms_env(t_prompt *prompt)
-{
-	int	i;
-
-	i = -1;
-	while (prompt->env[++i])
-		ft_putendl_fd(prompt->env[i], STDOUT_FILENO);
-}
-
 void	exit_env(t_prompt *prompt)
 {
 	g_status = 6;

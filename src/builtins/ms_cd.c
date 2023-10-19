@@ -76,5 +76,6 @@ int	ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds)
 	}
 	if (decree != 0)
 		return (1);
+	add_new_path(prompt);
 	return (decree);
 }
