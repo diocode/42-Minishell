@@ -106,6 +106,8 @@ t_simple_cmds	*single_cmd_heredoc(t_prompt *prompt, t_simple_cmds *p)
 	{
 		if (ft_strncmp(p->redirct->token, "<<", 2))
 			p->redirct->str = str_expander(prompt, p->redirct->str);
+		if (redirct->next == NULL)
+			break ;
 		redirct = redirct->next;
 	}
 	p->redirct = redirct;

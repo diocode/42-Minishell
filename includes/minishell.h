@@ -65,11 +65,6 @@ typedef struct s_prompt
 	int				flg[2];
 }	t_prompt;
 
-enum	e_errors
-{
-	FORKERR = 8,
-};
-
 /*---------- FUNCTIONS ----------*/
 
 //init

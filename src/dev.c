@@ -109,13 +109,13 @@ static void	dev_mod3(t_prompt *prompt)
 		cmds = cmds->next;
 	}
 	printf("\n\033[1;32m====================== TESTING ==========================\033[0m\n\n");
-	printf("\n\033[1;32mOUTPUT:\033[0m\n\n");
 }
 
 int	main(int ac, char **av, char **ev)
 {
-	t_prompt	*prompt;
-	char		*input;
+	t_prompt		*prompt;
+	t_simple_cmds	*process;
+	char			*input;
 
 	if (ac > 1)
 	{
@@ -123,32 +123,30 @@ int	main(int ac, char **av, char **ev)
 		exit(0);
 	}
 	prompt = init_prompt(av, ev);
-	while (prompt)
+	set_sign();
+	input = readline("minishell@dev$ ");
+	if (input == NULL)
+		exit_env(prompt);
+	dev_mod0(prompt, input);
+	lexer(prompt, input);
+	dev_mod1(prompt);
+	if (prompt->lexer)
 	{
-		set_sign();
-		input = readline("minishell@dev$ ");
-		if (input == NULL)
-			exit_env(prompt);
-		dev_mod0(prompt, input);
-		lexer(prompt, input);
-		dev_mod1(prompt);
-		if (prompt->lexer)
+		parser(prompt);
+		if (prompt->simple_cmds)
 		{
-			parser(prompt);
-			if (prompt->simple_cmds)
+			dev_mod2(prompt);
+			replace_variables(prompt, prompt->simple_cmds);
+			dev_mod3(prompt);
+			process = prompt->simple_cmds;
+			while (process)
 			{
-				dev_mod2(prompt);
-				replace_variables(prompt, prompt->simple_cmds);
-				dev_mod3(prompt);
-				execute(prompt);
-				printf("\n");
+				replace_variables(prompt, process);
+				process = process->next;
 			}
 		}
-		prompt = reset_prompt(prompt, av, ev);
 	}
 	free_data(prompt);
-	free(input);
-	exit(g_status);
 }
 
 /*
@@ -157,14 +155,6 @@ int	main(int ac, char **av, char **ev)
  	echo "'test'" >> note.txt -l | cat $USER echo -n << t1 > lol | pwd 'workpls' cd ok? < test.txt
 
  = BUGS =
-	. minishell$ export AAA="test"
-	  minishell$ echo AAA -----> Should print the first time
-	  minishell$ echo AAA
-	  AAA
-	  minishell$
-
-	  .echo "Hello" > ts.txt
-
 
 
  = NOTES =

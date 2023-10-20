@@ -14,6 +14,13 @@
 
 extern int	g_status;
 
+static void	end_program(char *input, t_prompt	*prompt)
+{
+	free(input);
+	free_data(prompt);
+	exit(g_status);
+}
+
 int	main(int ac, char **av, char **ev)
 {
 	t_prompt	*prompt;
@@ -39,7 +46,5 @@ int	main(int ac, char **av, char **ev)
 			execute(prompt);
 		prompt = reset_prompt(prompt, av, ev);
 	}
-	free(input);
-	free_data(prompt);
-	exit(g_status);
+	end_program(input, prompt);
 }
