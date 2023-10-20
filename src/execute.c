@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 19:11:30 by digoncal          #+#    #+#             */
-/*   Updated: 2023/09/10 18:44:26 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/10/20 11:58:34 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	check_fd(t_prompt *prompt, t_simple_cmds *process, int end[2])
 {
 	int	fd_in;
 
-	if (prompt->heredoc)
+	if (prompt->heredoc->status)
 	{
 		close(end[0]);
 		fd_in = open(process->hd_file, O_RDONLY);

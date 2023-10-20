@@ -163,6 +163,8 @@ int	main(int ac, char **av, char **ev)
 	  AAA
 	  minishell$
 
+	  .echo "Hello" > ts.txt
+
 
 
  = NOTES =
