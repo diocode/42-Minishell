@@ -142,10 +142,13 @@ void			free_parser(t_simple_cmds *simple_cmds);
 int				ms_echo(t_simple_cmds *process);
 void			ms_env(t_prompt *prompt, bool sort);
 int				ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds);
-void			exit_env(t_prompt *prompt);
 int				ms_unset(t_prompt *prompt, t_simple_cmds *simple_cmds);
 int				ms_export(t_prompt *prompt, t_simple_cmds *simple_cmds);
+int				ms_exit(t_prompt *prompt, t_simple_cmds *simple_cmd);
+
+//builtins_utils
 int				export_error(char *c);
 int				is_identifier(char c);
+int				is_digit(char *str);
 
 #endif

@@ -24,6 +24,20 @@ int	is_identifier(char c)
 		|| c == '=' || c == '-' || c == '?' || c == '&' || c == '*');
 }
 
+int	is_digit(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	export_error(char *c)
 {
 	ft_putstr_fd("export: ", STDERR_FILENO);

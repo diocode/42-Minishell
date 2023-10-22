@@ -61,18 +61,18 @@ static int	builtin(t_prompt *prompt, t_simple_cmds *process)
 
 	cmd = process->builtin;
 	if (!ft_strncmp(cmd, "exit", 4))
-		exit_env(prompt);
+		ms_exit(prompt, process);
 	else if (!ft_strncmp(cmd, "cd", 2))
 		ms_cd(prompt, process);
 	else if (!ft_strncmp(cmd, "export", 6))
 		ms_export(prompt, process);
 	else if (!ft_strncmp(cmd, "unset", 5))
 		ms_unset(prompt, process);
-	else if (!ft_strncmp(process->builtin, "echo", 4))
+	else if (!ft_strncmp(cmd, "echo", 4))
 		ms_echo(process);
-	else if (!ft_strncmp(process->builtin, "env", 3))
+	else if (!ft_strncmp(cmd, "env", 3))
 		ms_env(prompt, 0);
-	else if (!ft_strncmp(process->builtin, "pwd", 3))
+	else if (!ft_strncmp(cmd, "pwd", 3))
 		ft_printf("%s\n", ms_getenv("PWD", prompt->env));
 	else
 		return (1);

@@ -51,11 +51,3 @@ int	ms_echo(t_simple_cmds *process)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (0);
 }
-
-void	exit_env(t_prompt *prompt)
-{
-	g_status = 6;
-	printf("exit\n");
-	free_data(prompt);
-	exit(g_status);
-}

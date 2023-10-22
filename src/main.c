@@ -36,8 +36,8 @@ int	main(int ac, char **av, char **ev)
 	{
 		set_sign();
 		input = readline("\033[0;32mminishell$ \033[0m");
-		if (input == NULL || !ft_strncmp(input, "exit", 4))
-			exit_env(prompt);
+		if (input == NULL)
+			ms_exit(prompt, NULL);
 		else
 			add_history(input);
 		if (lexer(prompt, input) && prompt->lexer)
