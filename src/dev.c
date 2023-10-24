@@ -126,7 +126,7 @@ int	main(int ac, char **av, char **ev)
 	set_sign();
 	input = readline("minishell@dev$ ");
 	if (input == NULL)
-		exit_env(prompt);
+		ms_exit(prompt, NULL);
 	dev_mod0(prompt, input);
 	lexer(prompt, input);
 	dev_mod1(prompt);

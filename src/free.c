@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 15:29:47 by digoncal          #+#    #+#             */
-/*   Updated: 2023/09/10 16:05:08 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:35:18 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,11 @@ void	free_array(char **arr)
 
 	i = 0;
 	while (arr[i])
-		free(arr[i++]);
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr[i]);
 	free(arr);
 }
 
@@ -92,6 +96,8 @@ void	free_data(t_prompt *prompt)
 		free_lexer(prompt->lexer);
 	if (prompt->simple_cmds)
 		free_parser(prompt->simple_cmds);
+	if (prompt->heredoc)
+		free(prompt->heredoc);
 	if (prompt->env)
 		free_array(prompt->env);
 	if (prompt->pid)

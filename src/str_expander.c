@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:57:39 by digoncal          #+#    #+#             */
-/*   Updated: 2023/09/06 15:22:31 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/10/24 13:21:54 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ char	**single_cmd_expander(t_prompt *prompt, char **str)
 	tmp = NULL;
 	while (str[++i])
 	{
-		if (str[i][dollar_sign(str[i]) - 2] != '\'' && dollar_sign(str[i]) != 0
-			&& str[i][dollar_sign(str[i])] != '\0')
+		if (dollar_sign(str[i]) && str[i][dollar_sign(str[i]) - 2] != '\''
+			&& dollar_sign(str[i]) != 0 && str[i][dollar_sign(str[i])] != '\0')
 		{
 			tmp = expand(prompt, str[i]);
 			free(str[i]);

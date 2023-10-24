@@ -21,29 +21,39 @@ static void	end_program(char *input, t_prompt	*prompt)
 	exit(g_status);
 }
 
-int	main(int ac, char **av, char **ev)
+static void	start_program(int ac)
 {
-	t_prompt	*prompt;
-	char		*input;
-
 	if (ac > 1)
 	{
 		printf("No arguments are accepted\n");
 		exit(0);
 	}
+}
+
+int	main(int ac, char **av, char **ev)
+{
+	t_prompt	*prompt;
+	char		*input;
+
+	start_program(ac);
 	prompt = init_prompt(av, ev);
 	while (prompt)
 	{
 		set_sign();
 		input = readline("\033[0;32mminishell$ \033[0m");
 		if (input == NULL)
+		{
+			free(input);
 			ms_exit(prompt, NULL);
-		else
+		}
+		if (ft_strncmp(input, "", 1))
+		{
 			add_history(input);
-		if (lexer(prompt, input) && prompt->lexer)
-			parser(prompt);
-		if (input[0] && prompt->simple_cmds && !init_pid(prompt))
-			execute(prompt);
+			if (lexer(prompt, input) && prompt->lexer)
+				parser(prompt);
+			if (prompt->simple_cmds && !init_pid(prompt))
+				execute(prompt);
+		}
 		prompt = reset_prompt(prompt, av, ev);
 	}
 	end_program(input, prompt);
