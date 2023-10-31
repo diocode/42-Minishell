@@ -47,7 +47,7 @@ void	handle_sign(int sig, siginfo_t *info, void *c)
 	(void)c;
 	if (sig == SIGINT)
 	{
-		//g_status = 1;
+		g_status = 130;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -55,7 +55,7 @@ void	handle_sign(int sig, siginfo_t *info, void *c)
 	}
 	else if (sig == SIGQUIT)
 	{
-		g_status = 3;
+		printf("\b\b  \b\b");
 		rl_redisplay();
 	}
 }

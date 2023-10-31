@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:57:39 by digoncal          #+#    #+#             */
-/*   Updated: 2023/10/24 13:21:54 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/10/31 14:09:08 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,6 @@ char	**single_cmd_expander(t_prompt *prompt, char **str)
 			tmp = expand(prompt, str[i]);
 			free(str[i]);
 			str[i] = tmp;
-		}
-		if (ft_strncmp(str[0], "export", ft_strlen(str[0]) - 1))
-		{
-			str[i] = delquotes(str[i], '\"');
-			str[i] = delquotes(str[i], '\'');
 		}
 	}
 	return (str);

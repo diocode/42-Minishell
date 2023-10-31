@@ -31,8 +31,6 @@ typedef struct s_heredoc
 {
 	bool	status;
 	int		error_num;
-	int		in_process;
-	int		in_heredoc;
 }	t_heredoc;
 
 typedef struct s_lexer
@@ -128,7 +126,6 @@ void			set_sign(void);
 //lists
 t_lexer			*ms_lstnew(char *content, char type);
 void			ms_lstadd(t_lexer *lst, t_lexer *new);
-void			ms_delnode(t_lexer *node);
 t_lexer			*ms_lstlast(t_lexer *lst);
 
 //free

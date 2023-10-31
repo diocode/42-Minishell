@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:59:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/10/16 13:32:21 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:51:20 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int ac, char **av, char **ev)
 	while (prompt)
 	{
 		set_sign();
-		input = readline("\033[0;32mminishell$ \033[0m");
+		input = readline("\001\e[1;32m\002minishell$ \001\e[0m\002");
 		if (input == NULL)
 		{
 			free(input);

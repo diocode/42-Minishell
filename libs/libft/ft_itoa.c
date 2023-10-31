@@ -58,7 +58,7 @@ char	*ft_itoa(int n)
 
 	if (n == 0)
 		return (ft_strdup("0"));
-	str = (char *) malloc(sizeof(char) * (ft_size(n) + 1));
+	str = (char *) ft_calloc((ft_size(n) + 1), sizeof(char));
 	if (!str)
 		return (NULL);
 	if (n == -2147483648)

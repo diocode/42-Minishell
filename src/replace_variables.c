@@ -29,8 +29,8 @@ char	*get_env(t_prompt *prompt, char *val)
 			i[1] = 0;
 			while (prompt->env[i[0]][i[1]] != '=')
 				i[1]++;
-			val = ft_calloc(sizeof(char),
-					ft_strlen(prompt->env[i[0]]) - i[1] + 1);
+			val = ft_calloc(ft_strlen(prompt->env[i[0]]) - i[1] + 1,
+					sizeof(char));
 			if (!val)
 				return (NULL);
 			i[2] = -1;
@@ -53,7 +53,7 @@ static char	*get_variable(t_simple_cmds *process, int word, int i)
 	j = 0;
 	while (process->str[word][i] && process->str[word][i] != ' ')
 		i++;
-	val = ft_calloc(sizeof(char), i - start + 1);
+	val = ft_calloc(i - start + 1, sizeof(char));
 	if (!val)
 		return (NULL);
 	while (process->str[word][start] && process->str[word][start] != ' ')

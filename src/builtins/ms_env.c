@@ -51,7 +51,7 @@ static char	**sort_env(t_prompt *prompt)
 	len = 0;
 	while (prompt->env[len])
 		len++;
-	sorted = ft_calloc(sizeof(char *), len + 1);
+	sorted = ft_calloc(len + 1, sizeof(char *));
 	if (!sorted)
 		return (NULL);
 	i = 0;

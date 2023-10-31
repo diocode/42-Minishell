@@ -92,7 +92,7 @@ static char	**add_var(char **arr, char *str)
 		delquotes(str, '\'');
 	while (arr[i] != NULL)
 		i++;
-	res = ft_calloc(sizeof(char *), i + 2);
+	res = ft_calloc(i + 2, sizeof(char *));
 	if (!res)
 		return (NULL);
 	res = add_var_2(arr, res, str);

@@ -33,7 +33,7 @@ char	*char_to_str(char c)
 {
 	char	*str;
 
-	str = ft_calloc(sizeof(char), 2);
+	str = ft_calloc(2, sizeof(char));
 	str[0] = c;
 	return (str);
 }

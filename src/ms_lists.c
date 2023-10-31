@@ -12,21 +12,6 @@
 
 #include "../includes/minishell.h"
 
-void	ms_delnode(t_lexer *node)
-{
-	if (!node)
-		return ;
-	if (node->str)
-		free(node->str);
-	if (node->token)
-		free(node->token);
-	if (node->prev)
-		node->prev->next = node->next;
-	if (node->next)
-		node->next->prev = node ->prev;
-	free(node);
-}
-
 t_lexer	*ms_lstlast(t_lexer *lst)
 {
 	while (lst)

@@ -48,7 +48,7 @@ static char	**var_del(char **arr, char *str)
 	i = 0;
 	while (arr[i] != NULL)
 		i++;
-	res = ft_calloc(sizeof(char *), i + 1);
+	res = ft_calloc(i + 1, sizeof(char *));
 	if (!res)
 		return (NULL);
 	res = var_del_2(arr, res, str);

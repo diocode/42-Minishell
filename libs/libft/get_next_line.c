@@ -54,7 +54,7 @@ static char	*ft_reset_stash(char *stash)
 		free(stash);
 		return (NULL);
 	}
-	str = (char *) malloc((ft_strlen(stash) - i + 1) * sizeof(char));
+	str = (char *) ft_calloc((ft_strlen(stash) - i + 1), sizeof(char));
 	if (!str)
 		return (NULL);
 	j = 0;
@@ -98,7 +98,7 @@ static char	*ft_read_file(int fd, char *stash)
 	int		bytes;
 	char	*buffer;
 
-	buffer = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buffer = (char *) ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	if (!buffer)
 		return (NULL);
 	bytes = 1;

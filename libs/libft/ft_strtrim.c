@@ -58,7 +58,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		return (ft_strdup(s1));
 	if (start > end)
 		return (ft_strdup(""));
-	str = (char *) malloc(sizeof(char) * (end - start + 1));
+	str = (char *) ft_calloc((end - start + 1), sizeof(char));
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, s1 + start, end - start + 1);

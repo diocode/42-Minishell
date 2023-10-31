@@ -54,9 +54,7 @@ static int	setup_heredoc(t_prompt *prompt, t_lexer *redirct, char *hd_file)
 		quotes = false;
 	delquotes(redirct->str, '\"');
 	delquotes(redirct->str, '\'');
-	prompt->heredoc->in_heredoc = 1;
 	flg = create_heredoc(prompt, redirct, quotes, hd_file);
-	prompt->heredoc->in_heredoc = 0;
 	prompt->heredoc->status = true;
 	return (flg);
 }

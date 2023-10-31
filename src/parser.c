@@ -90,7 +90,6 @@ void	parser(t_prompt *prompt)
 
 	lexer = prompt->lexer;
 	pipes = 0;
-	//prompt->flg[1] = 0;
 	while (lexer)
 	{
 		if (lexer->token && !ft_strncmp(lexer->token, "|", 1))
