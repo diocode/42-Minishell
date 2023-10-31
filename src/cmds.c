@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 16:55:51 by digoncal          #+#    #+#             */
-/*   Updated: 2023/10/17 15:17:33 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/10/31 13:29:32 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 		prompt->heredoc->error_num += status;
 		exit(status);
 	}
-	if (process->str[0][0])
-		return (system_cmd(prompt, process));
-	return (0);
+	else if (process->str[0][0])
+		status = system_cmd(prompt, process);
+	exit (status);
 }
 
 //Handle single cmds that cannot be run in a child process

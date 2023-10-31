@@ -60,6 +60,35 @@ static char	**sort_env(t_prompt *prompt)
 	return (sorted);
 }
 
+void	print_sorted(char **env)
+{
+	int		i;
+	int		j;
+	bool	flg;
+
+	i = 0;
+	while (env[i])
+	{
+		flg = false;
+		write(STDOUT_FILENO, "declare -x ", 11);
+		j = 0;
+		while (env[i][j])
+		{
+			write(STDOUT_FILENO, &env[i][j], 1);
+			if (env[i][j] == '=' && !flg)
+			{
+				write(STDOUT_FILENO, "\"", 1);
+				flg = true;
+			}
+			j++;
+		}
+		if (flg)
+			write(STDOUT_FILENO, "\"", 1);
+		i++;
+		write(STDOUT_FILENO, "\n", 1);
+	}
+}
+
 void	ms_env(t_prompt *prompt, bool sort)
 {
 	char	**sorted;
@@ -70,8 +99,7 @@ void	ms_env(t_prompt *prompt, bool sort)
 	if (sort)
 	{
 		sorted = sort_env(prompt);
-		while (sorted[++i])
-			ft_putendl_fd(sorted[i], STDOUT_FILENO);
+		print_sorted(sorted);
 		free(sorted);
 	}
 	else

@@ -96,9 +96,9 @@ t_prompt	*init_prompt(char **av, char **ev)
 	prompt->heredoc->in_heredoc = 0;
 	prompt->heredoc->in_process = 0;
 	prompt->heredoc->status = false;
-	prompt->env = dup_arr(ev);
 	prompt->reset = false;
 	prompt->pid = NULL;
+	prompt->env = dup_arr(ev);
 	prompt = init_vars(prompt, av, path);
 	prompt->flg[0] = 0;
 	prompt->flg[1] = 0;

@@ -51,7 +51,7 @@ int	error_cmd_not_found(t_prompt *prompt)
 	ft_putendl_fd(str, STDERR_FILENO);
 	free(tmp);
 	free(str);
-	return (1);
+	return (127);
 }
 
 char	**dup_arr(char **arr)
@@ -62,7 +62,7 @@ char	**dup_arr(char **arr)
 	i = 0;
 	while (arr[i])
 		i++;
-	dup = ft_calloc(sizeof(char *), i + 1);
+	dup = ft_calloc(i + 1, sizeof(char *));
 	if (!dup)
 		return (NULL);
 	i = 0;

@@ -18,6 +18,7 @@ static void	end_program(char *input, t_prompt	*prompt)
 {
 	free(input);
 	free_data(prompt);
+	rl_clear_history();
 	exit(g_status);
 }
 

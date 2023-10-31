@@ -39,6 +39,7 @@ char	**ms_setenv(char *var, char *value, char **env)
 	{
 		if (!ft_strncmp(var, env[i], ft_strnlen(env[i], '=')))
 		{
+			free(env[i]);
 			env[i] = ft_strdup(str);
 			free(str);
 			return (env);
