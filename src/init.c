@@ -85,7 +85,6 @@ t_prompt	*init_prompt(char **av, char **ev)
 	prompt = malloc(sizeof(t_prompt));
 	if (!prompt)
 		return (NULL);
-	g_status = 0;
 	path = NULL;
 	prompt->lexer = NULL;
 	prompt->simple_cmds = init_simple_cmds();

@@ -97,6 +97,7 @@ int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 		if_question_mark();
 	else if (process->str[0][0])
 		status = system_cmd(prompt, process);
+	g_status = status;
 	exit (status);
 }
 

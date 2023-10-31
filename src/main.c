@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 17:59:14 by digoncal          #+#    #+#             */
-/*   Updated: 2023/10/31 13:51:20 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/10/31 19:25:21 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	start_program(int ac)
 		printf("No arguments are accepted\n");
 		exit(0);
 	}
+	g_status = 0;
 }
 
 int	main(int ac, char **av, char **ev)
