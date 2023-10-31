@@ -103,7 +103,7 @@ int				dollar_sign(char *str);
 int				equal_sign(char *str);
 char			*char_to_str(char c);
 int				if_digit(char *str, int i);
-int				if_question_mark(t_prompt *prompt, char **tmp);
+void			if_question_mark(void);
 
 //trim_input
 char			**trim_input(t_prompt *prompt, char *input);
@@ -117,7 +117,7 @@ char			**extend_arr(char **arr, char *new);
 int				is_whitespace(char c);
 char			*delquotes(char *str, char c);
 int				ms_error(int error);
-int				error_cmd_not_found(t_prompt *prompt);
+int				error_cmd_not_found( t_simple_cmds *process);
 
 //signal
 void			handle_sign(int sig, siginfo_t *info, void *c);

@@ -39,15 +39,15 @@ int	is_whitespace(char c)
 	return (c == ' ' || (c > 8 && c < 14));
 }
 
-int	error_cmd_not_found(t_prompt *prompt)
+int	error_cmd_not_found( t_simple_cmds *process)
 {
 	char	*str;
 	char	*tmp;
 
-	if (!prompt->lexer->str && !prompt->lexer->str[0])
+	if (!process->str && !process->str[0])
 		return (1);
-	tmp = ft_strdup(prompt->lexer->str);
-	str = ft_strjoin("zsh: command not found: ", tmp);
+	tmp = ft_strdup(process->str[0]);
+	str = ft_strjoin(tmp, ": command not found");
 	ft_putendl_fd(str, STDERR_FILENO);
 	free(tmp);
 	free(str);

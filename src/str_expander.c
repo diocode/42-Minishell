@@ -66,10 +66,9 @@ static char	*expand(t_prompt *prompt, char *str)
 	while (str[++i])
 	{
 		i += if_digit(str, i);
-		if (str[i] == '$' && str[i + 1] == '?')
-			i += if_question_mark(prompt, &tmp);
-		else if (str[i] == '$' && (str[i + 1] != ' ' && (str[i + 1] != '"'
-					|| str[i + 2] != '\0')) && str[i + 1] != '\0')
+		if (!(str[i] == '$' && str[i + 1] == '?')
+			&& (str[i] == '$' && (str[i + 1] != ' ' && (str[i + 1] != '"'
+						|| str[i + 2] != '\0')) && str[i + 1] != '\0'))
 			i += replace_var(prompt, str, &tmp, i);
 		else
 		{

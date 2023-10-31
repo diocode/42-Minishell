@@ -52,7 +52,7 @@ static int	system_cmd(t_prompt *prompt, t_simple_cmds *process)
 		free(path);
 	}
 	free_array(paths);
-	return (error_cmd_not_found(prompt));
+	return (error_cmd_not_found(process));
 }
 
 static int	builtin(t_prompt *prompt, t_simple_cmds *process)
@@ -93,6 +93,8 @@ int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 		prompt->heredoc->error_num += status;
 		exit(status);
 	}
+	else if (!ft_strncmp(process->str[0], "$?", 2))
+		if_question_mark();
 	else if (process->str[0][0])
 		status = system_cmd(prompt, process);
 	exit (status);

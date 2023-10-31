@@ -14,11 +14,14 @@
 
 extern int	g_status;
 
-int	if_question_mark(t_prompt *prompt, char **tmp)
+void	if_question_mark(void)
 {
-	free(*tmp);
-	*tmp = ft_itoa(prompt->heredoc->error_num);
-	return (ft_strlen(*tmp) + 1);
+	char	*tmp;
+
+	tmp = ft_itoa(g_status);
+	ft_putstr_fd(tmp, STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	free(tmp);
 }
 
 int	if_digit(char *str, int i)

@@ -16,9 +16,18 @@ extern int	g_status;
 
 static void	ft_print(char **str, int i)
 {
+	char	*tmp;
+
 	while (str[i])
 	{
-		ft_putstr_fd(str[i], STDOUT_FILENO);
+		if (!ft_strncmp(str[i], "$?", 2))
+		{
+			tmp = ft_itoa(g_status);
+			ft_putstr_fd(tmp, STDOUT_FILENO);
+			free(tmp);
+		}
+		else
+			ft_putstr_fd(str[i], STDOUT_FILENO);
 		i++;
 		if (str[i])
 			ft_putchar_fd(' ', STDOUT_FILENO);
