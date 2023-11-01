@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-extern int	g_status;
-
 t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev)
 {
 	t_prompt	*reset;

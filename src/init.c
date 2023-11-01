@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-extern int	g_status;
-
 int	init_pid(t_prompt *prompt)
 {
 	t_simple_cmds	*process;

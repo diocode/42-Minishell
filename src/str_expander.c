@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-extern int	g_status;
-
 static int	var_len_after_dol(char *str, int j)
 {
 	int	i;

@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-extern int	g_status;
-
 static int	ft_outfile(t_lexer	*redirct)
 {
 	int	fd;

@@ -12,8 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-extern int	g_status;
-
 static int	is_variable(t_prompt *prompt, char *str)
 {
 	int	i;

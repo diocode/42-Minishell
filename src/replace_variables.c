@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-extern int	g_status;
-
 char	*get_env(t_prompt *prompt, char *val)
 {
 	int		i[3];

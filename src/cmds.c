@@ -115,6 +115,7 @@ int	single_cmd(t_prompt *prompt, t_simple_cmds *process)
 			|| !ft_strncmp(cmd, "export", 6) || !ft_strncmp(cmd, "unset", 5)))
 	{
 		prompt->heredoc->error_num += builtin(prompt, prompt->simple_cmds);
+		g_status = prompt->heredoc->error_num;
 		return (0);
 	}
 	send_heredoc(prompt, prompt->simple_cmds);
@@ -125,6 +126,6 @@ int	single_cmd(t_prompt *prompt, t_simple_cmds *process)
 		handle_cmd(prompt, prompt->simple_cmds);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-		prompt->heredoc->error_num += WEXITSTATUS(status);
+		g_status += WEXITSTATUS(status);
 	return (0);
 }

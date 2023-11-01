@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-extern int	g_status;
+int	g_status;
 
 static void	end_program(char *input, t_prompt	*prompt)
 {
@@ -29,7 +29,6 @@ static void	start_program(int ac)
 		printf("No arguments are accepted\n");
 		exit(0);
 	}
-	g_status = 0;
 }
 
 int	main(int ac, char **av, char **ev)

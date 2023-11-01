@@ -12,8 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-extern int	g_status;
-
 static bool	is_in_array(char *str, char **arr)
 {
 	int	i;

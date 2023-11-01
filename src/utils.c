@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-extern int	g_status;
-
 char	*delquotes(char *str, char c)
 {
 	int	i;

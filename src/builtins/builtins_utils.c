@@ -12,8 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-extern int	g_status;
-
 int	is_identifier(char c)
 {
 	return (c == '|' || c == '<' || c == '>' || c == '[' || c == ']'

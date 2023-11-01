@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int	g_status;
+extern int	g_status;
 
 int	ms_error(int error)
 {
