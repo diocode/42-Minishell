@@ -41,13 +41,14 @@ int	ms_error(int error)
 	return (1);
 }
 
-void	handle_sign(int sig, siginfo_t *info, void *c)
+/*void	handle_sign(int sig, siginfo_t *info, void *c)
 {
 	(void)info;
 	(void)c;
 	if (sig == SIGINT)
 	{
 		g_status = 130;
+		printf("\b\b  \b\b");
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -69,4 +70,49 @@ void	set_sign(void)
 	sigemptyset(&sig.sa_mask);
 	sigaction(SIGINT, &sig, NULL);
 	sigaction(SIGQUIT, &sig, NULL);
+}*/
+
+void	execute_sig(int sig, void *prompt)
+{
+	static t_prompt	*static_prompt;
+
+	if (!static_prompt && prompt)
+		static_prompt = (t_prompt *)prompt;
+	if (static_prompt && static_prompt->interact)
+	{
+		if (sig == SIGINT)
+		{
+			printf("\b\b  \b\b");
+			printf("\n");
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+		}
+		if (sig == SIGQUIT)
+		{
+			printf("\b\b  \b\b");
+			rl_redisplay();
+		}
+	}
+	if (!(static_prompt->interact))
+		if (sig == SIGINT)
+			write(1, &"\n", 1);
+	if (sig == SIGINT)
+		g_status = 130;
+}
+
+static void	handle(int sig)
+{
+	execute_sig(sig, 0);
+}
+
+void	set_sign(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = &handle;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }

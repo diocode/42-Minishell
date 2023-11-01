@@ -92,6 +92,7 @@ t_prompt	*init_prompt(char **av, char **ev)
 	prompt->heredoc->error_num = 0;
 	prompt->heredoc->status = false;
 	prompt->reset = false;
+	prompt->interact = false;
 	prompt->pid = NULL;
 	prompt->env = dup_arr(ev);
 	prompt = init_vars(prompt, av, path);

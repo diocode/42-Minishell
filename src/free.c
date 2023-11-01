@@ -29,6 +29,8 @@ t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev)
 			free(reset->env[i++]);
 		reset->env = old_env;
 	}
+	else
+		free_array(old_env);
 	return (reset);
 }
 

@@ -38,10 +38,13 @@ int	main(int ac, char **av, char **ev)
 
 	start_program(ac);
 	prompt = init_prompt(av, ev);
+	set_sign();
+	execute_sig(0, prompt);
 	while (prompt)
 	{
-		set_sign();
+		prompt->interact = true;
 		input = readline("\001\e[1;32m\002minishell$ \001\e[0m\002");
+		prompt->interact = false;
 		if (input == NULL)
 		{
 			free(input);

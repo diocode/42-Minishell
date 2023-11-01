@@ -59,8 +59,9 @@ typedef struct s_prompt
 	t_heredoc		*heredoc;
 	char			**env;
 	int				*pid;
-	bool			reset;
 	int				flg[2];
+	bool			reset;
+	bool			interact;
 }	t_prompt;
 
 /*---------- FUNCTIONS ----------*/
@@ -120,7 +121,7 @@ int				ms_error(int error);
 int				error_cmd_not_found( t_simple_cmds *process);
 
 //signal
-void			handle_sign(int sig, siginfo_t *info, void *c);
+void			execute_sig(int sig, void *prompt);
 void			set_sign(void);
 
 //lists
