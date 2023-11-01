@@ -12,6 +12,8 @@
 
 #include "../../includes/minishell.h"
 
+extern int	g_status;
+
 static void	exit_code(char **str)
 {
 	int	exit_code;
@@ -25,7 +27,7 @@ static void	exit_code(char **str)
 		ft_putstr_fd("exit: ", STDERR_FILENO);
 		ft_putstr_fd(str[1], STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-		exit_code = 255;
+		exit_code = 2;
 	}
 	free_array(str);
 	exit(exit_code);
@@ -43,8 +45,12 @@ int	ms_exit(t_prompt *prompt, t_simple_cmds *simple_cmd)
 	}
 	if (simple_cmd->str[1] && simple_cmd->str[2])
 	{
-		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		if (is_digit(simple_cmd->str[1]))
+		{
+			ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
+			g_status = 127;
+			return (g_status);
+		}
 	}
 	str = dup_arr(simple_cmd->str);
 	free_data(prompt);

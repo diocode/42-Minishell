@@ -14,7 +14,7 @@
 
 extern int	g_status;
 
-void	if_question_mark(void)
+int	if_question_mark(void)
 {
 	char	*tmp;
 
@@ -22,6 +22,7 @@ void	if_question_mark(void)
 	ft_putstr_fd(tmp, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	free(tmp);
+	return (127);
 }
 
 int	if_digit(char *str, int i)

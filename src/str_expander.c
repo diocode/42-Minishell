@@ -104,6 +104,12 @@ char	**single_cmd_expander(t_prompt *prompt, char **str)
 
 	i = -1;
 	tmp = NULL;
+	if (!str)
+	{
+		str = malloc(sizeof(char *));
+		str[0] = ft_strdup("");
+		return (str);
+	}
 	while (str[++i])
 	{
 		if (dollar_sign(str[i]) && str[i][dollar_sign(str[i]) - 2] != '\''

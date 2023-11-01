@@ -47,14 +47,11 @@ int	main(int ac, char **av, char **ev)
 			free(input);
 			ms_exit(prompt, NULL);
 		}
-		if (ft_strncmp(input, "", 1))
-		{
-			add_history(input);
-			if (lexer(prompt, input) && prompt->lexer)
-				parser(prompt);
-			if (prompt->simple_cmds && !init_pid(prompt))
-				execute(prompt);
-		}
+		add_history(input);
+		if (lexer(prompt, input) && prompt->lexer)
+			parser(prompt);
+		if (prompt->simple_cmds && !init_pid(prompt))
+			execute(prompt);
 		prompt = reset_prompt(prompt, av, ev);
 	}
 	end_program(input, prompt);

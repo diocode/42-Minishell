@@ -103,7 +103,7 @@ int				dollar_sign(char *str);
 int				equal_sign(char *str);
 char			*char_to_str(char c);
 int				if_digit(char *str, int i);
-void			if_question_mark(void);
+int				if_question_mark(void);
 
 //trim_input
 char			**trim_input(t_prompt *prompt, char *input);

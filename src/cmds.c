@@ -61,7 +61,7 @@ static int	builtin(t_prompt *prompt, t_simple_cmds *process)
 
 	cmd = process->builtin;
 	if (!ft_strncmp(cmd, "exit", 4))
-		ms_exit(prompt, process);
+		return (ms_exit(prompt, process));
 	else if (!ft_strncmp(cmd, "cd", 2))
 		ms_cd(prompt, process);
 	else if (!ft_strncmp(cmd, "export", 6))
@@ -94,8 +94,8 @@ int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 		exit(status);
 	}
 	else if (!ft_strncmp(process->str[0], "$?", 2))
-		if_question_mark();
-	else if (process->str[0][0])
+		status = if_question_mark();
+	else if (process->str[0])
 		status = system_cmd(prompt, process);
 	g_status = status;
 	exit (status);
@@ -126,6 +126,6 @@ int	single_cmd(t_prompt *prompt, t_simple_cmds *process)
 		handle_cmd(prompt, prompt->simple_cmds);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-		g_status += WEXITSTATUS(status);
+		g_status = WEXITSTATUS(status);
 	return (0);
 }
