@@ -16,17 +16,14 @@ t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev)
 {
 	t_prompt	*reset;
 	char		**old_env;
-	int			i;
 
 	old_env = dup_arr(prompt->env);
 	free_data(prompt);
 	reset = init_prompt(av, ev);
 	reset->reset = true;
-	i = 0;
 	if (reset->env)
 	{
-		while (reset->env[i])
-			free(reset->env[i++]);
+		free_array(reset->env);
 		reset->env = old_env;
 	}
 	else
