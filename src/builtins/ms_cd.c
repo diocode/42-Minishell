@@ -35,7 +35,7 @@ void	add_new_path(t_prompt *prompt)
 	char	*tmp;
 
 	i = -1;
-	while (prompt->env[i++])
+	while (prompt->env[++i])
 	{
 		if (!ft_strncmp(prompt->simple_cmds->str[1], "PWD=", 4))
 		{

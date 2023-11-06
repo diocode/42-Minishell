@@ -14,13 +14,13 @@
 
 extern int	g_status;
 
-static void	ft_print(char **str, int i)
+static void	ft_print(t_prompt *prompt, char **str, int i)
 {
 	char	*tmp;
 
 	while (str[i])
 	{
-		if (!ft_strncmp(str[i], "$?", 2))
+		if (!ft_strncmp(str[i], "$?", 2) && is_double_qts(prompt, str[i]))
 		{
 			tmp = ft_itoa(g_status);
 			ft_putstr_fd(tmp, STDOUT_FILENO);
@@ -34,7 +34,7 @@ static void	ft_print(char **str, int i)
 	}
 }
 
-int	ms_echo(t_simple_cmds *process)
+int	ms_echo(t_prompt *prompt, t_simple_cmds *process)
 {
 	float	flg;
 	char	**cmd;
@@ -55,7 +55,7 @@ int	ms_echo(t_simple_cmds *process)
 			break ;
 		i++;
 	}
-	ft_print(cmd, i);
+	ft_print(prompt, cmd, i);
 	if (flg == false)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (0);

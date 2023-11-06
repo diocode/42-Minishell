@@ -96,6 +96,8 @@ void	free_data(t_prompt *prompt)
 		free(prompt->heredoc);
 	if (prompt->env)
 		free_array(prompt->env);
+	if (prompt->input)
+		free(prompt->input);
 	if (prompt->pid)
 		free(prompt->pid);
 	free(prompt);

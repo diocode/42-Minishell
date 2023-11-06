@@ -56,7 +56,7 @@ int	equal_sign(char *str)
 	return (0);
 }
 
-int	dollar_sign(char *str)
+int	dol_sign(char *str)
 {
 	int	i;
 

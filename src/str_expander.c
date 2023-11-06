@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:57:39 by digoncal          #+#    #+#             */
-/*   Updated: 2023/10/31 14:09:08 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:58:15 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ char	*str_expander(t_prompt *prompt, char *str)
 	char	*tmp;
 
 	tmp = NULL;
-	if (str[dollar_sign(str) - 2] != '\'' && dollar_sign(str) != 0
-		&& str[dollar_sign(str)] != '\0')
+	if (str[dol_sign(str) - 2] != '\'' && dol_sign(str) != 0
+		&& str[dol_sign(str)] != '\0')
 	{
 		tmp = expand(prompt, str);
 		free(str);
@@ -101,6 +101,7 @@ char	**single_cmd_expander(t_prompt *prompt, char **str)
 {
 	char	*tmp;
 	int		i;
+	int		index;
 
 	i = -1;
 	tmp = NULL;
@@ -112,8 +113,10 @@ char	**single_cmd_expander(t_prompt *prompt, char **str)
 	}
 	while (str[++i])
 	{
-		if (dollar_sign(str[i]) && str[i][dollar_sign(str[i]) - 2] != '\''
-			&& dollar_sign(str[i]) != 0 && str[i][dollar_sign(str[i])] != '\0')
+		index = dol_sign(str[i]);
+		if (dol_sign(str[i]) && (index > 0 && index - 2 >= 0
+				&& str[i][dol_sign(str[i]) - 2] != '\'')
+			&& dol_sign(str[i]) != 0 && str[i][dol_sign(str[i])] != '\0')
 		{
 			tmp = expand(prompt, str[i]);
 			free(str[i]);

@@ -69,7 +69,7 @@ static int	builtin(t_prompt *prompt, t_simple_cmds *process)
 	else if (!ft_strncmp(cmd, "unset", 5))
 		ms_unset(prompt, process);
 	else if (!ft_strncmp(cmd, "echo", 4))
-		ms_echo(process);
+		ms_echo(prompt, process);
 	else if (!ft_strncmp(cmd, "env", 3))
 		ms_env(prompt, 0);
 	else if (!ft_strncmp(cmd, "pwd", 3))
@@ -109,6 +109,7 @@ int	single_cmd(t_prompt *prompt, t_simple_cmds *process)
 	int		pid;
 
 	status = 0;
+	//replace_variables(prompt, process);
 	prompt->simple_cmds = single_cmd_heredoc(prompt, process);
 	cmd = process->builtin;
 	if (cmd && (!ft_strncmp(cmd, "exit", 4) || !ft_strncmp(cmd, "cd", 2)

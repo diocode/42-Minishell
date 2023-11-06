@@ -14,7 +14,7 @@
 
 /* flg[0] = '"' | flg[1] = '\'' */
 /*Adds a quote to the end of the str if the quotes are odd numbered*/
-static char	*check_quotes(char *str)
+static int	check_quotes(const char *str)
 {
 	int	flg[2];
 	int	i;
@@ -31,12 +31,10 @@ static char	*check_quotes(char *str)
 	}
 	if (flg[0] % 2 || flg[1] % 2)
 	{
-		if (flg[0] % 2)
-			return (ft_strjoin(str, "\""));
-		else
-			return (ft_strjoin(str, "\'"));
+		ms_error(2);
+		return (1);
 	}
-	return (str);
+	return (0);
 }
 
 static int	is_token(char *str)
@@ -76,14 +74,15 @@ int	lexer(t_prompt *prompt, char *input)
 	int			i;
 
 	if (!input[0])
-		return (0);
-	input = check_quotes(input);
+		return (1);
+	if (check_quotes(input))
+		return (1);
 	cmds = trim_input(prompt, input);
 	if (!cmds)
-		return (0);
+		return (1);
 	i = -1;
 	while (cmds[++i])
 		gen_lexer(prompt, cmds[i]);
 	free_array(cmds);
-	return (1);
+	return (0);
 }

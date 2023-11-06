@@ -97,7 +97,7 @@ int	execute(t_prompt *prompt)
 		return (single_cmd(prompt, process));
 	while (process)
 	{
-		replace_variables(prompt, process);
+		//replace_variables(prompt, process);
 		if (process->next)
 			pipe(end);
 		if (send_heredoc(prompt, process))

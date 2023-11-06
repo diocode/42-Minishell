@@ -58,6 +58,7 @@ typedef struct s_prompt
 	t_simple_cmds	*simple_cmds;
 	t_heredoc		*heredoc;
 	char			**env;
+	char			*input;
 	int				*pid;
 	int				flg[2];
 	bool			reset;
@@ -70,6 +71,7 @@ typedef struct s_prompt
 t_prompt		*init_prompt(char **av, char **ev);
 t_simple_cmds	*init_simple_cmds(void);
 int				init_pid(t_prompt *prompt);
+char			*expand_input(t_prompt *prompt, char *input);
 
 //env
 char			**ms_setenv(char *var, char *value, char **env);
@@ -100,11 +102,12 @@ int				setup_redirct(t_simple_cmds *process);
 //str_expander
 char			**single_cmd_expander(t_prompt *prompt, char **str);
 char			*str_expander(t_prompt *prompt, char *str);
-int				dollar_sign(char *str);
+int				dol_sign(char *str);
 int				equal_sign(char *str);
 char			*char_to_str(char c);
 int				if_digit(char *str, int i);
 int				if_question_mark(void);
+int				is_double_qts(t_prompt *prompt, char *str);
 
 //trim_input
 char			**trim_input(t_prompt *prompt, char *input);
@@ -137,7 +140,7 @@ void			free_lexer(t_lexer *lst);
 void			free_parser(t_simple_cmds *simple_cmds);
 
 //builtins
-int				ms_echo(t_simple_cmds *process);
+int				ms_echo(t_prompt *prompt, t_simple_cmds *process);
 void			ms_env(t_prompt *prompt, bool sort);
 int				ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds);
 int				ms_unset(t_prompt *prompt, t_simple_cmds *simple_cmds);

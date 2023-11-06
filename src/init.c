@@ -95,6 +95,7 @@ t_prompt	*init_prompt(char **av, char **ev)
 	prompt->interact = false;
 	prompt->pid = NULL;
 	prompt->env = dup_arr(ev);
+	prompt->input = NULL;
 	prompt = init_vars(prompt, av, path);
 	prompt->flg[0] = 0;
 	prompt->flg[1] = 0;
