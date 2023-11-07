@@ -101,7 +101,8 @@ int	main(int ac, char **av, char **ev)
 			ms_exit(prompt, NULL);
 		}
 		add_history(input);
-		input = expand_input(prompt, input);
+		if (input && input[0])
+			input = expand_input(prompt, input);
 		if (lexer(prompt, input) || !prompt->lexer)
 			continue ;
 		parser(prompt);

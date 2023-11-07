@@ -122,6 +122,8 @@ int				is_whitespace(char c);
 char			*delquotes(char *str, char c);
 int				ms_error(int error);
 int				error_cmd_not_found( t_simple_cmds *process);
+char			*array_to_str(char **arr);
+bool			is_expandable(char *str);
 
 //signal
 void			execute_sig(int sig, void *prompt);

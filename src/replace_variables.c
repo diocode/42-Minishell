@@ -49,9 +49,9 @@ int	is_double_qts(t_prompt *prompt, char *str)
 	return (0);
 }
 
-char	*get_env(t_prompt *prompt, char *val)
+char    *get_env(t_prompt *prompt, char *val)
 {
-	int		i[3];
+	int       i[3];
 
 	if (!val)
 		return (NULL);
@@ -65,7 +65,7 @@ char	*get_env(t_prompt *prompt, char *val)
 			while (prompt->env[i[0]][i[1]] != '=')
 				i[1]++;
 			val = ft_calloc(ft_strlen(prompt->env[i[0]]) - i[1] + 1,
-					sizeof(char));
+							sizeof(char));
 			if (!val)
 				return (NULL);
 			i[2] = -1;
@@ -78,12 +78,12 @@ char	*get_env(t_prompt *prompt, char *val)
 	return (NULL);
 }
 
-static char	*get_word(char *str)
+static char    *get_word(char *str)
 {
-	char	*val;
-	int		i;
-	int		j;
-	int		start;
+	char   *val;
+	int       i;
+	int       j;
+	int       start;
 
 	i = 0;
 	while (str[i] && str[i] != '$')
@@ -99,11 +99,11 @@ static char	*get_word(char *str)
 	return (val);
 }
 
-static bool	is_expandable(char *str)
+bool    is_expandable(char *str)
 {
-	bool	in_double_quotes;
-	bool	in_single_quotes;
-	int		i;
+	bool   in_double_quotes;
+	bool   in_single_quotes;
+	int       i;
 
 	in_double_quotes = false;
 	in_single_quotes = false;
@@ -114,7 +114,7 @@ static bool	is_expandable(char *str)
 			&& !in_double_quotes)
 			in_single_quotes = !in_single_quotes;
 		else if (str[i] == '"' && (i == 0 || str[i - 1] != '\\')
-			&& !in_single_quotes)
+				 && !in_single_quotes)
 			in_double_quotes = !in_double_quotes;
 		else if (str[i] == '$' && in_single_quotes)
 			return (false);
@@ -123,25 +123,30 @@ static bool	is_expandable(char *str)
 	return (true);
 }
 
-static char	*replace(t_prompt *prompt, char *str)
+static char    *replace(t_prompt *prompt, char *str)
 {
-	char	*final_str;
-	char	*var;
+	char   *final_str;
+	char   *var;
 	char	*word;
+	size_t	final_length
 
 	word = get_word(str);
 	var = get_env(prompt, get_word(str));
 	if (!var)
+	{
+		free(word);
 		return (NULL);
-	final_str = ft_calloc((ft_strlen(str) - ft_strlen(word))
-			+ ft_strlen(var), sizeof(char));
+	}
+	size_t final_length = (ft_strlen(str) - ft_strlen(word)) + ft_strlen(var);
+	final_str = ft_calloc(final_length + 1, sizeof(char));
 	if (!final_str)
 		return (NULL);
 	prompt->flg[0] = 0;
 	prompt->flg[1] = 0;
+
 	while (str[prompt->flg[0]] != '$')
 		final_str[prompt->flg[1]++] = str[prompt->flg[0]++];
-	final_str = ft_strjoin(final_str, var);
+	ft_strlcat(final_str, var, final_length + 1);
 	prompt->flg[0] += ft_strlen(word) + 1;
 	while (final_str[prompt->flg[1]])
 		prompt->flg[1]++;
@@ -152,32 +157,49 @@ static char	*replace(t_prompt *prompt, char *str)
 	return (final_str);
 }
 
-static char	*array_to_str(char **arr)
+char *array_to_str(char **arr)
 {
-	char	*new_input;
-	int		i;
+	char *result;
+	size_t total_length;
+	char **str;
 
-	i = 0;
-	if (!arr[i])
-		return (NULL);
-	new_input = ft_strdup(arr[i]);
-	while (arr[++i])
+	total_length = 0;
+	str = arr;
+	if (arr == NULL || arr[0] == NULL)
+		return NULL;
+	while (*str != NULL)
 	{
-		new_input = ft_strjoin(new_input, " ");
-		new_input = ft_strjoin(new_input, arr[i]);
+		total_length += strlen(*str);
+		str++;
+	}
+	total_length += (size_t)(str - arr - 1);
+	result = malloc(total_length + 1);
+	if (result == NULL)
+		return NULL;
+	result[0] = '\0';
+	str = arr;
+	while (*str != NULL)
+	{
+		ft_strlcat(result, *str, total_length + 1);
+		if (*(str + 1) != NULL)
+			ft_strlcat(result, " ", total_length + 1);
+		str++;
 	}
 	free_array(arr);
-	return (new_input);
+	return (result);
 }
 
-char	*expand_input(t_prompt *prompt, char *input)
+
+char   *expand_input(t_prompt *prompt, char *input)
 {
-	char	**arr;
-	char	*tmp;
-	int		i;
-	int		j;
+	char   **arr;
+	char   *tmp;
+	int       i;
+	int       j;
 
 	arr = ft_split(input, ' ');
+	if (!arr)
+		return (NULL);
 	i = 0;
 	while (arr[i])
 	{
@@ -185,14 +207,17 @@ char	*expand_input(t_prompt *prompt, char *input)
 		while (arr[i][++j])
 		{
 			if (arr[i][j] == '$')
-			{
 				if (is_expandable(arr[i]))
 				{
 					tmp = replace(prompt, arr[i]);
 					if (tmp)
-						arr[i] = tmp;
+					{
+						free(arr[i]);
+						arr[i] = ft_strdup(tmp);
+						free(tmp);
+					}
+
 				}
-			}
 		}
 		i++;
 	}
