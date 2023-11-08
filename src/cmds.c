@@ -94,7 +94,7 @@ int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 		exit(status);
 	}
 	else if (!ft_strncmp(process->str[0], "$?", 2))
-		status = if_question_mark();
+		status = if_question_mark(prompt);
 	else if (process->str[0])
 		status = system_cmd(prompt, process);
 	g_status = status;
@@ -109,7 +109,6 @@ int	single_cmd(t_prompt *prompt, t_simple_cmds *process)
 	int		pid;
 
 	status = 0;
-	//replace_variables(prompt, process);
 	prompt->simple_cmds = single_cmd_heredoc(prompt, process);
 	cmd = process->builtin;
 	if (cmd && (!ft_strncmp(cmd, "exit", 4) || !ft_strncmp(cmd, "cd", 2)

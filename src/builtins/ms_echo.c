@@ -20,7 +20,7 @@ static void	ft_print(char **str, int i)
 
 	while (str[i])
 	{
-		if (!ft_strncmp(str[i], "$?", 2) && is_expandable(array_to_str(str)))
+		if (!ft_strncmp(str[i], "$?", 2))
 		{
 			tmp = ft_itoa(g_status);
 			ft_putstr_fd(tmp, STDOUT_FILENO);

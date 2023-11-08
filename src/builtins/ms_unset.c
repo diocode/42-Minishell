@@ -67,19 +67,15 @@ static int	error(t_simple_cmds *simple_cmds)
 	}
 	while (simple_cmds->str[1][i])
 	{
-		if (simple_cmds->str[1][i++] == '/')
+		if (is_digit(simple_cmds->str[1])
+			|| (!ft_isalnum(simple_cmds->str[1][i]) && simple_cmds->str[1][i] != '_'))
 		{
 			ft_putstr_fd("unset: `", STDERR_FILENO);
 			ft_putstr_fd(simple_cmds->str[1], STDERR_FILENO);
 			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 			return (EXIT_FAILURE);
 		}
-	}
-	if (equal_sign(simple_cmds->str[1]) != 0)
-	{
-		ft_putendl_fd("unset: not a valid identifier",
-			STDERR_FILENO);
-		return (EXIT_FAILURE);
+		i++;
 	}
 	return (EXIT_SUCCESS);
 }

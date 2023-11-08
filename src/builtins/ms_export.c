@@ -15,19 +15,33 @@
 static int	is_variable(t_prompt *prompt, char *str)
 {
 	int	i;
+	int	equal;
 
 	i = 0;
+	equal = equal_sign(prompt->env[i]);
 	if (str[equal_sign(str)] == '\"')
 		delquotes(str, '\"');
 	if (str[equal_sign(str)] == '\'')
 		delquotes(str, '\'');
 	while (prompt->env[i])
 	{
-		if (ft_strncmp(prompt->env[i], str, equal_sign(prompt->env[i])) == 0)
+		if (!equal)
 		{
-			free(prompt->env[i]);
-			prompt->env[i] = ft_strdup(str);
-			return (1);
+			if (ft_strncmp(prompt->env[i], str, ft_strlen(str)) == 0)
+			{
+				free(prompt->env[i]);
+				prompt->env[i] = ft_strdup(str);
+				return (1);
+			}
+		}
+		else
+		{
+			if (ft_strncmp(prompt->env[i], str, equal) == 0)
+			{
+				free(prompt->env[i]);
+				prompt->env[i] = ft_strdup(str);
+				return (1);
+			}
 		}
 		i++;
 	}
@@ -41,11 +55,11 @@ static int	check_param(char *str)
 	i = 0;
 	if (ft_isdigit(str[0]))
 		return (export_error(str));
-	if (equal_sign(str) == 0)
+	if (!ft_strncmp(str, "_", 2))
 		return (EXIT_FAILURE);
 	if (str[0] == '=')
 		return (export_error(str));
-	while (str[i] != '=')
+	while (str[i] && str[i] != '=')
 	{
 		if (is_identifier(str[i]))
 			return (export_error(str));

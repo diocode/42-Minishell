@@ -71,7 +71,6 @@ typedef struct s_prompt
 t_prompt		*init_prompt(char **av, char **ev);
 t_simple_cmds	*init_simple_cmds(void);
 int				init_pid(t_prompt *prompt);
-char			*expand_input(t_prompt *prompt, char *input);
 
 //env
 char			**ms_setenv(char *var, char *value, char **env);
@@ -90,11 +89,10 @@ int				nbr_nodes(t_lexer *lexer);
 int				execute(t_prompt *prompt);
 int				handle_cmd(t_prompt *prompt, t_simple_cmds *cmd);
 int				single_cmd(t_prompt *prompt, t_simple_cmds *process);
-void			replace_variables(t_prompt *prompt, t_simple_cmds *process);
 
 //heredoc
-int				send_heredoc(t_prompt *prompt, t_simple_cmds *process);
 t_simple_cmds	*single_cmd_heredoc(t_prompt *prompt, t_simple_cmds *process);
+int				send_heredoc(t_prompt *prompt, t_simple_cmds *process);
 
 //redircts
 int				setup_redirct(t_simple_cmds *process);
@@ -102,28 +100,38 @@ int				setup_redirct(t_simple_cmds *process);
 //str_expander
 char			**single_cmd_expander(t_prompt *prompt, char **str);
 char			*str_expander(t_prompt *prompt, char *str);
+char			*char_to_str(char c);
 int				dol_sign(char *str);
 int				equal_sign(char *str);
-char			*char_to_str(char c);
 int				if_digit(char *str, int i);
 int				if_question_mark(void);
-int				is_double_qts(t_prompt *prompt, char *str);
 
 //trim_input
-char			**trim_input(t_prompt *prompt, char *input);
 void			check_flg(t_prompt *p, char const *str, int i);
+char			**trim_input(t_prompt *prompt, char *input);
 int				qts_nbr(t_prompt *prompt, char const *str, int i, int size);
 int				skip_word(t_prompt *prompt, char const *str, int i);
 
+//expand_input && utils
+bool			is_expandable(const char *str);
+char			*expand_input(t_prompt *prompt, char *input);
+char			*get_env(t_prompt *prompt, char *val);
+
 //utils
+char			*delquotes(char *str, char c);
+int				is_whitespace(char c);
+int				is_identifier(char c);
+int				is_digit(char *str);
+
+//str_utils
 char			**dup_arr(char **arr);
 char			**extend_arr(char **arr, char *new);
-int				is_whitespace(char c);
-char			*delquotes(char *str, char c);
-int				ms_error(int error);
-int				error_cmd_not_found( t_simple_cmds *process);
 char			*array_to_str(char **arr);
-bool			is_expandable(char *str);
+
+//errors
+int				ms_error(int error);
+int				export_error(char *c);
+int				error_cmd_not_found( t_simple_cmds *process);
 
 //signal
 void			execute_sig(int sig, void *prompt);
@@ -131,8 +139,8 @@ void			set_sign(void);
 
 //lists
 t_lexer			*ms_lstnew(char *content, char type);
-void			ms_lstadd(t_lexer *lst, t_lexer *new);
 t_lexer			*ms_lstlast(t_lexer *lst);
+void			ms_lstadd(t_lexer *lst, t_lexer *new);
 
 //free
 t_prompt		*reset_prompt(t_prompt *prompt, char **av, char **ev);
@@ -142,16 +150,11 @@ void			free_lexer(t_lexer *lst);
 void			free_parser(t_simple_cmds *simple_cmds);
 
 //builtins
-int				ms_echo(t_prompt *prompt, t_simple_cmds *process);
 void			ms_env(t_prompt *prompt, bool sort);
+int				ms_echo(t_prompt *prompt, t_simple_cmds *process);
 int				ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds);
 int				ms_unset(t_prompt *prompt, t_simple_cmds *simple_cmds);
 int				ms_export(t_prompt *prompt, t_simple_cmds *simple_cmds);
 int				ms_exit(t_prompt *prompt, t_simple_cmds *simple_cmd);
-
-//builtins_utils
-int				export_error(char *c);
-int				is_identifier(char c);
-int				is_digit(char *str);
 
 #endif

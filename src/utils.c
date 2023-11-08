@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/26 15:21:20 by digoncal          #+#    #+#             */
-/*   Updated: 2023/10/24 16:27:25 by digoncal         ###   ########.fr       */
+/*   Created: 2023/11/08 11:35:46 by digoncal          #+#    #+#             */
+/*   Updated: 2023/11/08 11:35:46 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,73 +37,26 @@ int	is_whitespace(char c)
 	return (c == ' ' || (c > 8 && c < 14));
 }
 
-int	error_cmd_not_found( t_simple_cmds *process)
+int	is_identifier(char c)
 {
-	char	*str;
-	char	*tmp;
-
-	if (!process->str && !process->str[0])
-		return (1);
-	if (process->str[0][0])
-		tmp = ft_strdup(process->str[0]);
-	else
-		tmp = ft_strdup("\'\'");
-	str = ft_strjoin(tmp, ": command not found");
-	ft_putendl_fd(str, STDERR_FILENO);
-	free(tmp);
-	free(str);
-	return (127);
+	return (c == '|' || c == '<' || c == '>' || c == '[' || c == ']'
+		|| c == '\'' || c == '\"' || c == ' ' || c == ',' || c == '.'
+		|| c == ':' || c == '/' || c == '{' || c == '}' || c == '+'
+		|| c == '^' || c == '%' || c == '#' || c == '@' || c == '!'
+		|| c == '~'
+		|| c == '=' || c == '-' || c == '?' || c == '&' || c == '*');
 }
 
-char	**dup_arr(char **arr)
+int	is_digit(char *str)
 {
-	char	**dup;
-	int		i;
+	int	i;
 
 	i = 0;
-	while (arr[i])
-		i++;
-	dup = ft_calloc(i + 1, sizeof(char *));
-	if (!dup)
-		return (NULL);
-	i = 0;
-	while (arr[i])
+	while (str[i])
 	{
-		dup[i] = ft_strdup(arr[i]);
-		if (!dup[i])
-		{
-			free_array(dup);
-			return (NULL);
-		}
+		if (!ft_isdigit(str[i]))
+			return (0);
 		i++;
 	}
-	return (dup);
-}
-
-char	**extend_arr(char **arr, char *new)
-{
-	char	**new_arr;
-	int		len;
-	int		i;
-
-	if (!new)
-		return (arr);
-	len = 0;
-	while (arr[len])
-		len++;
-	new_arr = ft_calloc(sizeof(char *), len + 2);
-	if (!new_arr)
-		return (arr);
-	i = -1;
-	while (len > ++i)
-	{
-		new_arr[i] = ft_strdup(arr[i]);
-		if (!new_arr[i])
-		{
-			free_array(arr);
-			free_array(new_arr);
-		}
-	}
-	new_arr[i] = ft_strdup(new);
-	return (new_arr);
+	return (1);
 }
