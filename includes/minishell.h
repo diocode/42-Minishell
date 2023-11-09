@@ -60,7 +60,8 @@ typedef struct s_prompt
 	char			**env;
 	char			*input;
 	int				*pid;
-	int				flg[2];
+	int				*exit_codes;
+	int				flg[3];
 	bool			reset;
 	bool			interact;
 }	t_prompt;
@@ -117,11 +118,17 @@ bool			is_expandable(const char *str);
 char			*expand_input(t_prompt *prompt, char *input);
 char			*get_env(t_prompt *prompt, char *val);
 
-//utils
+//utils_1
 char			*delquotes(char *str, char c);
 int				is_whitespace(char c);
 int				is_identifier(char c);
 int				is_digit(char *str);
+void			init_exit_codes(t_prompt *prompt, char *input);
+
+//utils_2
+bool			is_exit_status(char *str);
+int				current_exit_status(t_prompt *prompt);
+int				check_param(char *str);
 
 //str_utils
 char			**dup_arr(char **arr);

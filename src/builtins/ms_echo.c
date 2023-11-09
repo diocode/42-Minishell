@@ -14,17 +14,33 @@
 
 extern int	g_status;
 
-static void	ft_print(char **str, int i)
+static void	print_exit_status(char *str)
 {
 	char	*tmp;
+	int		i;
 
+	i = 0;
+	while (str[i] && str[i] != '$')
+		write(STDOUT_FILENO, &str[i++], 1);
+	tmp = ft_itoa(g_status);
+	ft_putstr_fd(tmp, STDOUT_FILENO);
+	free(tmp);
+	i += 2;
+	while (str[i])
+		write(STDOUT_FILENO, &str[i++], 1);
+}
+
+static void	ft_print(t_prompt *prompt, char **str, int i)
+{
 	while (str[i])
 	{
-		if (!ft_strncmp(str[i], "$?", 2))
+		if (is_exit_status(str[i]))
 		{
-			tmp = ft_itoa(g_status);
-			ft_putstr_fd(tmp, STDOUT_FILENO);
-			free(tmp);
+			if (prompt->exit_codes[current_exit_status(prompt)] == 1)
+				print_exit_status(str[i]);
+			else
+				ft_putstr_fd(str[i], STDOUT_FILENO);
+			prompt->exit_codes[current_exit_status(prompt)] = 2;
 		}
 		else
 			ft_putstr_fd(str[i], STDOUT_FILENO);
@@ -56,7 +72,7 @@ int	ms_echo(t_prompt *prompt, t_simple_cmds *process)
 			break ;
 		i++;
 	}
-	ft_print(cmd, i);
+	ft_print(prompt, cmd, i);
 	if (flg == false)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (0);

@@ -13,7 +13,6 @@
 #include "../includes/minishell.h"
 
 /* flg[0] = '"' | flg[1] = '\'' */
-/*Adds a quote to the end of the str if the quotes are odd numbered*/
 static int	check_quotes(const char *str)
 {
 	int	flg[2];
@@ -24,9 +23,9 @@ static int	check_quotes(const char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == '"')
+		if (str[i] == '"' && flg[1] % 2 == 0)
 			flg[0]++;
-		if (str[i] == '\'')
+		if (str[i] == '\'' && flg[0] % 2 == 0)
 			flg[1]++;
 	}
 	if (flg[0] % 2 || flg[1] % 2)

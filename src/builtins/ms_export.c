@@ -12,6 +12,17 @@
 
 #include "../../includes/minishell.h"
 
+static int	is_variable_utils(t_prompt *prompt, char *str, int size, int i)
+{
+	if (ft_strncmp(prompt->env[i], str, size) == 0)
+	{
+		free(prompt->env[i]);
+		prompt->env[i] = ft_strdup(str);
+		return (1);
+	}
+	return (0);
+}
+
 static int	is_variable(t_prompt *prompt, char *str)
 {
 	int	i;
@@ -27,45 +38,17 @@ static int	is_variable(t_prompt *prompt, char *str)
 	{
 		if (!equal)
 		{
-			if (ft_strncmp(prompt->env[i], str, ft_strlen(str)) == 0)
-			{
-				free(prompt->env[i]);
-				prompt->env[i] = ft_strdup(str);
+			if (is_variable_utils(prompt, str, ft_strlen(str), i))
 				return (1);
-			}
 		}
 		else
 		{
-			if (ft_strncmp(prompt->env[i], str, equal) == 0)
-			{
-				free(prompt->env[i]);
-				prompt->env[i] = ft_strdup(str);
+			if (is_variable_utils(prompt, str, equal, i))
 				return (1);
-			}
 		}
 		i++;
 	}
 	return (0);
-}
-
-static int	check_param(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (ft_isdigit(str[0]))
-		return (export_error(str));
-	if (!ft_strncmp(str, "_", 2))
-		return (EXIT_FAILURE);
-	if (str[0] == '=')
-		return (export_error(str));
-	while (str[i] && str[i] != '=')
-	{
-		if (is_identifier(str[i]))
-			return (export_error(str));
-		i++;
-	}
-	return (EXIT_SUCCESS);
 }
 
 static char	**add_var_2(char **arr, char **res, char *str)

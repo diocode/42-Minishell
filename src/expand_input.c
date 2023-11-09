@@ -74,6 +74,8 @@ static char	*replace(t_prompt *prompt, char *str)
 	char	*final_str;
 
 	word = get_word(str);
+	if (!ft_strncmp(word, "?", 1))
+		prompt->exit_codes[prompt->flg[2]++] = 1;
 	var = get_env(prompt, get_word(str));
 	if (!var)
 	{
@@ -105,6 +107,8 @@ static void	expand_word(t_prompt *prompt, char **word)
 			}
 		}
 	}
+	if (!is_expandable(*word) && is_exit_status(*word))
+		prompt->exit_codes[prompt->flg[2]++] = 0;
 }
 
 char	*expand_input(t_prompt *prompt, char *input)
@@ -112,6 +116,10 @@ char	*expand_input(t_prompt *prompt, char *input)
 	char	**arr;
 	int		i;
 
+	prompt->flg[2] = 0;
+	init_exit_codes(prompt, input);
+	if (!prompt->exit_codes)
+		return (NULL);
 	arr = ft_split(input, ' ');
 	if (!arr)
 		return (NULL);

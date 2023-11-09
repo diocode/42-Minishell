@@ -102,5 +102,7 @@ void	free_data(t_prompt *prompt)
 		free(prompt->input);
 	if (prompt->pid)
 		free(prompt->pid);
+	if (prompt->exit_codes)
+		free(prompt->exit_codes);
 	free(prompt);
 }

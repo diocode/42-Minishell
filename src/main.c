@@ -103,7 +103,7 @@ int	main(int ac, char **av, char **ev)
 		add_history(input);
 		if (input && input[0])
 			input = expand_input(prompt, input);
-		if (lexer(prompt, input) || !prompt->lexer)
+		if (!input || lexer(prompt, input) || !prompt->lexer)
 			continue ;
 		parser(prompt);
 		//dev_mod(prompt); /*DEV MOD*/

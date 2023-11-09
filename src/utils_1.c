@@ -60,3 +60,24 @@ int	is_digit(char *str)
 	}
 	return (1);
 }
+
+void	init_exit_codes(t_prompt *prompt, char *input)
+{
+	int	i;
+	int	count;
+
+	count = 0;
+	i = -1;
+	while (input[++i])
+	{
+		if (input[i] == '$')
+			if (input[i + 1] && input[i + 1] == '?')
+				count++;
+	}
+	prompt->exit_codes = malloc(count * sizeof(int));
+	if (!prompt->exit_codes)
+		return ;
+	i = -1;
+	while (++i < count)
+		prompt->exit_codes[i] = 0;
+}

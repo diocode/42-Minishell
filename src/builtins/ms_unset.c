@@ -68,7 +68,8 @@ static int	error(t_simple_cmds *simple_cmds)
 	while (simple_cmds->str[1][i])
 	{
 		if (is_digit(simple_cmds->str[1])
-			|| (!ft_isalnum(simple_cmds->str[1][i]) && simple_cmds->str[1][i] != '_'))
+			|| (!ft_isalnum(simple_cmds->str[1][i])
+			&& simple_cmds->str[1][i] != '_'))
 		{
 			ft_putstr_fd("unset: `", STDERR_FILENO);
 			ft_putstr_fd(simple_cmds->str[1], STDERR_FILENO);
