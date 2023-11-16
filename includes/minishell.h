@@ -129,6 +129,7 @@ void			init_exit_codes(t_prompt *prompt, char *input);
 bool			is_exit_status(char *str);
 int				current_exit_status(t_prompt *prompt);
 int				check_param(char *str);
+bool			existing_var(char *env, char *str);
 
 //str_utils
 char			**dup_arr(char **arr);

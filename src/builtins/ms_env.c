@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 14:57:28 by digoncal          #+#    #+#             */
-/*   Updated: 2023/10/17 17:59:26 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:51:44 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	ms_env(t_prompt *prompt, bool sort)
 	else
 	{
 		while (prompt->env[++i])
-			ft_putendl_fd(prompt->env[i], STDOUT_FILENO);
+			if (equal_sign(prompt->env[i]))
+				ft_putendl_fd(prompt->env[i], STDOUT_FILENO);
 	}
 }

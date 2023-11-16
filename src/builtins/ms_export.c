@@ -12,46 +12,30 @@
 
 #include "../../includes/minishell.h"
 
-static int	is_variable_utils(t_prompt *prompt, char *str, int size, int i)
-{
-	if (ft_strncmp(prompt->env[i], str, size) == 0)
-	{
-		free(prompt->env[i]);
-		prompt->env[i] = ft_strdup(str);
-		return (1);
-	}
-	return (0);
-}
-
 static int	is_variable(t_prompt *prompt, char *str)
 {
 	int	i;
-	int	equal;
 
-	i = 0;
-	equal = equal_sign(prompt->env[i]);
 	if (str[equal_sign(str)] == '\"')
 		delquotes(str, '\"');
 	if (str[equal_sign(str)] == '\'')
 		delquotes(str, '\'');
-	while (prompt->env[i])
+	i = -1;
+	while (prompt->env[++i])
 	{
-		if (!equal)
+		if (existing_var(prompt->env[i], str))
 		{
-			if (is_variable_utils(prompt, str, ft_strlen(str), i))
+			if (!equal_sign(str))
 				return (1);
+			free(prompt->env[i]);
+			prompt->env[i] = ft_strdup(str);
+			return (1);
 		}
-		else
-		{
-			if (is_variable_utils(prompt, str, equal, i))
-				return (1);
-		}
-		i++;
 	}
 	return (0);
 }
 
-static char	**add_var_2(char **arr, char **res, char *str)
+static char	**copy_arr(char **arr, char **res, char *str)
 {
 	int	i;
 
@@ -90,7 +74,7 @@ static char	**add_var(char **arr, char *str)
 	res = ft_calloc(i + 2, sizeof(char *));
 	if (!res)
 		return (NULL);
-	res = add_var_2(arr, res, str);
+	res = copy_arr(arr, res, str);
 	return (res);
 }
 

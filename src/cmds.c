@@ -94,7 +94,13 @@ int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 		exit(status);
 	}
 	else if (!ft_strncmp(process->str[0], "$?", 2))
-		status = if_question_mark();
+	{
+		if (prompt->exit_codes[current_exit_status(prompt)] == 1)
+			status = if_question_mark();
+		else
+			status = system_cmd(prompt, process);
+		prompt->exit_codes[current_exit_status(prompt)] = 2;
+	}
 	else if (process->str[0])
 		status = system_cmd(prompt, process);
 	g_status = status;

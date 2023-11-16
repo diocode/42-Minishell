@@ -29,40 +29,55 @@ static int	change_path(t_prompt *prompt, char *path)
 	return (decree);
 }
 
-void	add_new_path(t_prompt *prompt)
+static void	add_path(t_prompt *prompt)
 {
 	int		i;
 	char	*tmp;
+	char	*oldpath;
+	char	*cwd;
 
 	i = -1;
+	oldpath = ms_getenv("PWD", prompt->env);
 	while (prompt->env[++i])
 	{
-		if (!ft_strncmp(prompt->simple_cmds->str[1], "PWD=", 4))
+		if (!ft_strncmp(prompt->env[i], "PWD=", 4))
 		{
-			tmp = ft_strjoin("PWD=", prompt->simple_cmds->str[1]);
+			cwd = getcwd(NULL, 0);
+			tmp = ft_strjoin("PWD=", cwd);
 			free(prompt->env[i]);
-			prompt->env[1] = tmp;
+			free(cwd);
+			prompt->env[i] = tmp;
 		}
-		else if (!ft_strncmp(prompt->simple_cmds->str[1], "OLDPWD=", 7)
-			&& prompt->simple_cmds->str)
+		else if (!ft_strncmp(prompt->env[i], "OLDPWD=", 7))
 		{
-			tmp = ft_strjoin("OLDPWD=", prompt->simple_cmds->str[1]);
+			tmp = ft_strjoin("OLDPWD=", oldpath);
 			free(prompt->env[i]);
-			prompt->env[1] = tmp;
+			prompt->env[i] = tmp;
 		}
 	}
+	free(oldpath);
+}
+
+static void	ms_cd_utils(t_prompt *prompt)
+{
+	char	*tmp;
+
+	tmp = ms_getenv("OLDPWD", prompt->env);
+	ft_printf("%s\n", tmp);
+	free(tmp);
 }
 
 int	ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds)
 {
-	int	decree;
+	int		decree;
 
 	if (!simple_cmds->str[1])
 		decree = change_path(prompt, "HOME");
 	else if (!ft_strncmp(simple_cmds->str[1], "-", 1))
 	{
 		decree = change_path(prompt, "OLDPWD");
-		ft_printf("%s\n", ms_getenv("HOME", prompt->env));
+		if (decree == 0)
+			ms_cd_utils(prompt);
 	}
 	else
 	{
@@ -76,6 +91,6 @@ int	ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds)
 	}
 	if (decree != 0)
 		return (1);
-	add_new_path(prompt);
+	add_path(prompt);
 	return (decree);
 }

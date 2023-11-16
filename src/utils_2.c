@@ -56,3 +56,15 @@ int	check_param(char *str)
 	}
 	return (EXIT_SUCCESS);
 }
+
+bool	existing_var(char *env, char *str)
+{
+	int	size;
+
+	size = 0;
+	while (str[size] && str[size] != '=')
+		size++;
+	if (!ft_strncmp(env, str, size))
+		return (true);
+	return (false);
+}
