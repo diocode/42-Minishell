@@ -22,6 +22,8 @@ static void	exit_code(char **str)
 		exit_code = 0;
 	else if (is_digit(str[1]))
 		exit_code = ft_atoi(str[1]);
+	else if (str[1][0] && str[1][0] == '-' && is_digit(str[1] + 1))
+		exit_code = 256 - ft_atoi(str[1] + 1);
 	else
 	{
 		ft_putstr_fd("exit: ", STDERR_FILENO);
@@ -41,7 +43,7 @@ int	ms_exit(t_prompt *prompt, t_simple_cmds *simple_cmd)
 	if (!simple_cmd)
 	{
 		free_data(prompt);
-		exit(0);
+		exit(g_status);
 	}
 	if (simple_cmd->str[1] && simple_cmd->str[2])
 	{

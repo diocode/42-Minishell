@@ -24,7 +24,6 @@ void	execute_sig(int sig, void *prompt)
 	{
 		if (sig == SIGINT)
 		{
-			printf("\b\b  \b\b");
 			printf("\n");
 			rl_on_new_line();
 			rl_replace_line("", 0);
