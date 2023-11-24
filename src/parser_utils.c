@@ -28,10 +28,10 @@ int	is_builtin(char const *str)
 {
 	if (!str)
 		return (0);
-	if (!ft_strncmp(str, "echo", 4) || !ft_strncmp(str, "cd", 2)
-		|| !ft_strncmp(str, "pwd", 3) || !ft_strncmp(str, "export", 6)
-		|| !ft_strncmp(str, "unset", 5) || !ft_strncmp(str, "env", 3)
-		|| !ft_strncmp(str, "exit", 4))
+	if (!ft_strncmp(str, "echo", 5) || !ft_strncmp(str, "cd", 3)
+		|| !ft_strncmp(str, "pwd", 4) || !ft_strncmp(str, "export", 7)
+		|| !ft_strncmp(str, "unset", 6) || !ft_strncmp(str, "env", 4)
+		|| !ft_strncmp(str, "exit", 5))
 		return (1);
 	return (0);
 }

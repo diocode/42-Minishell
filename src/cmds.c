@@ -60,19 +60,19 @@ static int	builtin(t_prompt *prompt, t_simple_cmds *process)
 	char	*cmd;
 
 	cmd = process->builtin;
-	if (!ft_strncmp(cmd, "exit", 4))
+	if (!ft_strncmp(cmd, "exit", 5))
 		return (ms_exit(prompt, process));
-	else if (!ft_strncmp(cmd, "cd", 2))
+	else if (!ft_strncmp(cmd, "cd", 3))
 		ms_cd(prompt, process);
-	else if (!ft_strncmp(cmd, "export", 6))
+	else if (!ft_strncmp(cmd, "export", 7))
 		ms_export(prompt, process);
-	else if (!ft_strncmp(cmd, "unset", 5))
+	else if (!ft_strncmp(cmd, "unset", 6))
 		ms_unset(prompt, process);
-	else if (!ft_strncmp(cmd, "echo", 4))
+	else if (!ft_strncmp(cmd, "echo", 5))
 		ms_echo(prompt, process);
-	else if (!ft_strncmp(cmd, "env", 3))
+	else if (!ft_strncmp(cmd, "env", 4))
 		ms_env(prompt, 0);
-	else if (!ft_strncmp(cmd, "pwd", 3))
+	else if (!ft_strncmp(cmd, "pwd", 4))
 		ft_printf("%s\n", ms_getenv("PWD", prompt->env));
 	else
 		return (1);
@@ -81,30 +81,26 @@ static int	builtin(t_prompt *prompt, t_simple_cmds *process)
 
 int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 {
-	int	status;
-
-	status = 0;
 	if (process->redirct)
 		if (setup_redirct(process))
 			exit(1);
 	if (process->builtin)
 	{
-		status = builtin(prompt, process);
-		prompt->heredoc->error_num += status;
-		exit(status);
+		g_status = builtin(prompt, process);
+		prompt->heredoc->error_num += g_status;
+		exit(g_status);
 	}
 	else if (!ft_strncmp(process->str[0], "$?", 2))
 	{
 		if (prompt->exit_codes[current_exit_status(prompt)] == 1)
-			status = if_question_mark();
+			g_status = if_question_mark();
 		else
-			status = system_cmd(prompt, process);
+			g_status = system_cmd(prompt, process);
 		prompt->exit_codes[current_exit_status(prompt)] = 2;
 	}
 	else if (process->str[0])
-		status = system_cmd(prompt, process);
-	g_status = status;
-	exit (status);
+		g_status = system_cmd(prompt, process);
+	exit (g_status);
 }
 
 //Handle single cmds that cannot be run in a child process

@@ -20,7 +20,7 @@ static void	exit_code(char **str)
 
 	if (!str[1])
 		exit_code = 0;
-	else if (is_digit(str[1]))
+	else if (is_digit(str[1]) || ft_atoi(str[1]))
 		exit_code = ft_atoi(str[1]);
 	else if (str[1][0] && str[1][0] == '-' && is_digit(str[1] + 1))
 		exit_code = 256 - ft_atoi(str[1] + 1);
