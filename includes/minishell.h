@@ -77,8 +77,13 @@ int				init_pid(t_prompt *prompt);
 char			**ms_setenv(char *var, char *value, char **env);
 char			*ms_getenv(char *var, char **env);
 
-//lexer
+//lexer & utils
 int				lexer(t_prompt *prompt, char *input);
+void			skip_spaces(char **line);
+int				is_separator(char *c);
+int				is_quote(char c);
+bool			skip_quotes(char *line, size_t *i);
+void			remove_quotes(char *str);
 
 //parser
 void			parser(t_prompt *prompt);
@@ -106,12 +111,6 @@ int				dol_sign(char *str);
 int				equal_sign(char *str);
 int				if_digit(char *str, int i);
 int				if_question_mark(void);
-
-//trim_input
-void			check_flg(t_prompt *p, char const *str, int i);
-char			**trim_input(t_prompt *prompt, char *input);
-int				qts_nbr(t_prompt *prompt, char const *str, int i, int size);
-int				skip_word(t_prompt *prompt, char const *str, int i);
 
 //expand_input && utils
 bool			is_expandable(const char *str);
@@ -142,6 +141,7 @@ int				ms_error(int error);
 int				export_error(char *c);
 int				error_cmd_not_found( t_simple_cmds *process);
 int				token_error(t_lexer *lexer);
+void			quotes_error(char c);
 
 //signal
 void			execute_sig(int sig, void *prompt);

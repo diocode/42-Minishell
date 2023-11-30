@@ -67,6 +67,13 @@ int	token_error(t_lexer *lexer)
 	return (0);
 }
 
+void	quotes_error(char c)
+{
+	g_status = 2;
+	ft_putstr_fd("minishell: unexpected EOF while looking for matching `", 2);
+	ft_putchar_fd(c, 2);
+}
+
 int	ms_error(int error)
 {
 	g_status = error;

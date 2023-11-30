@@ -12,76 +12,90 @@
 
 #include "../includes/minishell.h"
 
-/* flg[0] = '"' | flg[1] = '\'' */
-static int	check_quotes(const char *str)
+static int	append_identifier(t_prompt *prompt, char **str)
 {
-	int	flg[2];
-	int	i;
+	char	*tmp;
+	char	*value;
+	size_t	i;
 
-	flg[0] = 0;
-	flg[1] = 0;
 	i = -1;
-	while (str[++i])
+	tmp = *str;
+	while (tmp[++i] && !is_separator(tmp + i))
 	{
-		if (str[i] == '"' && flg[1] % 2 == 0)
-			flg[0]++;
-		if (str[i] == '\'' && flg[0] % 2 == 0)
-			flg[1]++;
+		if (is_quote(tmp[i]))
+		{
+			if (!skip_quotes(tmp, &i))
+				return (quotes_error(tmp[i]), 1);
+		}
 	}
-	if (flg[0] % 2 || flg[1] % 2)
-	{
-		ms_error(2);
+	value = ft_substr(tmp, 0, i);
+	if (!value)
 		return (1);
-	}
+	remove_quotes(value);
+	if (!prompt->lexer)
+		prompt->lexer = ms_lstnew(value, 'w');
+	else
+		ms_lstadd(prompt->lexer, ms_lstnew(value, 'w'));
+	*str += i;
+	free(value);
 	return (0);
 }
 
-static int	is_token(char *str)
+static int	append_separator(t_prompt *prompt, char *token, char **line)
 {
-	if (!str || !str[0])
-		return (0);
-	if ((str[0] == '|' || str[0] == '<' || str[0] == '>')
-		&& ft_strlen(str) == 1)
-		return (1);
-	if ((ft_strncmp(str, "<<", 2) == 0 || ft_strncmp(str, ">>", 2) == 0)
-		&& ft_strlen(str) == 2)
-		return (1);
+	if (!prompt->lexer)
+		prompt->lexer = ms_lstnew(token, 't');
+	else
+		ms_lstadd(prompt->lexer, ms_lstnew(token, 't'));
+	*line += 1;
+	if (!ft_strncmp(token, "<<", 3) || !ft_strncmp(token, ">>", 3))
+		*line += 1;
 	return (0);
 }
 
-static void	gen_lexer(t_prompt *prompt, char *cmd)
+static int	handle_separator(t_prompt *prompt, char **line_ptr)
 {
-	if (is_token(cmd))
+	if (!ft_strncmp(*line_ptr, "<<", 2))
+		return (append_separator(prompt, "<<", line_ptr));
+	else if (!ft_strncmp(*line_ptr, ">>", 2))
+		return (append_separator(prompt, ">>", line_ptr));
+	else if (!ft_strncmp(*line_ptr, "<", 1))
+		return (append_separator(prompt, "<", line_ptr));
+	else if (!ft_strncmp(*line_ptr, ">", 1))
+		return (append_separator(prompt, ">", line_ptr));
+	else if (!ft_strncmp(*line_ptr, "|", 1))
+		return (append_separator(prompt, "|", line_ptr));
+	else
+		return (1);
+}
+
+static int	handle_tokenize(t_prompt *prompt, char *str)
+{
+	int		error;
+
+	error = 0;
+	while (*str)
 	{
-		if (!prompt->lexer)
-			prompt->lexer = ms_lstnew(cmd, 't');
+		if (error)
+			return (free_lexer(prompt->lexer), 1);
+		if (is_whitespace(*str))
+			skip_spaces(&str);
+		else if (!ft_strncmp(str, "<", 1) || !ft_strncmp(str, ">", 1)
+			|| !ft_strncmp(str, "|", 1))
+			error = (handle_separator(prompt, &str));
 		else
-			ms_lstadd(prompt->lexer, ms_lstnew(cmd, 't'));
+			error = (append_identifier(prompt, &str));
 	}
-	else if (cmd[0])
-	{
-		if (!prompt->lexer)
-			prompt->lexer = ms_lstnew(cmd, 'w');
-		else
-			ms_lstadd(prompt->lexer, ms_lstnew(cmd, 'w'));
-	}
+	return (0);
 }
 
 int	lexer(t_prompt *prompt, char *input)
 {
-	char		**cmds;
-	int			i;
-
 	if (!input[0])
 		return (1);
-	if (check_quotes(input))
+	handle_tokenize(prompt, input);
+	free(input);
+	if (!prompt->lexer)
 		return (1);
-	cmds = trim_input(prompt, input);
-	if (!cmds)
-		return (1);
-	i = -1;
-	while (cmds[++i])
-		gen_lexer(prompt, cmds[i]);
-	free_array(cmds);
 	return (0);
 }
