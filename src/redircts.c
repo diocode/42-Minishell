@@ -16,7 +16,7 @@ static int	ft_outfile(t_lexer	*redirct)
 {
 	int	fd;
 
-	if (!ft_strncmp(redirct->token, ">>", 1))
+	if (!ft_strncmp(redirct->token, ">>", 3))
 		fd = open(redirct->str, O_CREAT | O_RDWR | O_APPEND, 0644);
 	else
 		fd = open(redirct->str, O_CREAT | O_RDWR | O_TRUNC, 0644);
@@ -48,18 +48,18 @@ int	setup_redirct(t_simple_cmds *process)
 	redirct = process->redirct;
 	while (redirct)
 	{
-		if (!ft_strncmp(redirct->token, "<", 1))
+		if (!ft_strncmp(redirct->token, "<", 2))
 		{
 			if (ft_infile(redirct->str))
 				return (1);
 		}
-		else if (!ft_strncmp(redirct->token, "<<", 2))
+		else if (!ft_strncmp(redirct->token, "<<", 3))
 		{
 			if (ft_infile(process->hd_file))
 				return (1);
 		}
-		else if (!ft_strncmp(redirct->token, ">", 1)
-			|| !ft_strncmp(redirct->token, ">>", 2))
+		else if (!ft_strncmp(redirct->token, ">", 2)
+			|| !ft_strncmp(redirct->token, ">>", 3))
 			if (ft_outfile(redirct))
 				return (1);
 		redirct = redirct->next;

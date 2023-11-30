@@ -115,6 +115,7 @@ int				skip_word(t_prompt *prompt, char const *str, int i);
 
 //expand_input && utils
 bool			is_expandable(const char *str);
+bool			solo_doll_sign(const char *str);
 char			*expand_input(t_prompt *prompt, char *input);
 char			*get_env(t_prompt *prompt, char *val);
 
@@ -140,6 +141,7 @@ char			*array_to_str(char **arr);
 int				ms_error(int error);
 int				export_error(char *c);
 int				error_cmd_not_found( t_simple_cmds *process);
+int				token_error(t_lexer *lexer);
 
 //signal
 void			execute_sig(int sig, void *prompt);

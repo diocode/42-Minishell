@@ -103,8 +103,11 @@ int	main(int ac, char **av, char **ev)
 		add_history(input);
 		if (input && input[0])
 			input = expand_input(prompt, input);
-		if (!input || lexer(prompt, input) || !prompt->lexer)
+		if (!input || lexer(prompt, input) || !prompt->lexer || token_error(prompt->lexer))
+		{
+			prompt = reset_prompt(prompt, av, ev);
 			continue ;
+		}
 		parser(prompt);
 		//dev_mod(prompt); /*DEV MOD*/
 		if (prompt->simple_cmds && !init_pid(prompt))

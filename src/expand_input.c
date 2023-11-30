@@ -1,24 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   replace_variables.c                                :+:      :+:    :+:   */
+/*   expand_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: diogo <diogo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 16:25:32 by digoncal          #+#    #+#             */
-/*   Updated: 2023/11/06 16:25:32 by digoncal         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                    +:+ +:+         +:+     */
-/*                                                        :::      ::::::::   */
-/*   replace_variables.c                                :+:      :+:    :+:   */
-/*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/25 15:16:19 by digoncal          #+#    #+#             */
-/*   Updated: 2023/11/04 16:57:48 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:23:27 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +62,7 @@ static char	*replace(t_prompt *prompt, char *str)
 	char	*final_str;
 
 	word = get_word(str);
-	if (!ft_strncmp(word, "?", 1))
+	if (!ft_strncmp(word, "?", 2))
 		prompt->exit_codes[prompt->flg[2]++] = 1;
 	var = get_env(prompt, get_word(str));
 	if (!var)
@@ -96,7 +84,7 @@ static void	expand_word(t_prompt *prompt, char **word)
 	j = -1;
 	while ((*word)[++j])
 	{
-		if ((*word)[j] == '$' && is_expandable(*word))
+		if ((*word)[j] == '$' && is_expandable(*word) && !solo_doll_sign(*word))
 		{
 			tmp = replace(prompt, *word);
 			if (tmp)

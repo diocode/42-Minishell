@@ -85,7 +85,7 @@ char	*str_expander(t_prompt *prompt, char *str)
 	char	*tmp;
 
 	tmp = NULL;
-	if (str[dol_sign(str) - 2] != '\'' && dol_sign(str) != 0
+	if (str && str[dol_sign(str) - 2] != '\'' && dol_sign(str) != 0
 		&& str[dol_sign(str)] != '\0')
 	{
 		tmp = expand(prompt, str);

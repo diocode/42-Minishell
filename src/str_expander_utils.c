@@ -47,7 +47,7 @@ int	equal_sign(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i])
+	while (str && str[i])
 	{
 		if (str[i] == '=')
 			return (i + 1);
@@ -61,7 +61,7 @@ int	dol_sign(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i])
+	while (str && str[i])
 	{
 		if (str[i] == '$')
 			return (i + 1);

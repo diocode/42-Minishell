@@ -90,7 +90,7 @@ int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 		prompt->heredoc->error_num += g_status;
 		exit(g_status);
 	}
-	else if (!ft_strncmp(process->str[0], "$?", 2))
+	else if (!ft_strncmp(process->str[0], "$?", 3))
 	{
 		if (prompt->exit_codes[current_exit_status(prompt)] == 1)
 			g_status = if_question_mark();

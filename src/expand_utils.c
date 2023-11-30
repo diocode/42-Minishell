@@ -41,6 +41,25 @@ char	*get_env(t_prompt *prompt, char *val)
 	return (NULL);
 }
 
+bool	solo_doll_sign(const char *str)
+{
+	int	i;
+	int	doll;
+
+	doll = 0;
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '$')
+			doll++;
+		if (str[i] != '\'' && str[i] != '\"' && str[i] != '$')
+			return (false);
+	}
+	if (doll > 1)
+		return (false);
+	return (true);
+}
+
 bool	is_expandable(const char *str)
 {
 	bool	in_double_quotes;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: diogo <diogo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 11:36:31 by digoncal          #+#    #+#             */
-/*   Updated: 2023/11/08 11:36:31 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:38:37 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,28 @@ int	export_error(char *c)
 	return (EXIT_FAILURE);
 }
 
+int	token_error(t_lexer *lexer)
+{
+	while (lexer)
+	{
+		if (lexer->token
+			&& (!lexer->next || (lexer->next && !lexer->next->str)))
+		{
+			g_status = 2;
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
+			if (!lexer->next)
+				ft_putstr_fd("newline", STDERR_FILENO);
+			else
+				ft_putstr_fd(lexer->next->token, STDERR_FILENO);
+			ft_putstr_fd("'\n", STDERR_FILENO);
+			return (1);
+		}
+		lexer = lexer->next;
+	}
+	return (0);
+}
+
 int	ms_error(int error)
 {
 	g_status = error;
@@ -68,6 +90,6 @@ int	ms_error(int error)
 	else if (error == 7)
 		ft_putstr_fd("infile: No such file or directory\n", STDERR_FILENO);
 	else if (error == 8)
-		ft_putendl_fd("Path does not exist", STDERR_FILENO);
+		ft_putendl_fd("Path does not exist\n", STDERR_FILENO);
 	return (1);
 }
