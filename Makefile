@@ -19,7 +19,7 @@ NAME = minishell
 SRC = src/main.c src/utils_1.c src/free.c src/lexer.c src/signals.c src/init.c \
 	src/env.c src/ms_lists.c src/parser.c src/lexer_utils.c src/parser_utils.c \
 	src/execute.c src/expand_input.c src/expand_utils.c src/str_utils.c \
-	src/builtins/ms_echo.c src/builtins/ms_cd.c src/errors.c\
+	src/builtins/ms_echo.c src/builtins/ms_cd.c src/errors.c src/lexer_append.c\
 	src/heredoc.c src/str_expander.c src/str_expander_utils.c src/cmds.c \
 	src/redircts.c src/builtins/ms_env.c src/builtins/ms_unset.c \
 	src/builtins/ms_export.c src/builtins/ms_exit.c src/utils_2.c

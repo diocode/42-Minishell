@@ -66,7 +66,7 @@ static char	*gen_hd_filename(void)
 	char		*file_name;
 
 	num = ft_itoa(i++);
-	file_name = ft_strjoin("build/.tmp_heredoc_file_", num);
+	file_name = ft_strjoin(".tmp_file", num);
 	free(num);
 	return (file_name);
 }
@@ -78,7 +78,7 @@ int	send_heredoc(t_prompt *prompt, t_simple_cmds *process)
 	redirct = process->redirct;
 	while (redirct)
 	{
-		if (!ft_strncmp(redirct->token, "<<", 2))
+		if (!ft_strncmp(redirct->token, "<<", 3))
 		{
 			if (process->hd_file)
 				free(process->hd_file);
@@ -102,11 +102,11 @@ t_simple_cmds	*single_cmd_heredoc(t_prompt *prompt, t_simple_cmds *p)
 	redirct = p->redirct;
 	while (p->redirct)
 	{
-		if (ft_strncmp(p->redirct->token, "<<", 2))
+		if (ft_strncmp(p->redirct->token, "<<", 3))
 			p->redirct->str = str_expander(prompt, p->redirct->str);
 		if (redirct->next == NULL)
 			break ;
-		redirct = redirct->next;
+		p->redirct = p->redirct->next;
 	}
 	p->redirct = redirct;
 	return (p);

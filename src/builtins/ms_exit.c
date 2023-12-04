@@ -39,12 +39,13 @@ int	ms_exit(t_prompt *prompt, t_simple_cmds *simple_cmd)
 {
 	char	**str;
 
-	ft_putendl_fd("exit", STDERR_FILENO);
 	if (!simple_cmd)
 	{
 		free_data(prompt);
 		exit(g_status);
 	}
+	if (!simple_cmd->prev)
+		ft_putendl_fd("exit", STDOUT_FILENO);
 	if (simple_cmd->str[1] && simple_cmd->str[2])
 	{
 		if (is_digit(simple_cmd->str[1]))
