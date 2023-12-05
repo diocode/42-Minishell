@@ -74,7 +74,6 @@ static t_prompt	*init_vars(t_prompt *prompt, char **av, char *value)
 	return (prompt);
 }
 
-/*Init prompt struct and setup env: PID - PWD - SHLVL - PATH - EXECUTABLE("_")*/
 t_prompt	*init_prompt(char **av, char **ev)
 {
 	t_prompt	*prompt;

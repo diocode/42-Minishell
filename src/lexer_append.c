@@ -14,15 +14,14 @@
 
 extern int	g_status;
 
-int	append_identifier(t_prompt *prompt, char **str)
+int	append_identifier(t_prompt *prompt, char **str, size_t	i)
 {
 	char	*tmp;
 	char	*value;
-	size_t	i;
 
-	i = -1;
 	tmp = *str;
-	while (tmp[++i] && !is_separator(tmp + i) && (tmp[i] != '$' || (tmp[i] == '$' && tmp[i + 1] == '?')))
+	while (tmp[++i] && !is_separator(tmp + i) && (tmp[i] != '$'
+			|| (tmp[i] == '$' && tmp[i + 1] == '?')))
 	{
 		if (is_quote(tmp[i]))
 		{
@@ -55,53 +54,62 @@ int	append_separator(t_prompt *prompt, char *token, char **line)
 	return (0);
 }
 
-int	append_doll_sign(t_prompt *prompt, char **str)
+static int	add_node(t_prompt *prompt, char *str, int index)
 {
-	char	*tmp1;
-	char	*tmp2;
+	if (!prompt->lexer)
+		prompt->lexer = ms_lstnew(str, 'w');
+	else
+		ms_lstadd(prompt->lexer, ms_lstnew(str, 'w'));
+	return (index);
+}
+
+static int	handle_word(t_prompt *prompt, char **str, char *input, char *env)
+{
 	char	*value;
 	size_t	i;
 
-	tmp1 = *str;
-	if (ft_isdigit(tmp1[1]))
-	{
-		*str += 2;
-		return (0);
-	}
-	if (tmp1[1] == '?')
-	{
-		if (!prompt->lexer)
-			prompt->lexer = ms_lstnew(ft_itoa(g_status), 'w');
-		else
-			ms_lstadd(prompt->lexer, ms_lstnew(ft_itoa(g_status), 'w'));
-		*str += 2;
-		return (0);
-	}
 	i = 1;
-	while (tmp1[i] && tmp1[i] != '$')
+	while (input[i] && input[i] != '$')
 	{
-		if (is_quote(tmp1[i]))
+		if (is_quote(input[i]))
 		{
-			if (!skip_quotes(tmp1, &i))
-				return (quotes_error(tmp1[i]), 1);
+			if (!skip_quotes(input, &i))
+				return (quotes_error(input[i]), 1);
 		}
 		i++;
 	}
-	value = ft_substr(tmp1, 1, i - 1);
+	value = ft_substr(input, 1, i - 1);
 	if (!value)
 		return (1);
-	tmp2 = ms_getenv(value, prompt->env);
-	if (!tmp2)
-	{
-		*str += i;
-		return (0);
-	}
-	if (!prompt->lexer)
-		prompt->lexer = ms_lstnew(tmp2, 'w');
-	else
-		ms_lstadd(prompt->lexer, ms_lstnew(tmp2, 'w'));
-	*str += i;
+	env = ms_getenv(value, prompt->env);
+	if (!env)
+		return (*str += i, 0);
+	*str += add_node(prompt, env, i);
 	free(value);
-	free(tmp2);
+	free(env);
+	return (0);
+}
+
+int	append_doll_sign(t_prompt *prompt, char **str)
+{
+	char	*input;
+	char	*env;
+
+	env = NULL;
+	input = *str;
+	if (!ft_strncmp(input, "$", 2) && ft_strlen(input) == 1)
+		*str += add_node(prompt, input, 1);
+	else if (!ft_strncmp(input, "$$", 3) && ft_strlen(input) == 2)
+	{
+		env = ms_getenv("SYSTEMD_EXEC_PID", prompt->env);
+		*str += add_node(prompt, env, 1);
+		free(env);
+	}
+	else if (ft_isdigit(input[1]))
+		*str += 2;
+	else if (input[1] == '?')
+		*str += add_node(prompt, ft_itoa(g_status), 2);
+	else
+		return (handle_word(prompt, str, input, env));
 	return (0);
 }

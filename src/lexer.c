@@ -42,10 +42,10 @@ static int	handle_tokenize(t_prompt *prompt, char *str)
 		else if (!ft_strncmp(str, "<", 1) || !ft_strncmp(str, ">", 1)
 			|| !ft_strncmp(str, "|", 1))
 			error = handle_separator(prompt, &str);
-		else if (!ft_strncmp(str, "$", 1) && ft_strncmp(str, "$?", 2))
+		else if (!ft_strncmp(str, "$", 1))
 			error = append_doll_sign(prompt, &str);
 		else
-			error = append_identifier(prompt, &str);
+			error = append_identifier(prompt, &str, -1);
 	}
 	return (0);
 }

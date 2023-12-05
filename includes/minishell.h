@@ -86,7 +86,7 @@ bool			skip_quotes(char *line, size_t *i);
 void			remove_quotes(char *str);
 
 //lexer_append
-int				append_identifier(t_prompt *prompt, char **str);
+int				append_identifier(t_prompt *prompt, char **str, size_t	i);
 int				append_separator(t_prompt *prompt, char *token, char **line);
 int				append_doll_sign(t_prompt *prompt, char **str);
 
