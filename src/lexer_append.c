@@ -27,6 +27,7 @@ int	append_identifier(t_prompt *prompt, char **str, size_t	i)
 		{
 			if (!skip_quotes(tmp, &i))
 				return (quotes_error(tmp[i]), 1);
+			break ;
 		}
 	}
 	value = ft_substr(tmp, 0, i);
@@ -54,16 +55,20 @@ int	append_separator(t_prompt *prompt, char *token, char **line)
 	return (0);
 }
 
-static int	add_node(t_prompt *prompt, char *str, int index)
+static int	add_node(t_prompt *prompt, char *str, int index, int len)
 {
+	char	*tmp;
+
+	tmp = ft_substr(str, 0, len);
 	if (!prompt->lexer)
-		prompt->lexer = ms_lstnew(str, 'w');
+		prompt->lexer = ms_lstnew(tmp, 'w');
 	else
-		ms_lstadd(prompt->lexer, ms_lstnew(str, 'w'));
+		ms_lstadd(prompt->lexer, ms_lstnew(tmp, 'w'));
+	free(tmp);
 	return (index);
 }
 
-static int	handle_word(t_prompt *prompt, char **str, char *input, char *env)
+static int	handle_word(t_prompt *prompt, char **str, char *input, char *val)
 {
 	char	*value;
 	size_t	i;
@@ -81,35 +86,39 @@ static int	handle_word(t_prompt *prompt, char **str, char *input, char *env)
 	value = ft_substr(input, 1, i - 1);
 	if (!value)
 		return (1);
-	env = ms_getenv(value, prompt->env);
-	if (!env)
+	val = ms_getenv(value, prompt->env);
+	if (!val)
 		return (*str += i, 0);
-	*str += add_node(prompt, env, i);
+	*str += add_node(prompt, val, i, ft_strlen(val) - 1);
 	free(value);
-	free(env);
+	free(val);
 	return (0);
 }
 
 int	append_doll_sign(t_prompt *prompt, char **str)
 {
 	char	*input;
-	char	*env;
+	char	*val;
 
-	env = NULL;
+	val = NULL;
 	input = *str;
-	if (!ft_strncmp(input, "$", 2) && ft_strlen(input) == 1)
-		*str += add_node(prompt, input, 1);
-	else if (!ft_strncmp(input, "$$", 3) && ft_strlen(input) == 2)
+	if (is_whitespace(input[1]))
+		*str += add_node(prompt, input, 1, 1);
+	else if (!ft_strncmp(input, "$$", 2))
 	{
-		env = ms_getenv("SYSTEMD_EXEC_PID", prompt->env);
-		*str += add_node(prompt, env, 1);
-		free(env);
+		val = ms_getenv("SYSTEMD_EXEC_PID", prompt->env);
+		*str += add_node(prompt, val, 2, ft_strlen(val));
+		free(val);
 	}
 	else if (ft_isdigit(input[1]))
 		*str += 2;
 	else if (input[1] == '?')
-		*str += add_node(prompt, ft_itoa(g_status), 2);
+	{
+		val = ft_itoa(g_status);
+		*str += add_node(prompt, val, 2, ft_strlen(val));
+		free(val);
+	}
 	else
-		return (handle_word(prompt, str, input, env));
+		return (handle_word(prompt, str, input, val));
 	return (0);
 }

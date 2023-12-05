@@ -42,6 +42,7 @@ clean:
 fclean: clean
 	$(MAKE) $@ -C ./libs/libft
 	@rm -rf $(NAME)
+	@rm -rf .tmp_file*
 
 re: fclean all
 	$(MAKE) re -C ./libs/libft
