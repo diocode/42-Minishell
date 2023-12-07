@@ -84,7 +84,7 @@ int	ms_export(t_prompt *prompt, t_simple_cmds *simple_cmds)
 	int		i;
 
 	i = 1;
-	if (!simple_cmds->str[1] || simple_cmds->str[1][0] == '\0')
+	if (!simple_cmds->str[1])
 		ms_env(prompt, 1);
 	else
 	{

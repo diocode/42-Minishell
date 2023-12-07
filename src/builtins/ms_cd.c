@@ -79,6 +79,11 @@ int	ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds)
 		if (decree == 0)
 			ms_cd_utils(prompt);
 	}
+	else if (simple_cmds->str[2])
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
+		return (1);
+	}
 	else
 	{
 		decree = chdir(simple_cmds->str[1]);

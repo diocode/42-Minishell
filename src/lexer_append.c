@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:49:19 by digoncal          #+#    #+#             */
-/*   Updated: 2023/11/30 19:41:26 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/12/07 13:28:06 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	handle_word(t_prompt *prompt, char **str, char *input, char *val)
 	size_t	i;
 
 	i = 1;
-	while (input[i] && input[i] != '$')
+	while (input[i] && input[i] != '$' && (input[i] >= 'A' && input[i] <= 'Z'))
 	{
 		if (is_quote(input[i]))
 		{
@@ -83,13 +83,13 @@ static int	handle_word(t_prompt *prompt, char **str, char *input, char *val)
 		}
 		i++;
 	}
-	value = ft_substr(input, 1, i - 1);
+	value = ft_substr(input, 1, i);
 	if (!value)
 		return (1);
 	val = ms_getenv(value, prompt->env);
 	if (!val)
 		return (*str += i, 0);
-	*str += add_node(prompt, val, i, ft_strlen(val) - 1);
+	*str += add_node(prompt, val, i, ft_strlen(val));
 	free(value);
 	free(val);
 	return (0);
@@ -102,7 +102,7 @@ int	append_doll_sign(t_prompt *prompt, char **str)
 
 	val = NULL;
 	input = *str;
-	if (is_whitespace(input[1]))
+	if (is_whitespace(input[1]) || !ft_strncmp(input, "$", 2))
 		*str += add_node(prompt, input, 1, 1);
 	else if (!ft_strncmp(input, "$$", 2))
 	{

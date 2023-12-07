@@ -64,6 +64,8 @@ typedef struct s_prompt
 	int				flg[3];
 	bool			reset;
 	bool			interact;
+	bool			redict_flg;
+	bool			merge;
 }	t_prompt;
 
 /*---------- FUNCTIONS ----------*/
@@ -156,6 +158,7 @@ void			set_sign(void);
 t_lexer			*ms_lstnew(char *content, char type);
 t_lexer			*ms_lstlast(t_lexer *lst);
 void			ms_lstadd(t_lexer *lst, t_lexer *new);
+void			merge_nodes(t_prompt *prompt);
 
 //free
 t_prompt		*reset_prompt(t_prompt *prompt, char **av, char **ev);

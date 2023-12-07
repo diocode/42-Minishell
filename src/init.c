@@ -92,6 +92,8 @@ t_prompt	*init_prompt(char **av, char **ev)
 	prompt->heredoc->status = false;
 	prompt->reset = false;
 	prompt->interact = false;
+	prompt->redict_flg = false;
+	prompt->merge = false;
 	prompt->pid = NULL;
 	prompt->exit_codes = NULL;
 	prompt->env = dup_arr(ev);

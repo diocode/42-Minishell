@@ -42,12 +42,10 @@ int	check_param(char *str)
 	int	i;
 
 	i = 0;
-	if (ft_isdigit(str[0]))
+	if (!str[0] || ft_isdigit(str[0]) || str[0] == '=')
 		return (export_error(str));
 	if (!ft_strncmp(str, "_", 2))
 		return (EXIT_FAILURE);
-	if (str[0] == '=')
-		return (export_error(str));
 	while (str[i] && str[i] != '=')
 	{
 		if (is_identifier(str[i]))

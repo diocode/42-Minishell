@@ -114,7 +114,10 @@ char	*expand_input(t_prompt *prompt, char *input)
 	i = 0;
 	while (arr[i])
 	{
-		expand_word(prompt, &arr[i]);
+		if (!ft_strncmp(arr[i], "<<", 3))
+			i++;
+		else
+			expand_word(prompt, &arr[i]);
 		i++;
 	}
 	return (array_to_str(arr));

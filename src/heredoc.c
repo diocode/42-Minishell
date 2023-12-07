@@ -94,7 +94,7 @@ int	send_heredoc(t_prompt *prompt, t_simple_cmds *process)
 	return (0);
 }
 
-t_simple_cmds	*single_cmd_heredoc(t_prompt *prompt, t_simple_cmds *p)
+/*t_simple_cmds	*single_cmd_heredoc(t_prompt *prompt, t_simple_cmds *p)
 {
 	t_lexer	*redirct;
 
@@ -110,4 +110,4 @@ t_simple_cmds	*single_cmd_heredoc(t_prompt *prompt, t_simple_cmds *p)
 	}
 	p->redirct = redirct;
 	return (p);
-}
+}*/

@@ -15,7 +15,10 @@
 static int	handle_separator(t_prompt *prompt, char **line_ptr)
 {
 	if (!ft_strncmp(*line_ptr, "<<", 2))
+	{
+		prompt->redict_flg = true;
 		return (append_separator(prompt, "<<", line_ptr));
+	}
 	else if (!ft_strncmp(*line_ptr, ">>", 2))
 		return (append_separator(prompt, ">>", line_ptr));
 	else if (!ft_strncmp(*line_ptr, "<", 1))
@@ -39,13 +42,24 @@ static int	handle_tokenize(t_prompt *prompt, char *str)
 			return (1);
 		if (is_whitespace(*str))
 			skip_spaces(&str);
-		else if (!ft_strncmp(str, "<", 1) || !ft_strncmp(str, ">", 1)
+		if (!ft_strncmp(str, "<", 1) || !ft_strncmp(str, ">", 1)
 			|| !ft_strncmp(str, "|", 1))
 			error = handle_separator(prompt, &str);
-		else if (!ft_strncmp(str, "$", 1))
+		else if (!ft_strncmp(str, "$", 1) && !prompt->redict_flg)
 			error = append_doll_sign(prompt, &str);
 		else
+		{
 			error = append_identifier(prompt, &str, -1);
+			prompt->redict_flg = false;
+		}
+		if (prompt->merge)
+		{
+			merge_nodes(prompt);
+			prompt->merge = false;
+		}
+		//CODE NOT WORKING -> "echo $9$?I$SER$2USER$USER$SER$USER" THE FLAG IS NOT BEING TRIGGERED AT THE RIGHT TIME
+		if (*str && !is_whitespace(*str) /*&& prompt->lexer && prompt->lexer->next*/)
+			prompt->merge = true;
 	}
 	return (0);
 }

@@ -97,7 +97,7 @@ char	*str_expander(t_prompt *prompt, char *str)
 	return (str);
 }
 
-char	**single_cmd_expander(t_prompt *prompt, char **str)
+/*char	**single_cmd_expander(t_prompt *prompt, char **str)
 {
 	char	*tmp;
 	int		i;
@@ -124,4 +124,4 @@ char	**single_cmd_expander(t_prompt *prompt, char **str)
 		}
 	}
 	return (str);
-}
+}*/
