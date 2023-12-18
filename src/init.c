@@ -94,6 +94,7 @@ t_prompt	*init_prompt(char **av, char **ev)
 	prompt->interact = false;
 	prompt->redict_flg = false;
 	prompt->merge = false;
+	prompt->no_node = false;
 	prompt->pid = NULL;
 	prompt->exit_codes = NULL;
 	prompt->env = dup_arr(ev);

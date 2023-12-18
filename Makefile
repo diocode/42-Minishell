@@ -22,7 +22,8 @@ SRC = src/main.c src/utils_1.c src/free.c src/lexer.c src/signals.c src/init.c \
 	src/builtins/ms_echo.c src/builtins/ms_cd.c src/errors.c src/lexer_append.c\
 	src/heredoc.c src/str_expander.c src/str_expander_utils.c src/cmds.c \
 	src/redircts.c src/builtins/ms_env.c src/builtins/ms_unset.c \
-	src/builtins/ms_export.c src/builtins/ms_exit.c src/utils_2.c
+	src/builtins/ms_export.c src/builtins/ms_exit.c src/utils_2.c \
+	src/lexer_append_utils.c
 OBJ = $(SRC:.c=.o)
 
 LIBFT = libs/libft/libft.a
@@ -42,7 +43,6 @@ clean:
 fclean: clean
 	$(MAKE) $@ -C ./libs/libft
 	@rm -rf $(NAME)
-	@rm -rf .tmp_file*
 
 re: fclean all
 	$(MAKE) re -C ./libs/libft

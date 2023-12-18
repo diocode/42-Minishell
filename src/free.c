@@ -62,7 +62,10 @@ void	free_parser(t_simple_cmds *simple_cmds)
 		if (simple_cmds->builtin)
 			free(simple_cmds->builtin);
 		if (simple_cmds->hd_file)
+		{
+			unlink(simple_cmds->hd_file);
 			free(simple_cmds->hd_file);
+		}
 		if (simple_cmds->redirct)
 			free_lexer(simple_cmds->redirct);
 		tmp = simple_cmds;

@@ -19,6 +19,7 @@ int	append_identifier(t_prompt *prompt, char **str, size_t	i)
 	char	*tmp;
 	char	*value;
 
+	value = NULL;
 	tmp = *str;
 	while (tmp[++i] && !is_separator(tmp + i) && (tmp[i] != '$'
 			|| (tmp[i] == '$' && tmp[i + 1] == '?')))
@@ -30,15 +31,8 @@ int	append_identifier(t_prompt *prompt, char **str, size_t	i)
 			break ;
 		}
 	}
-	value = ft_substr(tmp, 0, i);
-	if (!value)
+	if (iden_util(prompt, str, value, &i))
 		return (1);
-	remove_quotes(value);
-	if (!prompt->lexer)
-		prompt->lexer = ms_lstnew(value, 'w');
-	else
-		ms_lstadd(prompt->lexer, ms_lstnew(value, 'w'));
-	*str += i;
 	free(value);
 	return (0);
 }
@@ -52,46 +46,6 @@ int	append_separator(t_prompt *prompt, char *token, char **line)
 	*line += 1;
 	if (!ft_strncmp(token, "<<", 3) || !ft_strncmp(token, ">>", 3))
 		*line += 1;
-	return (0);
-}
-
-static int	add_node(t_prompt *prompt, char *str, int index, int len)
-{
-	char	*tmp;
-
-	tmp = ft_substr(str, 0, len);
-	if (!prompt->lexer)
-		prompt->lexer = ms_lstnew(tmp, 'w');
-	else
-		ms_lstadd(prompt->lexer, ms_lstnew(tmp, 'w'));
-	free(tmp);
-	return (index);
-}
-
-static int	handle_word(t_prompt *prompt, char **str, char *input, char *val)
-{
-	char	*value;
-	size_t	i;
-
-	i = 1;
-	while (input[i] && input[i] != '$' && (input[i] >= 'A' && input[i] <= 'Z'))
-	{
-		if (is_quote(input[i]))
-		{
-			if (!skip_quotes(input, &i))
-				return (quotes_error(input[i]), 1);
-		}
-		i++;
-	}
-	value = ft_substr(input, 1, i);
-	if (!value)
-		return (1);
-	val = ms_getenv(value, prompt->env);
-	if (!val)
-		return (*str += i, 0);
-	*str += add_node(prompt, val, i, ft_strlen(val));
-	free(value);
-	free(val);
 	return (0);
 }
 
@@ -111,7 +65,7 @@ int	append_doll_sign(t_prompt *prompt, char **str)
 		free(val);
 	}
 	else if (ft_isdigit(input[1]))
-		*str += 2;
+		doll_sign_digit(prompt, str);
 	else if (input[1] == '?')
 	{
 		val = ft_itoa(g_status);

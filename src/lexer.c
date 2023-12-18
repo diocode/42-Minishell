@@ -52,14 +52,13 @@ static int	handle_tokenize(t_prompt *prompt, char *str)
 			error = append_identifier(prompt, &str, -1);
 			prompt->redict_flg = false;
 		}
-		if (prompt->merge)
-		{
+		if (prompt->merge && !prompt->no_node)
 			merge_nodes(prompt);
+		if (is_whitespace(*str))
 			prompt->merge = false;
-		}
-		//CODE NOT WORKING -> "echo $9$?I$SER$2USER$USER$SER$USER" THE FLAG IS NOT BEING TRIGGERED AT THE RIGHT TIME
-		if (*str && !is_whitespace(*str) /*&& prompt->lexer && prompt->lexer->next*/)
+		if (*str && !is_whitespace(*str) && !prompt->no_node)
 			prompt->merge = true;
+		prompt->no_node = false;
 	}
 	return (0);
 }

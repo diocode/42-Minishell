@@ -6,34 +6,34 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 11:44:34 by digoncal          #+#    #+#             */
-/*   Updated: 2023/11/08 11:44:34 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/12/18 19:03:23 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*get_env(t_prompt *prompt, char *val)
+char	*get_env(t_prompt *p, char *val)
 {
 	int	i[3];
 
 	if (!val)
 		return (NULL);
 	i[0] = -1;
-	while (prompt->env[++i[0]])
+	while (p->env[++i[0]])
 	{
-		if (!ft_strncmp(val, prompt->env[i[0]], ft_strlen(val)))
+		if (!ft_strncmp(val, p->env[i[0]], equal_sign(p->env[i[0]]) - 1))
 		{
 			free(val);
 			i[1] = 0;
-			while (prompt->env[i[0]][i[1]] != '=')
+			while (p->env[i[0]][i[1]] != '=')
 				i[1]++;
-			val = ft_calloc(ft_strlen(prompt->env[i[0]]) - i[1] + 1,
+			val = ft_calloc(ft_strlen(p->env[i[0]]) - i[1] + 1,
 					sizeof(char));
 			if (!val)
 				return (NULL);
 			i[2] = -1;
-			while (prompt->env[i[0]][i[1]])
-				val[++i[2]] = prompt->env[i[0]][++i[1]];
+			while (p->env[i[0]][i[1]])
+				val[++i[2]] = p->env[i[0]][++i[1]];
 			return (val);
 		}
 	}

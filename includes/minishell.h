@@ -66,6 +66,7 @@ typedef struct s_prompt
 	bool			interact;
 	bool			redict_flg;
 	bool			merge;
+	bool			no_node;
 }	t_prompt;
 
 /*---------- FUNCTIONS ----------*/
@@ -87,10 +88,14 @@ int				is_quote(char c);
 bool			skip_quotes(char *line, size_t *i);
 void			remove_quotes(char *str);
 
-//lexer_append
+//lexer_append && utils
 int				append_identifier(t_prompt *prompt, char **str, size_t	i);
 int				append_separator(t_prompt *prompt, char *token, char **line);
 int				append_doll_sign(t_prompt *prompt, char **str);
+int				add_node(t_prompt *prompt, char *str, int index, int len);
+int				handle_word(t_prompt *p, char **str, char *input, char *val);
+void			doll_sign_digit(t_prompt *prompt, char **str);
+int				iden_util(t_prompt *prompt, char **str, char *value, size_t *i);
 
 //parser
 void			parser(t_prompt *prompt);
@@ -123,7 +128,7 @@ int				if_question_mark(void);
 bool			is_expandable(const char *str);
 bool			solo_doll_sign(const char *str);
 char			*expand_input(t_prompt *prompt, char *input);
-char			*get_env(t_prompt *prompt, char *val);
+char			*get_env(t_prompt *p, char *val);
 
 //utils_1
 char			*delquotes(char *str, char c);

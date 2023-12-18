@@ -111,7 +111,6 @@ int	single_cmd(t_prompt *prompt, t_simple_cmds *process)
 	int		pid;
 
 	status = 0;
-	//prompt->simple_cmds = single_cmd_heredoc(prompt, process);
 	cmd = process->builtin;
 	if (cmd && (!ft_strncmp(cmd, "exit", 4) || !ft_strncmp(cmd, "cd", 2)
 			|| !ft_strncmp(cmd, "export", 6) || !ft_strncmp(cmd, "unset", 5)))

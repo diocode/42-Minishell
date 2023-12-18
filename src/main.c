@@ -14,7 +14,7 @@
 
 int	g_status;
 
-/*static void	dev_mod(t_prompt *prompt)
+static void	dev_mod(t_prompt *prompt)
 {
 	t_simple_cmds	*cmds;
 	t_lexer			*node;
@@ -59,7 +59,7 @@ int	g_status;
 	}
 	printf("\n\033[1;32m* OUTPUT *\033[0m");
 	printf("\n\033[1;32m--------------------------------------\033[0m\n");
-}*/
+}
 
 static void	end_program(char *input, t_prompt	*prompt)
 {
@@ -103,10 +103,11 @@ int	main(int ac, char **av, char **ev)
 		add_history(input);
 		if (input && input[0])
 			input = expand_input(prompt, input);
+		printf("INPUT: %s\n", input);
 		if (input && !lexer(prompt, input) && !token_error(prompt->lexer))
 		{
 			parser(prompt);
-			//dev_mod(prompt); /*DEV MOD*/
+			dev_mod(prompt); /*DEV MOD*/
 			if (prompt->simple_cmds && !init_pid(prompt))
 				execute(prompt);
 		}
