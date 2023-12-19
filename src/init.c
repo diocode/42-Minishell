@@ -81,6 +81,7 @@ static void	init_flags(t_prompt *prompt)
 	prompt->redict_flg = false;
 	prompt->merge = false;
 	prompt->no_node = false;
+	prompt->separator = false;
 	prompt->flg[0] = 0;
 	prompt->flg[1] = 0;
 	prompt->flg[2] = 0;

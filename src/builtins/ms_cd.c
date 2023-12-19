@@ -67,6 +67,20 @@ static void	ms_cd_utils(t_prompt *prompt)
 	free(tmp);
 }
 
+static int	cd_utils(t_simple_cmds *simple_cmds)
+{
+	int	decree;
+
+	decree = chdir(simple_cmds->str[1]);
+	if (decree != 0)
+	{
+		ft_putstr_fd("minishell$: ", STDERR_FILENO);
+		ft_putstr_fd(simple_cmds->str[1], STDERR_FILENO);
+		perror(" ");
+	}
+	return (decree);
+}
+
 int	ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds)
 {
 	int		decree;
@@ -85,15 +99,7 @@ int	ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds)
 		return (1);
 	}
 	else
-	{
-		decree = chdir(simple_cmds->str[1]);
-		if (decree != 0)
-		{
-			ft_putstr_fd("minishell$: ", STDERR_FILENO);
-			ft_putstr_fd(simple_cmds->str[1], STDERR_FILENO);
-			perror(" ");
-		}
-	}
+		decree = cd_utils(simple_cmds);
 	if (decree != 0)
 		return (1);
 	add_path(prompt);

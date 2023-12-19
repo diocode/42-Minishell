@@ -49,8 +49,8 @@ int	token_error(t_lexer *lexer)
 {
 	while (lexer)
 	{
-		if (lexer->token
-			&& (!lexer->next || (lexer->next && !lexer->next->str)))
+		if (lexer->token && (!lexer->next
+				|| (lexer->next && !lexer->next->str)))
 		{
 			g_status = 2;
 			ft_putstr_fd("minishell: ", STDERR_FILENO);

@@ -67,6 +67,7 @@ typedef struct s_prompt
 	bool			redict_flg;
 	bool			merge;
 	bool			no_node;
+	bool			separator;
 }	t_prompt;
 
 /*---------- FUNCTIONS ----------*/

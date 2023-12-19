@@ -14,6 +14,7 @@
 
 static int	handle_separator(t_prompt *prompt, char **line_ptr)
 {
+	prompt->separator = true;
 	if (!ft_strncmp(*line_ptr, "<<", 2))
 	{
 		prompt->redict_flg = true;
@@ -29,6 +30,19 @@ static int	handle_separator(t_prompt *prompt, char **line_ptr)
 		return (append_separator(prompt, "|", line_ptr));
 	else
 		return (1);
+}
+
+static void	check_flags(t_prompt *prompt, const char *str)
+{
+	if (prompt->merge && !prompt->no_node)
+		merge_nodes(prompt);
+	if (is_whitespace(*str))
+		prompt->merge = false;
+	if (*str && !is_whitespace(*str)
+		&& !prompt->no_node && !prompt->separator)
+		prompt->merge = true;
+	prompt->no_node = false;
+	prompt->separator = false;
 }
 
 static int	handle_tokenize(t_prompt *prompt, char *str)
@@ -52,13 +66,7 @@ static int	handle_tokenize(t_prompt *prompt, char *str)
 			error = append_identifier(prompt, &str, -1);
 			prompt->redict_flg = false;
 		}
-		if (prompt->merge && !prompt->no_node)
-			merge_nodes(prompt);
-		if (is_whitespace(*str))
-			prompt->merge = false;
-		if (*str && !is_whitespace(*str) && !prompt->no_node)
-			prompt->merge = true;
-		prompt->no_node = false;
+		check_flags(prompt, str);
 	}
 	return (0);
 }
