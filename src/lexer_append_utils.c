@@ -61,7 +61,8 @@ int	handle_word(t_prompt *p, char **str, char *input, char *val)
 	size_t	i;
 
 	i = 1;
-	while (input[i] && input[i] != '$' && (input[i] >= 'A' && input[i] <= 'Z'))
+	while (input[i] && input[i] != '$' && ((input[i] >= 'A' && input[i] <= 'Z')
+			|| (input[i] >= 'a' && input[i] <= 'z')))
 	{
 		if (is_quote(input[i]))
 		{
@@ -73,7 +74,8 @@ int	handle_word(t_prompt *p, char **str, char *input, char *val)
 		}
 		i++;
 	}
-	value = ft_substr(input, 1, i);
+	value = ft_substr(input, 1, i - 1);
+	printf("VALUE: %s\n", value);
 	if (!value)
 	{
 		p->no_node = true;
@@ -82,14 +84,14 @@ int	handle_word(t_prompt *p, char **str, char *input, char *val)
 	val = ms_getenv(value, p->env);
 	if (!val)
 	{
-		if (p->merge)
-		{
+		/*if (p->merge)
+		{*/
 			p->no_node = true;
 			return (*str += i, 0);
-		}
-		*str += add_node(p, input, ft_strlen(input), ft_strlen(input));
+		/*}*/
+		/**str += add_node(p, input, ft_strlen(input), ft_strlen(input));
 		free(value);
-		return (0);
+		return (0);*/
 	}
 	*str += add_node(p, val, (int)i, ft_strlen(val));
 	free(value);

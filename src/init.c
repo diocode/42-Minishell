@@ -74,6 +74,18 @@ static t_prompt	*init_vars(t_prompt *prompt, char **av, char *value)
 	return (prompt);
 }
 
+static void	init_flags(t_prompt *prompt)
+{
+	prompt->reset = false;
+	prompt->interact = false;
+	prompt->redict_flg = false;
+	prompt->merge = false;
+	prompt->no_node = false;
+	prompt->flg[0] = 0;
+	prompt->flg[1] = 0;
+	prompt->flg[2] = 0;
+}
+
 t_prompt	*init_prompt(char **av, char **ev)
 {
 	t_prompt	*prompt;
@@ -90,18 +102,11 @@ t_prompt	*init_prompt(char **av, char **ev)
 		return (NULL);
 	prompt->heredoc->error_num = 0;
 	prompt->heredoc->status = false;
-	prompt->reset = false;
-	prompt->interact = false;
-	prompt->redict_flg = false;
-	prompt->merge = false;
-	prompt->no_node = false;
+	init_flags(prompt);
 	prompt->pid = NULL;
 	prompt->exit_codes = NULL;
-	prompt->env = dup_arr(ev);
 	prompt->input = NULL;
+	prompt->env = dup_arr(ev);
 	prompt = init_vars(prompt, av, path);
-	prompt->flg[0] = 0;
-	prompt->flg[1] = 0;
-	prompt->flg[2] = 0;
 	return (prompt);
 }

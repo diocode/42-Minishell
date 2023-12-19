@@ -14,14 +14,20 @@
 
 char	*get_env(t_prompt *p, char *val)
 {
-	int	i[3];
+	int		i[3];
+	char	*var;
+	int		len;
 
 	if (!val)
 		return (NULL);
 	i[0] = -1;
 	while (p->env[++i[0]])
 	{
-		if (!ft_strncmp(val, p->env[i[0]], equal_sign(p->env[i[0]]) - 1))
+		var = ft_substr(p->env[i[0]], 0, equal_sign(p->env[i[0]]) - 1);
+		len = ft_strlen(val);
+		if (len < ft_strlen(var))
+			len = ft_strlen(var);
+		if (!ft_strncmp(val, var, len))
 		{
 			free(val);
 			i[1] = 0;
@@ -38,6 +44,7 @@ char	*get_env(t_prompt *p, char *val)
 		}
 	}
 	free(val);
+	free(var);
 	return (NULL);
 }
 
