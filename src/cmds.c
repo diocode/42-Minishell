@@ -103,7 +103,6 @@ int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 	exit (g_status);
 }
 
-//Handle single cmds that cannot be run in a child process
 int	single_cmd(t_prompt *prompt, t_simple_cmds *process)
 {
 	char	*cmd;
@@ -112,8 +111,8 @@ int	single_cmd(t_prompt *prompt, t_simple_cmds *process)
 
 	status = 0;
 	cmd = process->builtin;
-	if (cmd && (!ft_strncmp(cmd, "exit", 4) || !ft_strncmp(cmd, "cd", 2)
-			|| !ft_strncmp(cmd, "export", 6) || !ft_strncmp(cmd, "unset", 5)))
+	if (cmd && (!ft_strncmp(cmd, "exit", 5) || !ft_strncmp(cmd, "cd", 3)
+			|| !ft_strncmp(cmd, "export", 7) || !ft_strncmp(cmd, "unset", 6)))
 	{
 		prompt->heredoc->error_num += builtin(prompt, prompt->simple_cmds);
 		g_status = prompt->heredoc->error_num;

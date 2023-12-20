@@ -82,7 +82,10 @@ static void	wait_pipe(t_prompt *prompt, int *pid)
 		waitpid(pid[i], &status, 0);
 	waitpid(pid[i], &status, 0);
 	if (WIFEXITED(status))
+	{
 		prompt->heredoc->error_num += WEXITSTATUS(status);
+		g_status = WEXITSTATUS(status);
+	}
 }
 
 int	execute(t_prompt *prompt)
