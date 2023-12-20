@@ -90,13 +90,12 @@ bool			skip_quotes(char *line, size_t *i);
 void			remove_quotes(char *str);
 
 //lexer_append && utils
-int				append_identifier(t_prompt *prompt, char **str, size_t	i);
+int				append_identifier(t_prompt *prompt, char **str);
 int				append_separator(t_prompt *prompt, char *token, char **line);
 int				append_doll_sign(t_prompt *prompt, char **str);
 int				add_node(t_prompt *prompt, char *str, int index, int len);
 int				handle_word(t_prompt *p, char **str, char *input, char *val);
 void			doll_sign_digit(t_prompt *prompt, char **str);
-int				iden_util(t_prompt *prompt, char **str, char *value, size_t *i);
 
 //parser
 void			parser(t_prompt *prompt);

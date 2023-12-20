@@ -6,7 +6,7 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:49:19 by digoncal          #+#    #+#             */
-/*   Updated: 2023/12/07 13:28:06 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/12/20 13:20:40 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,50 @@
 
 extern int	g_status;
 
-int	append_identifier(t_prompt *prompt, char **str, size_t	i)
+static char	*iden_redict(char *str)
+{
+	char	*value;
+	int		i;
+
+	i = -1;
+	while (str[++i])
+		if (is_whitespace(str[i]))
+			break ;
+	value = ft_substr(str, 0, i);
+	return (value);
+}
+
+static int	iden_util(t_prompt *prompt, char **str, char *value, size_t	*i)
+{
+	if (prompt->redict_flg)
+	{
+		value = iden_redict(*str);
+		*i = ft_strlen(value);
+	}
+	else
+	{
+		value = ft_substr(*str, 0, *i);
+		if (!value)
+			return (1);
+	}
+	remove_quotes(value);
+	if (!prompt->lexer)
+		prompt->lexer = ms_lstnew(value, 'w');
+	else
+		ms_lstadd(prompt->lexer, ms_lstnew(value, 'w'));
+	*str += *i;
+	return (0);
+}
+
+int	append_identifier(t_prompt *prompt, char **str)
 {
 	char	*tmp;
 	char	*value;
+	size_t	i;
 
 	value = NULL;
 	tmp = *str;
+	i = -1;
 	while (tmp[++i] && !is_separator(tmp + i) && (tmp[i] != '$'
 			|| (tmp[i] == '$' && tmp[i + 1] == '?')))
 	{

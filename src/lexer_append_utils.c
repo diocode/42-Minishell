@@ -6,35 +6,13 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 17:54:15 by digoncal          #+#    #+#             */
-/*   Updated: 2023/12/18 17:54:15 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/12/19 18:26:50 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 extern int	g_status;
-
-int	iden_util(t_prompt *prompt, char **str, char *value, size_t	*i)
-{
-	if (prompt->redict_flg)
-	{
-		value = ft_strdup(*str);
-		*i = ft_strlen(*str);
-	}
-	else
-	{
-		value = ft_substr(*str, 0, *i);
-		if (!value)
-			return (1);
-	}
-	remove_quotes(value);
-	if (!prompt->lexer)
-		prompt->lexer = ms_lstnew(value, 'w');
-	else
-		ms_lstadd(prompt->lexer, ms_lstnew(value, 'w'));
-	*str += *i;
-	return (0);
-}
 
 void	doll_sign_digit(t_prompt *prompt, char **str)
 {

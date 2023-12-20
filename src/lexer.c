@@ -63,7 +63,7 @@ static int	handle_tokenize(t_prompt *prompt, char *str)
 			error = append_doll_sign(prompt, &str);
 		else
 		{
-			error = append_identifier(prompt, &str, -1);
+			error = append_identifier(prompt, &str);
 			prompt->redict_flg = false;
 		}
 		check_flags(prompt, str);
