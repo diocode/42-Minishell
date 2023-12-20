@@ -6,45 +6,60 @@
 /*   By: digoncal <digoncal@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 11:44:34 by digoncal          #+#    #+#             */
-/*   Updated: 2023/12/18 19:03:23 by digoncal         ###   ########.fr       */
+/*   Updated: 2023/12/20 13:44:07 by digoncal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+static char	*extract_env_value(char *env_entry)
+{
+	int		i;
+	int		j;
+	char	*value;
+
+	i = 0;
+	while (env_entry[i] && env_entry[i] != '=')
+		i++;
+	value = ft_calloc(ft_strlen(env_entry) - i, sizeof(char));
+	if (!value)
+		return (NULL);
+	j = 0;
+	i = 0;
+	while (env_entry[i] && env_entry[i] != '=')
+		i++;
+	i++;
+	while (env_entry[i])
+		value[j++] = env_entry[i++];
+	return (value);
+}
+
 char	*get_env(t_prompt *p, char *val)
 {
-	int		i[3];
 	char	*var;
+	char	*value;
+	int		i;
 	int		len;
 
 	if (!val)
 		return (NULL);
-	i[0] = -1;
-	while (p->env[++i[0]])
+	i = -1;
+	while (p->env[++i])
 	{
-		var = ft_substr(p->env[i[0]], 0, equal_sign(p->env[i[0]]) - 1);
+		var = ft_substr(p->env[i], 0, equal_sign(p->env[i]) - 1);
 		len = ft_strlen(val);
 		if (len < ft_strlen(var))
 			len = ft_strlen(var);
 		if (!ft_strncmp(val, var, len))
 		{
 			free(val);
-			i[1] = 0;
-			while (p->env[i[0]][i[1]] != '=')
-				i[1]++;
-			val = ft_calloc(ft_strlen(p->env[i[0]]) - i[1] + 1,
-					sizeof(char));
-			if (!val)
-				return (NULL);
-			i[2] = -1;
-			while (p->env[i[0]][i[1]])
-				val[++i[2]] = p->env[i[0]][++i[1]];
-			return (val);
+			value = extract_env_value(p->env[i]);
+			free(var);
+			return (value);
 		}
+		free(var);
 	}
 	free(val);
-	free(var);
 	return (NULL);
 }
 
