@@ -47,7 +47,7 @@ t_simple_cmds	*init_simple_cmds(void)
 	return (cmds);
 }
 
-static t_prompt	*init_vars(t_prompt *prompt, char **av, char *value)
+void	init_vars(t_prompt *prompt, char **av, char *value)
 {
 	char	*n;
 
@@ -71,10 +71,9 @@ static t_prompt	*init_vars(t_prompt *prompt, char **av, char *value)
 	if (value)
 		prompt->env = ms_setenv("_", av[0], prompt->env);
 	free(value);
-	return (prompt);
 }
 
-static void	init_flags(t_prompt *prompt)
+void	init_flags(t_prompt *prompt)
 {
 	prompt->reset = false;
 	prompt->interact = false;
@@ -106,8 +105,7 @@ t_prompt	*init_prompt(char **av, char **ev)
 	init_flags(prompt);
 	prompt->pid = NULL;
 	prompt->exit_codes = NULL;
-	prompt->input = NULL;
 	prompt->env = dup_arr(ev);
-	prompt = init_vars(prompt, av, path);
+	init_vars(prompt, av, path);
 	return (prompt);
 }

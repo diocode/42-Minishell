@@ -89,6 +89,8 @@ void	parser(t_prompt *prompt)
 	int			pipes;
 
 	lexer = prompt->lexer;
+	if (!prompt->simple_cmds)
+		prompt->simple_cmds = init_simple_cmds();
 	pipes = 0;
 	while (lexer)
 	{

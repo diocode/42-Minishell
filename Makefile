@@ -23,7 +23,7 @@ SRC = src/main.c src/utils_1.c src/free.c src/lexer.c src/signals.c src/init.c \
 	src/heredoc.c src/str_expander.c src/str_expander_utils.c src/cmds.c \
 	src/redircts.c src/builtins/ms_env.c src/builtins/ms_unset.c \
 	src/builtins/ms_export.c src/builtins/ms_exit.c src/utils_2.c \
-	src/lexer_append_utils.c src/merge_nodes.c
+	src/lexer_append_utils.c src/merge_nodes.c src/reset_prompt.c
 OBJ = $(SRC:.c=.o)
 
 LIBFT = libs/libft/libft.a

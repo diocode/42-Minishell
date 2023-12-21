@@ -44,6 +44,12 @@ static int	setup_heredoc(t_prompt *prompt, t_lexer *redirct, char *hd_file)
 	bool	quotes;
 	int		flg;
 
+	if (!prompt->heredoc)
+	{
+		prompt->heredoc = malloc(sizeof(t_heredoc));
+		prompt->heredoc->error_num = 0;
+		prompt->heredoc->status = false;
+	}
 	flg = 0;
 	if ((redirct->str[0] == '\"'
 			&& redirct->str[ft_strlen(redirct->str) - 1] == '\"')
@@ -93,21 +99,3 @@ int	send_heredoc(t_prompt *prompt, t_simple_cmds *process)
 	}
 	return (0);
 }
-
-/*t_simple_cmds	*single_cmd_heredoc(t_prompt *prompt, t_simple_cmds *p)
-{
-	t_lexer	*redirct;
-
-	p->str = single_cmd_expander(prompt, p->str);
-	redirct = p->redirct;
-	while (p->redirct)
-	{
-		if (ft_strncmp(p->redirct->token, "<<", 3))
-			p->redirct->str = str_expander(prompt, p->redirct->str);
-		if (redirct->next == NULL)
-			break ;
-		p->redirct = p->redirct->next;
-	}
-	p->redirct = redirct;
-	return (p);
-}*/

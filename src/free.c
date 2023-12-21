@@ -12,25 +12,6 @@
 
 #include "../includes/minishell.h"
 
-t_prompt	*reset_prompt(t_prompt *prompt, char **av, char **ev)
-{
-	t_prompt	*reset;
-	char		**old_env;
-
-	old_env = dup_arr(prompt->env);
-	free_data(prompt);
-	reset = init_prompt(av, ev);
-	reset->reset = true;
-	if (reset->env)
-	{
-		free_array(reset->env);
-		reset->env = old_env;
-	}
-	else
-		free_array(old_env);
-	return (reset);
-}
-
 void	free_lexer(t_lexer *lst)
 {
 	t_lexer	*tmp;
@@ -101,8 +82,6 @@ void	free_data(t_prompt *prompt)
 		free(prompt->heredoc);
 	if (prompt->env)
 		free_array(prompt->env);
-	if (prompt->input)
-		free(prompt->input);
 	if (prompt->pid)
 		free(prompt->pid);
 	if (prompt->exit_codes)

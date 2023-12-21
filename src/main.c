@@ -61,14 +61,6 @@ int	g_status;
 	printf("\n\033[1;32m--------------------------------------\033[0m\n");
 }*/
 
-static void	end_program(char *input, t_prompt	*prompt)
-{
-	free(input);
-	free_data(prompt);
-	rl_clear_history();
-	exit(g_status);
-}
-
 static t_prompt	*start_program(int ac, char **av, char **ev)
 {
 	t_prompt	*prompt;
@@ -110,7 +102,6 @@ int	main(int ac, char **av, char **ev)
 			if (prompt->simple_cmds && !init_pid(prompt))
 				execute(prompt);
 		}
-		prompt = reset_prompt(prompt, av, ev);
+		reset_prompt(prompt, av, ev);
 	}
-	end_program(input, prompt);
 }

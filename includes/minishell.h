@@ -58,7 +58,6 @@ typedef struct s_prompt
 	t_simple_cmds	*simple_cmds;
 	t_heredoc		*heredoc;
 	char			**env;
-	char			*input;
 	int				*pid;
 	int				*exit_codes;
 	int				flg[3];
@@ -76,6 +75,9 @@ typedef struct s_prompt
 t_prompt		*init_prompt(char **av, char **ev);
 t_simple_cmds	*init_simple_cmds(void);
 int				init_pid(t_prompt *prompt);
+void			reset_prompt(t_prompt *prompt, char **av, char **ev);
+void			init_flags(t_prompt *prompt);
+void			init_vars(t_prompt *prompt, char **av, char *value);
 
 //env
 char			**ms_setenv(char *var, char *value, char **env);
@@ -166,7 +168,6 @@ void			ms_lstadd(t_lexer *lst, t_lexer *new);
 void			merge_nodes(t_prompt *prompt);
 
 //free
-t_prompt		*reset_prompt(t_prompt *prompt, char **av, char **ev);
 void			free_data(t_prompt *prompt);
 void			free_array(char **arr);
 void			free_lexer(t_lexer *lst);
