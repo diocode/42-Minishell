@@ -106,8 +106,6 @@ char	*expand_input(t_prompt *prompt, char *input)
 
 	prompt->flg[2] = 0;
 	init_exit_codes(prompt, input);
-	if (!prompt->exit_codes)
-		return (NULL);
 	arr = ft_split(input, ' ');
 	if (!arr)
 		return (NULL);

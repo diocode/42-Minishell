@@ -53,7 +53,7 @@ t_lexer	*ms_lstnew(char *content, char type)
 		node->str = ft_strdup(content);
 		node->token = NULL;
 	}
-	if (type == 't')
+	else if (type == 't')
 	{
 		node->str = NULL;
 		node->token = ft_strdup(content);

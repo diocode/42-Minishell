@@ -74,6 +74,8 @@ void	init_exit_codes(t_prompt *prompt, char *input)
 			if (input[i + 1] && input[i + 1] == '?')
 				count++;
 	}
+	if (!count)
+		return ;
 	prompt->exit_codes = malloc(count * sizeof(int));
 	if (!prompt->exit_codes)
 		return ;

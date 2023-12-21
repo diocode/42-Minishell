@@ -44,8 +44,11 @@ static int	iden_util(t_prompt *prompt, char **str, char *value, size_t	*i)
 	if (!prompt->lexer)
 		prompt->lexer = ms_lstnew(value, 'w');
 	else
+	{
 		ms_lstadd(prompt->lexer, ms_lstnew(value, 'w'));
+	}
 	*str += *i;
+	free(value);
 	return (0);
 }
 

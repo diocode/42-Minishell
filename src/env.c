@@ -65,10 +65,13 @@ char	*ms_getenv(char *var, char **env)
 			if (len < ft_strlen(var))
 				len = ft_strlen(var);
 			if (!ft_strncmp(var, word, len))
-				return (ft_substr(env[i], ft_strnlen(env[i], '=') + 1,
-						ft_strlen(env[i])));
+				return (free(word), ft_substr(env[i],
+						ft_strnlen(env[i], '=') + 1, ft_strlen(env[i])));
 			else
+			{
+				free(word);
 				break ;
+			}
 		}
 	}
 	return (NULL);
