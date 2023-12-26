@@ -168,7 +168,7 @@ void			ms_lstadd(t_lexer *lst, t_lexer *new);
 void			merge_nodes(t_prompt *prompt);
 
 //free
-void			free_data(t_prompt *prompt);
+void			free_data(t_prompt *prompt, bool reset);
 void			free_array(char **arr);
 void			free_lexer(t_lexer *lst);
 void			free_parser(t_simple_cmds *simple_cmds);

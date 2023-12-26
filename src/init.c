@@ -24,6 +24,8 @@ int	init_pid(t_prompt *prompt)
 		n_processes++;
 		process = process->next;
 	}
+	if (!n_processes)
+		return (1);
 	prompt->pid = ft_calloc(n_processes, sizeof(int));
 	if (!prompt->pid)
 		return (ms_error(1));
@@ -96,15 +98,11 @@ t_prompt	*init_prompt(char **av, char **ev)
 		return (NULL);
 	path = NULL;
 	prompt->lexer = NULL;
-	prompt->simple_cmds = init_simple_cmds();
-	prompt->heredoc = malloc(sizeof(t_heredoc));
-	if (!prompt->heredoc)
-		return (NULL);
-	prompt->heredoc->error_num = 0;
-	prompt->heredoc->status = false;
-	init_flags(prompt);
+	prompt->simple_cmds = NULL;
+	prompt->heredoc = NULL;
 	prompt->pid = NULL;
 	prompt->exit_codes = NULL;
+	init_flags(prompt);
 	prompt->env = dup_arr(ev);
 	init_vars(prompt, av, path);
 	return (prompt);

@@ -61,6 +61,19 @@ int	g_status;
 	printf("\n\033[1;32m--------------------------------------\033[0m\n");
 }*/
 
+static char	*handle_input(t_prompt *prompt, char *input)
+{
+	if (input == NULL)
+	{
+		free(input);
+		ms_exit(prompt, NULL);
+	}
+	add_history(input);
+	if (input && input[0])
+		input = expand_input(prompt, input);
+	return (input);
+}
+
 static t_prompt	*start_program(int ac, char **av, char **ev)
 {
 	t_prompt	*prompt;
@@ -87,14 +100,7 @@ int	main(int ac, char **av, char **ev)
 		prompt->interact = true;
 		input = readline("\001\e[1;32m\002minishell$ \001\e[0m\002");
 		prompt->interact = false;
-		if (input == NULL)
-		{
-			free(input);
-			ms_exit(prompt, NULL);
-		}
-		add_history(input);
-		if (input && input[0])
-			input = expand_input(prompt, input);
+		input = handle_input(prompt, input);
 		if (input && !lexer(prompt, input) && !token_error(prompt->lexer))
 		{
 			parser(prompt);

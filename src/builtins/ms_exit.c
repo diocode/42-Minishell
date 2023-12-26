@@ -41,7 +41,7 @@ int	ms_exit(t_prompt *prompt, t_simple_cmds *simple_cmd)
 
 	if (!simple_cmd)
 	{
-		free_data(prompt);
+		free_data(prompt, false);
 		exit(g_status);
 	}
 	if (!simple_cmd->prev)
@@ -56,7 +56,7 @@ int	ms_exit(t_prompt *prompt, t_simple_cmds *simple_cmd)
 		}
 	}
 	str = dup_arr(simple_cmd->str);
-	free_data(prompt);
+	free_data(prompt, false);
 	rl_clear_history();
 	exit_code(str);
 	return (EXIT_SUCCESS);

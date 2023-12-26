@@ -39,18 +39,19 @@ static int	create_heredoc(t_prompt *prompt, t_lexer *redirct,
 	return (0);
 }
 
-static int	setup_heredoc(t_prompt *prompt, t_lexer *redirct, char *hd_file)
+static int	setup_heredoc(t_prompt *p, t_lexer *redirct, char *hd_file)
 {
 	bool	quotes;
 	int		flg;
 
-	if (!prompt->heredoc)
+	if (!p->heredoc)
 	{
-		prompt->heredoc = malloc(sizeof(t_heredoc));
-		prompt->heredoc->error_num = 0;
-		prompt->heredoc->status = false;
+		p->heredoc = malloc(sizeof(t_heredoc));
+		if (!p->heredoc)
+			return (ms_error(1));
+		p->heredoc->error_num = 0;
+		p->heredoc->status = false;
 	}
-	flg = 0;
 	if ((redirct->str[0] == '\"'
 			&& redirct->str[ft_strlen(redirct->str) - 1] == '\"')
 		|| (redirct->str[0] == '\''
@@ -60,9 +61,8 @@ static int	setup_heredoc(t_prompt *prompt, t_lexer *redirct, char *hd_file)
 		quotes = false;
 	delquotes(redirct->str, '\"');
 	delquotes(redirct->str, '\'');
-	flg = create_heredoc(prompt, redirct, quotes, hd_file);
-	prompt->heredoc->status = true;
-	return (flg);
+	flg = create_heredoc(p, redirct, quotes, hd_file);
+	return (p->heredoc->status = true, flg);
 }
 
 static char	*gen_hd_filename(void)

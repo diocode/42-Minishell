@@ -70,7 +70,7 @@ void	free_array(char **arr)
 	free(arr);
 }
 
-void	free_data(t_prompt *prompt)
+void	free_data(t_prompt *prompt, bool reset)
 {
 	if (!prompt)
 		return ;
@@ -86,5 +86,8 @@ void	free_data(t_prompt *prompt)
 		free(prompt->pid);
 	if (prompt->exit_codes)
 		free(prompt->exit_codes);
-	free(prompt);
+	if (reset)
+		prompt = NULL;
+	else
+		free(prompt);
 }
