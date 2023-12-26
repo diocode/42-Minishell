@@ -14,6 +14,16 @@
 
 extern int	g_status;
 
+int	init_heredoc(t_prompt *prompt)
+{
+	prompt->heredoc = malloc(sizeof(t_heredoc));
+	if (!prompt->heredoc)
+		return (ms_error(1));
+	prompt->heredoc->error_num = 0;
+	prompt->heredoc->status = false;
+	return (0);
+}
+
 static int	create_heredoc(t_prompt *prompt, t_lexer *redirct,
 	bool quotes, char *hd_file)
 {
@@ -44,14 +54,6 @@ static int	setup_heredoc(t_prompt *p, t_lexer *redirct, char *hd_file)
 	bool	quotes;
 	int		flg;
 
-	if (!p->heredoc)
-	{
-		p->heredoc = malloc(sizeof(t_heredoc));
-		if (!p->heredoc)
-			return (ms_error(1));
-		p->heredoc->error_num = 0;
-		p->heredoc->status = false;
-	}
 	if ((redirct->str[0] == '\"'
 			&& redirct->str[ft_strlen(redirct->str) - 1] == '\"')
 		|| (redirct->str[0] == '\''

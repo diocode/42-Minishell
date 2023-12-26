@@ -101,13 +101,10 @@ int	main(int ac, char **av, char **ev)
 		input = readline("\001\e[1;32m\002minishell$ \001\e[0m\002");
 		prompt->interact = false;
 		input = handle_input(prompt, input);
-		if (input && !lexer(prompt, input) && !token_error(prompt->lexer))
-		{
-			parser(prompt);
-			//dev_mod(prompt); /*DEV MOD*/
-			if (prompt->simple_cmds && !init_pid(prompt))
-				execute(prompt);
-		}
+		if (input && !lexer(prompt, input))
+			if (!parser(prompt))
+				if (!init_pid(prompt) && !init_heredoc(prompt))
+					execute(prompt);
 		reset_prompt(prompt, av, ev);
 	}
 }

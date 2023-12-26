@@ -100,7 +100,7 @@ int				handle_word(t_prompt *p, char **str, char *input, char *val);
 void			doll_sign_digit(t_prompt *prompt, char **str);
 
 //parser
-void			parser(t_prompt *prompt);
+int				parser(t_prompt *prompt);
 int				is_redirct(char *str);
 int				is_builtin(char const *str);
 int				nbr_nodes(t_lexer *lexer);
@@ -113,6 +113,7 @@ int				single_cmd(t_prompt *prompt, t_simple_cmds *process);
 //heredoc
 t_simple_cmds	*single_cmd_heredoc(t_prompt *prompt, t_simple_cmds *process);
 int				send_heredoc(t_prompt *prompt, t_simple_cmds *process);
+int				init_heredoc(t_prompt *prompt);
 
 //redircts
 int				setup_redirct(t_simple_cmds *process);

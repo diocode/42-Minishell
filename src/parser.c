@@ -83,11 +83,13 @@ static void	get_simple_cmds(t_prompt *prompt, int pipes)
 	prompt->lexer = tmp_lexer;
 }
 
-void	parser(t_prompt *prompt)
+int	parser(t_prompt *prompt)
 {
 	t_lexer		*lexer;
 	int			pipes;
 
+	if (token_error(prompt->lexer))
+		return (1);
 	lexer = prompt->lexer;
 	if (!prompt->simple_cmds)
 		prompt->simple_cmds = init_simple_cmds();
@@ -100,5 +102,6 @@ void	parser(t_prompt *prompt)
 	}
 	get_simple_cmds(prompt, pipes);
 	if (!prompt->simple_cmds)
-		return ;
+		return (1);
+	return (0);
 }
