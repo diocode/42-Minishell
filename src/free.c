@@ -70,6 +70,29 @@ void	free_array(char **arr)
 	free(arr);
 }
 
+void	reset_data(t_prompt *prompt)
+{
+	if (!prompt)
+		return ;
+	if (prompt->lexer)
+		free_lexer(prompt->lexer);
+	if (prompt->simple_cmds)
+		free_parser(prompt->simple_cmds);
+	if (prompt->heredoc)
+		free(prompt->heredoc);
+/*	if (prompt->env)
+		free_array(prompt->env);*/
+	if (prompt->pid)
+		free(prompt->pid);
+	if (prompt->exit_codes)
+		free(prompt->exit_codes);
+	prompt->lexer = NULL;
+	prompt->simple_cmds = NULL;
+	prompt->heredoc = NULL;
+	prompt->pid = NULL;
+	prompt->exit_codes = NULL;
+}
+
 void	free_data(t_prompt *prompt, bool reset)
 {
 	if (!prompt)

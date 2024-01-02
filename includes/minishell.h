@@ -170,6 +170,7 @@ void			merge_nodes(t_prompt *prompt);
 
 //free
 void			free_data(t_prompt *prompt, bool reset);
+void			reset_data(t_prompt *prompt);
 void			free_array(char **arr);
 void			free_lexer(t_lexer *lst);
 void			free_parser(t_simple_cmds *simple_cmds);
@@ -181,5 +182,6 @@ int				ms_cd(t_prompt *prompt, t_simple_cmds *simple_cmds);
 int				ms_unset(t_prompt *prompt, t_simple_cmds *simple_cmds);
 int				ms_export(t_prompt *prompt, t_simple_cmds *simple_cmds);
 int				ms_exit(t_prompt *prompt, t_simple_cmds *simple_cmd);
+void			ms_pwd(t_prompt *prompt);
 
 #endif

@@ -23,18 +23,18 @@ static char	**var_del_2(char **arr, char **res, char *str)
 	j = 0;
 	while (arr[i] != NULL)
 	{
-		if (!(ft_strncmp(arr[i], str, equal_sign(arr[i]) - 2) == 0
-				&& str[equal_sign(arr[i])] == '\0'
-				&& arr[i][ft_strlen(str)] == '='))
+		if (!ft_strncmp(arr[i], str, equal_sign(arr[i]) - 1))
 		{
-			res[j] = ft_strdup(arr[i]);
-			if (res[j] == NULL)
-			{
-				free_array(res);
-				return (res);
-			}
-			j++;
+			i++;
+			continue;
 		}
+		res[j] = ft_strdup(arr[i]);
+		if (res[j] == NULL)
+		{
+			free_array(res);
+			return (res);
+		}
+		j++;
 		i++;
 	}
 	return (res);

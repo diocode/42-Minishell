@@ -73,9 +73,10 @@ static int	builtin(t_prompt *prompt, t_simple_cmds *process)
 	else if (!ft_strncmp(cmd, "env", 4))
 		ms_env(prompt, 0);
 	else if (!ft_strncmp(cmd, "pwd", 4))
-		ft_printf("%s\n", ms_getenv("PWD", prompt->env));
+		ms_pwd(prompt);
 	else
 		return (1);
+	//reset_data(prompt);
 	return (0);
 }
 
@@ -87,7 +88,6 @@ int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 	if (process->builtin)
 	{
 		g_status = builtin(prompt, process);
-		prompt->heredoc->error_num += g_status;
 		exit(g_status);
 	}
 	else if (!ft_strncmp(process->str[0], "$?", 3))
@@ -114,8 +114,7 @@ int	single_cmd(t_prompt *prompt, t_simple_cmds *process)
 	if (cmd && (!ft_strncmp(cmd, "exit", 5) || !ft_strncmp(cmd, "cd", 3)
 			|| !ft_strncmp(cmd, "export", 7) || !ft_strncmp(cmd, "unset", 6)))
 	{
-		prompt->heredoc->error_num += builtin(prompt, prompt->simple_cmds);
-		g_status = prompt->heredoc->error_num;
+		g_status += builtin(prompt, prompt->simple_cmds);
 		return (0);
 	}
 	send_heredoc(prompt, prompt->simple_cmds);
