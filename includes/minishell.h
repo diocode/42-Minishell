@@ -154,7 +154,7 @@ char			*array_to_str(char **arr);
 //errors
 int				ms_error(int error);
 int				export_error(char *c);
-int				error_cmd_not_found( t_simple_cmds *process);
+int				error_cmd_not_found(t_prompt *prompt, t_simple_cmds *process);
 int				token_error(t_lexer *lexer);
 void			quotes_error(char c);
 

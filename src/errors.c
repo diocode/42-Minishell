@@ -14,7 +14,7 @@
 
 extern int	g_status;
 
-int	error_cmd_not_found( t_simple_cmds *process)
+int	error_cmd_not_found(t_prompt *prompt, t_simple_cmds *process)
 {
 	char	*str;
 	char	*tmp;
@@ -29,6 +29,7 @@ int	error_cmd_not_found( t_simple_cmds *process)
 	ft_putendl_fd(str, STDERR_FILENO);
 	free(tmp);
 	free(str);
+	reset_data(prompt);
 	return (127);
 }
 

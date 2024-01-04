@@ -52,7 +52,7 @@ static int	system_cmd(t_prompt *prompt, t_simple_cmds *process)
 		free(path);
 	}
 	free_array(paths);
-	return (error_cmd_not_found(process));
+	return (error_cmd_not_found(prompt, process));
 }
 
 static int	builtin(t_prompt *prompt, t_simple_cmds *process)
@@ -76,7 +76,7 @@ static int	builtin(t_prompt *prompt, t_simple_cmds *process)
 		ms_pwd(prompt);
 	else
 		return (1);
-	//reset_data(prompt);
+	reset_data(prompt);
 	return (0);
 }
 

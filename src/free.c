@@ -72,6 +72,9 @@ void	free_array(char **arr)
 
 void	reset_data(t_prompt *prompt)
 {
+	char **env_cpy;
+
+	env_cpy = NULL;
 	if (!prompt)
 		return ;
 	if (prompt->lexer)
@@ -80,8 +83,11 @@ void	reset_data(t_prompt *prompt)
 		free_parser(prompt->simple_cmds);
 	if (prompt->heredoc)
 		free(prompt->heredoc);
-/*	if (prompt->env)
-		free_array(prompt->env);*/
+	if (prompt->env)
+	{
+		env_cpy = dup_arr(prompt->env);
+		free_array(prompt->env);
+	}
 	if (prompt->pid)
 		free(prompt->pid);
 	if (prompt->exit_codes)
@@ -89,6 +95,7 @@ void	reset_data(t_prompt *prompt)
 	prompt->lexer = NULL;
 	prompt->simple_cmds = NULL;
 	prompt->heredoc = NULL;
+	prompt->env = env_cpy;
 	prompt->pid = NULL;
 	prompt->exit_codes = NULL;
 }
