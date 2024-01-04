@@ -14,7 +14,7 @@
 
 int	g_status;
 
-/*static void	dev_mod(t_prompt *prompt)
+static void	dev_mod(t_prompt *prompt)
 {
 	t_simple_cmds	*cmds;
 	t_lexer			*node;
@@ -59,7 +59,7 @@ int	g_status;
 	}
 	printf("\n\033[1;32m* OUTPUT *\033[0m");
 	printf("\n\033[1;32m--------------------------------------\033[0m\n");
-}*/
+}
 
 static char	*handle_input(t_prompt *prompt, char *input)
 {
@@ -104,7 +104,10 @@ int	main(int ac, char **av, char **ev)
 		if (input && !lexer(prompt, input))
 			if (!parser(prompt))
 				if (!init_pid(prompt) && !init_heredoc(prompt))
+				{
+					dev_mod(prompt);
 					execute(prompt);
+				}
 		reset_prompt(prompt, av, ev);
 	}
 }

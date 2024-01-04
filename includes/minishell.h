@@ -154,7 +154,7 @@ char			*array_to_str(char **arr);
 //errors
 int				ms_error(int error);
 int				export_error(char *c);
-int				error_cmd_not_found(t_prompt *prompt, t_simple_cmds *process);
+int				error_cmd_not_found(t_simple_cmds *process);
 int				token_error(t_lexer *lexer);
 void			quotes_error(char c);
 
@@ -170,7 +170,6 @@ void			merge_nodes(t_prompt *prompt);
 
 //free
 void			free_data(t_prompt *prompt, bool reset);
-void			reset_data(t_prompt *prompt);
 void			free_array(char **arr);
 void			free_lexer(t_lexer *lst);
 void			free_parser(t_simple_cmds *simple_cmds);

@@ -52,7 +52,7 @@ static int	system_cmd(t_prompt *prompt, t_simple_cmds *process)
 		free(path);
 	}
 	free_array(paths);
-	return (error_cmd_not_found(prompt, process));
+	return (error_cmd_not_found(process));
 }
 
 static int	builtin(t_prompt *prompt, t_simple_cmds *process)
@@ -76,7 +76,6 @@ static int	builtin(t_prompt *prompt, t_simple_cmds *process)
 		ms_pwd(prompt);
 	else
 		return (1);
-	reset_data(prompt);
 	return (0);
 }
 
@@ -84,10 +83,14 @@ int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 {
 	if (process->redirct)
 		if (setup_redirct(process))
+		{
+			free_data(prompt, false);
 			exit(1);
+		}
 	if (process->builtin)
 	{
 		g_status = builtin(prompt, process);
+		free_data(prompt, false);
 		exit(g_status);
 	}
 	else if (!ft_strncmp(process->str[0], "$?", 3))
@@ -100,6 +103,7 @@ int	handle_cmd(t_prompt *prompt, t_simple_cmds *process)
 	}
 	else if (process->str[0])
 		g_status = system_cmd(prompt, process);
+	free_data(prompt, false);
 	exit (g_status);
 }
 
