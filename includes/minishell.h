@@ -78,6 +78,7 @@ typedef struct s_shell
 
 t_shell	*ms(void);
 void	lexer(char *input);
+void	parser(void);
 
 //init
 void	init(char **av, char **ev);
@@ -103,5 +104,7 @@ bool	only_whitespaces(char *str);
 void	skip_spaces(char **line);
 int		is_whitespace(char c);
 int		is_digit(char *str);
+bool	valid_quotes(char *str);
+bool	in_quotes(char c);
 
 #endif

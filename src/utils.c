@@ -12,6 +12,8 @@
 
 #include "../includes/minishell.h"
 
+extern int	g_exit_code;
+
 int	is_digit(char *str)
 {
 	int	i;
@@ -77,4 +79,28 @@ void	skip_spaces(char **line)
 {
 	while (**line && is_whitespace(**line))
 		(*line)++;
+}
+
+bool valid_quotes(char *str)
+{
+	int	i;
+
+	ms()->quote[0] = false;
+	ms()->quote[1] = false;
+	i = 0;
+	while (str[i])
+		in_quotes(str[i++]);
+	if (ms()->quote[0] || ms()->quote[1])
+	{
+		g_exit_code = 2;
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd("unexpected EOF while looking for matching `", 2);
+		if (ms()->quote[0])
+			ft_putchar_fd('\'', STDERR_FILENO);
+		else
+			ft_putchar_fd('\"', STDERR_FILENO);
+		ft_putchar_fd('\n', STDERR_FILENO);
+		return (false);
+	}
+	return (true);
 }

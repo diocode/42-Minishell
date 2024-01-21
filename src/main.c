@@ -32,7 +32,8 @@ void	dev_mod(void)
 			printf("[%s] ", tmp->content);
 			tmp = tmp->next;
 		}
-		printf("\n\033[32;1m==============================\033[0m\n");
+		printf("\n");
+		printf("\033[32;1m==============================\033[0m\n");
 	}
 }
 
@@ -62,6 +63,8 @@ static void ms_loop(void)
 		{
 			add_history(ms()->input);
 			lexer(ms()->input);
+			if (ms()->lexer)
+				parser();
 			dev_mod();
 		}
 		free_data(true);

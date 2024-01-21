@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-static bool	in_quotes(char c)
+bool	in_quotes(char c)
 {
 	if (c == '\'' && !ms()->quote[1])
 		ms()->quote[0] = !ms()->quote[0];
