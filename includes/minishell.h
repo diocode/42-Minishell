@@ -29,14 +29,79 @@
 
 /*------------- Structures ---------------*/
 
+typedef enum s_type
+{
+	OTHER,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT,
+	HEREDOC,
+	REDIR2_OUT,
+}	t_type;
+
+typedef struct s_token
+{
+	char			*content;
+	t_type			type;
+	struct s_token	*next;
+}	t_token;
+
+typedef struct s_process
+{
+	char				**args;
+	char				*builtin;
+	t_token				*redirct;
+	char				*hd_file;
+	struct s_process	*next;
+	struct s_process	*prev;
+}	t_process;
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct s_shell
 {
-	char			**env;
-	int				*pid;
+	char			*input;
+	t_env			*env;
+	t_token			*lexer;
+	t_process		*process;
+	pid_t			pid;
 	bool			interact;
+	bool			quote[2];
 }	t_shell;
 
 /*---------- FUNCTIONS ----------*/
 
+t_shell	*ms(void);
+void	lexer(char *input);
+
+//init
+void	init(char **av, char **ev);
+
+//env
+void	ms_setenv(char *key, char *value);
+char	*ms_getenv(char *key);
+void	print_env(void);
+
+//builtins
+int		ms_exit(t_process *process);
+
+//signals
+void	set_signals(void);
+
+//free
+void	free_data(bool reset);
+void	free_array(char **arr);
+
+//utils
+char	**dup_arr(char **arr);
+bool	only_whitespaces(char *str);
+void	skip_spaces(char **line);
+int		is_whitespace(char c);
+int		is_digit(char *str);
 
 #endif
