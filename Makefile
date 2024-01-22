@@ -24,7 +24,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 NAME = minishell
 
 SRC = src/main.c src/init.c src/free.c src/signals.c src/utils.c \
-	src/env.c src/lexer.c src/parser.c \
+	src/env.c src/lexer.c src/parser.c src/expander.c \
 	src/builtins/ms_exit.c
 
 OBJ = $(SRC:.c=.o)

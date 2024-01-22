@@ -12,15 +12,6 @@
 
 #include "../includes/minishell.h"
 
-bool	in_quotes(char c)
-{
-	if (c == '\'' && !ms()->quote[1])
-		ms()->quote[0] = !ms()->quote[0];
-	else if (c == '\"' && !ms()->quote[0])
-		ms()->quote[1] = !ms()->quote[1];
-	return (ms()->quote[0] || ms()->quote[1]);
-}
-
 /* s_quotes = 0  |  d_quotes = 1 */
 static size_t	word_len(char *input)
 {
@@ -37,6 +28,22 @@ static size_t	word_len(char *input)
 	return (len);
 }
 
+static t_type get_type(char *word)
+{
+	if (!ft_strncmp("|", word, 2))
+		return (PIPE);
+	if (!ft_strncmp("<", word, 2))
+		return (REDIR_IN);
+	if (!ft_strncmp(">", word, 2))
+		return (REDIR_OUT);
+	if (!strncmp("<<", word, 3))
+		return (HEREDOC);
+	if (!strncmp(">>", word, 3))
+		return (REDIR2_OUT);
+	else
+		return (OTHER);
+}
+
 static void	add_lexer_node(char *word)
 {
 	t_token	*new;
@@ -46,7 +53,9 @@ static void	add_lexer_node(char *word)
 	if (!new)
 		return ;
 	new->content = word;
-	new->type = 0;
+	new->type = get_type(word);
+	new->next = NULL;
+	new->prev = NULL;
 	if (!ms()->lexer)
 		ms()->lexer = new;
 	else
@@ -54,6 +63,7 @@ static void	add_lexer_node(char *word)
 		tmp = ms()->lexer;
 		while (tmp->next)
 			tmp = tmp->next;
+		new->prev = tmp;
 		tmp->next = new;
 	}
 }

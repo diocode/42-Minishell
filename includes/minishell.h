@@ -44,6 +44,7 @@ typedef struct s_token
 	char			*content;
 	t_type			type;
 	struct s_token	*next;
+	struct s_token	*prev;
 }	t_token;
 
 typedef struct s_process
@@ -79,6 +80,7 @@ typedef struct s_shell
 t_shell	*ms(void);
 void	lexer(char *input);
 void	parser(void);
+int 	expander(void);
 
 //init
 void	init(char **av, char **ev);
@@ -106,5 +108,7 @@ int		is_whitespace(char c);
 int		is_digit(char *str);
 bool	valid_quotes(char *str);
 bool	in_quotes(char c);
+void	ms_error(int error);
+
 
 #endif
