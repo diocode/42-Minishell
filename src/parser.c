@@ -14,6 +14,5 @@
 
 void	parser(void)
 {
-	if (expander())
-		return ;
+	expander();
 }

@@ -59,7 +59,7 @@ static void ms_loop(void)
 			ft_putendl_fd("exit", STDOUT_FILENO);
 			ms_exit(ms()->process);
 		}
-		if (ms()->input[0] && !only_whitespaces(ms()->input))
+		if (ms()->input[0])
 		{
 			add_history(ms()->input);
 			lexer(ms()->input);

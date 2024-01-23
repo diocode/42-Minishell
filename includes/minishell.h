@@ -80,7 +80,10 @@ typedef struct s_shell
 t_shell	*ms(void);
 void	lexer(char *input);
 void	parser(void);
-int 	expander(void);
+
+//expander
+void	expander(void);
+int		expand_str(t_token *lx, size_t i);
 
 //init
 void	init(char **av, char **ev);
@@ -102,13 +105,11 @@ void	free_array(char **arr);
 
 //utils
 char	**dup_arr(char **arr);
-bool	only_whitespaces(char *str);
 void	skip_spaces(char **line);
 int		is_whitespace(char c);
 int		is_digit(char *str);
 bool	valid_quotes(char *str);
 bool	in_quotes(char c);
 void	ms_error(int error);
-
 
 #endif

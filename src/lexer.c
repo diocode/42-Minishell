@@ -28,7 +28,7 @@ static size_t	word_len(char *input)
 	return (len);
 }
 
-static t_type get_type(char *word)
+static t_type	get_type(char *word)
 {
 	if (!ft_strncmp("|", word, 2))
 		return (PIPE);
