@@ -96,3 +96,44 @@ bool	valid_quotes(char *str)
 	}
 	return (true);
 }
+
+int	count_pipes(t_token *lx)
+{
+	t_token	*tmp;
+	int		pipes;
+
+	tmp = lx;
+	pipes = 0;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->content, "|", 2))
+			pipes++;
+		tmp = tmp->next;
+	}
+	return (pipes);
+}
+
+bool	is_redirect(char *str)
+{
+	if (!str)
+		return (0);
+	if ((str[0] == '<' || str[0] == '>') && ft_strlen(str) == 1)
+		return (true);
+	if ((!ft_strncmp(str, "<<", 2) || !ft_strncmp(str, ">>", 2))
+		&& ft_strlen(str) == 2)
+		return (true);
+	return (false);
+}
+
+bool	is_operator(char *str)
+{
+	if (!str)
+		return (0);
+	if ((str[0] == '<' || str[0] == '>' || str[0] == '|')
+		&& ft_strlen(str) == 1)
+		return (true);
+	if ((!ft_strncmp(str, "<<", 2) || !ft_strncmp(str, ">>", 2))
+		&& ft_strlen(str) == 2)
+		return (true);
+	return (false);
+}

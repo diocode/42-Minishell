@@ -78,8 +78,11 @@ typedef struct s_shell
 /*---------- FUNCTIONS ----------*/
 
 t_shell	*ms(void);
-void	lexer(char *input);
 void	parser(void);
+
+//lexer
+void	lexer(char *input);
+t_type	get_type(char *word);
 
 //expander
 void	expander(void);
@@ -111,5 +114,8 @@ int		is_digit(char *str);
 bool	valid_quotes(char *str);
 bool	in_quotes(char c);
 void	ms_error(int error);
+int		count_pipes(t_token *lx);
+bool	is_redirect(char *str);
+bool	is_operator(char *str);
 
 #endif
