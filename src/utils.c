@@ -106,7 +106,8 @@ int	count_pipes(t_token *lx)
 	pipes = 0;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->content, "|", 2))
+		if (!ft_strncmp(tmp->content, "|", 2)
+			|| !ft_strncmp(tmp->content, "||", 3))
 			pipes++;
 		tmp = tmp->next;
 	}
@@ -132,8 +133,8 @@ bool	is_operator(char *str)
 	if ((str[0] == '<' || str[0] == '>' || str[0] == '|')
 		&& ft_strlen(str) == 1)
 		return (true);
-	if ((!ft_strncmp(str, "<<", 2) || !ft_strncmp(str, ">>", 2))
-		&& ft_strlen(str) == 2)
+	if ((!ft_strncmp(str, "<<", 2) || !ft_strncmp(str, ">>", 2)
+			|| !ft_strncmp(str, "||", 2)) && ft_strlen(str) == 2)
 		return (true);
 	return (false);
 }

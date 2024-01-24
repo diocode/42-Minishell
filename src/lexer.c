@@ -16,13 +16,22 @@ static size_t	operator_size(const char *str)
 {
 	if (!str && *str)
 		return (0);
-	if ((*str == '<' || *str == '>' || *str == '|')
-		&& (*(str + 1) != '<' && *(str + 1) != '>' && *(str + 1) != '|'))
-		return (1);
-	if ((*str == '<' || *str == '>' || *str == '|')
-		&& (*(str + 1) != '\0' && (*(str + 1) == '<'
-				|| *(str + 1) == '>' || *(str + 1) == '|')))
-		return (2);
+	if (*str == '|')
+	{
+		if (*(str + 1) != '|')
+			return (1);
+		if (*(str + 1) == '|')
+			return (2);
+	}
+	else
+	{
+		if ((*str == '<' || *str == '>')
+			&& (*(str + 1) != '<' && *(str + 1) != '>'))
+			return (1);
+		if ((*str == '<' || *str == '>')
+			&& (*(str + 1) != '\0' && (*(str + 1) == '<' || *(str + 1) == '>')))
+			return (2);
+	}
 	return (0);
 }
 
@@ -41,6 +50,9 @@ static size_t	word_len(char *input)
 			break ;
 		}
 		len++;
+		if (!in_quotes(*input) && (*(input + 1) == '<'
+				|| *(input + 1) == '>' || *(input + 1) == '|'))
+			break ;
 		input++;
 	}
 	return (len);
@@ -48,7 +60,7 @@ static size_t	word_len(char *input)
 
 t_type	get_type(char *word)
 {
-	if (!ft_strncmp("|", word, 2))
+	if (!ft_strncmp("|", word, 2) || !ft_strncmp("||", word, 3))
 		return (PIPE);
 	if (!ft_strncmp("<", word, 2))
 		return (REDIR_IN);
@@ -101,7 +113,8 @@ void	lexer(char *input)
 		word = ft_substr(input, 0, len);
 		add_lexer_node(word);
 		input += len;
-		if (*input && !is_operator(word))
+		if (*input && !is_operator(word)
+			&& *input != '<' && *input != '>' && *input != '|')
 			input++;
 	}
 }
