@@ -102,6 +102,12 @@ int		ms_exit(t_process *process);
 //signals
 void	set_signals(void);
 
+//error
+void	ms_error(int error);
+int		redirection_error(void);
+int		token_error(void);
+int		pipe_error(void);
+
 //free
 void	free_data(bool reset);
 void	free_array(char **arr);
@@ -113,7 +119,6 @@ int		is_whitespace(char c);
 int		is_digit(char *str);
 bool	valid_quotes(char *str);
 bool	in_quotes(char c);
-void	ms_error(int error);
 int		count_pipes(t_token *lx);
 bool	is_redirect(char *str);
 bool	is_operator(char *str);
