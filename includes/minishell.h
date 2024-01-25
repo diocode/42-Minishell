@@ -51,7 +51,7 @@ typedef struct s_process
 {
 	char				**args;
 	char				*builtin;
-	t_token				*redirct;
+	t_token				*redirect;
 	char				*hd_file;
 	struct s_process	*next;
 	struct s_process	*prev;
@@ -88,7 +88,7 @@ int		expander(void);
 int		expand_str(t_token *lx, size_t i);
 
 //parser
-void	parser(void);
+int		parser(void);
 void	trim_quotes(void);
 
 //init
@@ -118,11 +118,12 @@ void	free_array(char **arr);
 //utils
 char	**dup_arr(char **arr);
 void	skip_spaces(char **line);
+bool	valid_quotes(char *str);
+int		count_pipes(t_token *lx);
 int		is_whitespace(char c);
 int		is_digit(char *str);
-bool	valid_quotes(char *str);
 bool	in_quotes(char c);
-int		count_pipes(t_token *lx);
 bool	is_operator(char *str);
+bool	is_builtin(char *str);
 
 #endif

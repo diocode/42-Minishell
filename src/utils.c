@@ -126,3 +126,15 @@ bool	is_operator(char *str)
 		return (true);
 	return (false);
 }
+
+bool	is_builtin(char *str)
+{
+	if (!str)
+		return (false);
+	if (!ft_strncmp(str, "echo", 5) || !ft_strncmp(str, "cd", 3)
+		|| !ft_strncmp(str, "pwd", 4) || !ft_strncmp(str, "export", 7)
+		|| !ft_strncmp(str, "unset", 6) || !ft_strncmp(str, "env", 4)
+		|| !ft_strncmp(str, "exit", 5))
+		return (true);
+	return (false);
+}

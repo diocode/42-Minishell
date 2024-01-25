@@ -25,6 +25,8 @@ void	dev_mod(void)
 	}
 	if (ms()->lexer)
 	{
+		 while (ms()->lexer->prev)
+			ms()->lexer = ms()->lexer->prev;
 		printf("\n\033[32;1mLEXER: \033[0m");
 		tmp = ms()->lexer;
 		while(tmp)
