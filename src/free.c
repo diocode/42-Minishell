@@ -43,6 +43,30 @@ static void	free_token(t_token *lst)
 	}
 }
 
+static void free_process(void)
+{
+	t_process	*tmp;
+
+	while (ms()->process)
+	{
+		if (ms()->process->args)
+			free_array(ms()->process->args);
+		if (ms()->process->redirect)
+		{
+			while (ms()->process->redirect->prev)
+				ms()->process->redirect = ms()->process->redirect->prev;
+			free_token(ms()->process->redirect);
+		}
+		if (ms()->process->builtin)
+			free(ms()->process->builtin);
+		if (ms()->process->hd_file)
+			free(ms()->process->hd_file);
+		tmp = ms()->process;
+		ms()->process = ms()->process->next;
+		free(tmp);
+	}
+}
+
 static void	free_env(void)
 {
 	t_env	*tmp;
@@ -67,6 +91,8 @@ void	free_data(bool reset)
 		free(ms()->input);
 	if (ms()->lexer)
 		free_token(ms()->lexer);
+	if (ms()->process)
+		free_process();
 	if (reset)
 	{
 		ms()->input = NULL;

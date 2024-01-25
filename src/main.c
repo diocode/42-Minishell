@@ -16,27 +16,76 @@ int	g_exit_code;
 
 void	dev_mod(void)
 {
-	t_token	*tmp = NULL;
 	printf("\033[32;1m=========== DEV MOD ==========\033[0m\n");
-	if (ms()->input)
-	{
-		printf("\n\033[32;1mINPUT: \033[0m");
-		printf("%s\n", ms()->input);
-	}
 	if (ms()->lexer)
 	{
-		 while (ms()->lexer->prev)
-			ms()->lexer = ms()->lexer->prev;
+		t_token	*lexer = NULL;
 		printf("\n\033[32;1mLEXER: \033[0m");
-		tmp = ms()->lexer;
-		while(tmp)
+		lexer = ms()->lexer;
+		while(lexer)
 		{
-			printf("[%s] ", tmp->content);
-			tmp = tmp->next;
+			printf("[%s] ", lexer->content);
+			lexer = lexer->next;
 		}
-		printf("\n");
-		printf("\033[32;1m==============================\033[0m\n");
 	}
+	t_process	*process = ms()->process;
+	int n = 1;
+	while (process)
+	{
+		printf("\n\n\033[32;1mPROCESS (%d): \033[0m", n++);
+		printf("\n");
+		printf("\033[34m   ARGS: \033[0m");
+		if (process->args)
+		{
+			if (!process->args[0])
+			{
+				printf("[");
+				printf("\033[90m(null)\033[0m");
+				printf("]");
+			}
+			else
+			{
+				for (int i = 0; process->args[i]; i++)
+					printf("[%s] ", process->args[i]);
+			}
+
+		}
+		else
+			printf("\033[90m(null)\033[0m");
+		printf("\n\033[34m   BUILTIN: \033[0m");
+		if (process->builtin)
+			printf("[%s]\n", process->builtin);
+		else
+			printf("\033[90m(null)\033[0m\n");
+		printf("\033[34m   REDIRECT: \033[0m");
+		t_token	*redir = process->redirect;
+		if (!redir)
+			printf("\033[90m(null)\033[0m");
+		else
+		{
+			while (redir)
+			{
+				if (redir->type == REDIR_IN)
+					printf("[<] ");
+				if (redir->type == REDIR_OUT)
+					printf("[>] ");
+				if (redir->type == REDIR2_OUT)
+					printf("[>>] ");
+				if (redir->type == HEREDOC)
+					printf("[<<] ");
+				printf("[%s]  ", redir->content);
+				redir = redir->next;
+			}
+		}
+		printf("\n\033[34m   HD_FILE: \033[0m");
+		if (process->hd_file)
+			printf("%s", process->hd_file);
+		else
+			printf("\033[90m(null)\033[0m");
+		process = process->next;
+	}
+	printf("\n\n");
+	printf("\033[32;1m==============================\033[0m\n");
 }
 
 /* ============================  dev mod ============================ */
