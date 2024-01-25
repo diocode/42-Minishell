@@ -53,15 +53,17 @@ static void	expand(t_token *lexer)
 	}
 }
 
-void	expander(void)
+int	expander(void)
 {
 	t_token		*tmp;
 
 	tmp = ms()->lexer;
 	while (tmp)
 	{
-		if (valid_quotes(tmp->content))
-			expand(tmp);
+		if (!valid_quotes(tmp->content))
+			return (1);
+		expand(tmp);
 		tmp = tmp->next;
 	}
+	return (0);
 }

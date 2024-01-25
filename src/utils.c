@@ -114,18 +114,6 @@ int	count_pipes(t_token *lx)
 	return (pipes);
 }
 
-bool	is_redirect(char *str)
-{
-	if (!str)
-		return (0);
-	if ((str[0] == '<' || str[0] == '>') && ft_strlen(str) == 1)
-		return (true);
-	if ((!ft_strncmp(str, "<<", 2) || !ft_strncmp(str, ">>", 2))
-		&& ft_strlen(str) == 2)
-		return (true);
-	return (false);
-}
-
 bool	is_operator(char *str)
 {
 	if (!str)

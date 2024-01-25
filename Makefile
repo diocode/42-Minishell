@@ -23,7 +23,8 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 NAME = minishell
 
-SRC = src/main.c src/init.c src/free.c src/signals.c src/utils.c src/error.c src/expander_str.c \
+SRC = src/main.c src/init.c src/free.c src/signals.c src/utils.c src/error.c \
+	src/expander_str.c src/trim_quotes.c\
 	src/env.c src/lexer.c src/parser.c src/expander.c \
 	src/builtins/ms_exit.c
 

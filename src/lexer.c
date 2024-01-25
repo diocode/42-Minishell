@@ -50,7 +50,7 @@ static size_t	word_len(char *input)
 			break ;
 		}
 		len++;
-		if (!in_quotes(*input) && (*(input + 1) == '<'
+		if (!ms()->quote[0] && !ms()->quote[1] && (*(input + 1) == '<'
 				|| *(input + 1) == '>' || *(input + 1) == '|'))
 			break ;
 		input++;

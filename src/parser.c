@@ -39,9 +39,11 @@ void	parser(void)
 {
 	int			pipes;
 
-	expander();
+	if (expander())
+		return ;
 	if(pipe_error() || token_error() || redirection_error())
 		return ;
+	trim_quotes();
 	pipes = count_pipes(ms()->lexer);
 	while (pipes >= 0)
 	{
