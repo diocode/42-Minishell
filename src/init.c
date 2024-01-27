@@ -50,7 +50,7 @@ t_env	*init_env(char **ev)
 	{
 		tmp = malloc(sizeof(t_env));
 		if (!tmp)
-			return (NULL);
+			return (ms_error(1), NULL);
 		tmp->key = ft_substr(ev[i], 0, ft_strchr(ev[i], '=') - ev[i]);
 		tmp->value = ft_substr(ev[i], ft_strchr(ev[i], '=') - ev[i] + 1,
 				ft_strlen(ev[i]));
@@ -70,6 +70,7 @@ void	init(char **av, char **ev)
 	ms()->input = NULL;
 	ms()->pid = 0;
 	ms()->interact = false;
+	ms()->heredoc = false;
 	ms()->quote[0] = false;
 	ms()->quote[1] = false;
 }

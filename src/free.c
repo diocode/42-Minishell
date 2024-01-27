@@ -67,12 +67,10 @@ static void free_process(void)
 	}
 }
 
-static void	free_env(void)
+void	free_env(t_env *tmp)
 {
-	t_env	*tmp;
 	t_env	*next;
 
-	tmp = ms()->env;
 	while (tmp)
 	{
 		next = tmp->next;
@@ -104,5 +102,5 @@ void	free_data(bool reset)
 		ms()->quote[1] = false;
 	}
 	else if (ms()->env)
-		free_env();
+		free_env(ms()->env);
 }

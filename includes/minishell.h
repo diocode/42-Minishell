@@ -72,12 +72,14 @@ typedef struct s_shell
 	t_process		*process;
 	pid_t			pid;
 	bool			interact;
+	bool			heredoc;
 	bool			quote[2];
 }	t_shell;
 
 /*---------- FUNCTIONS ----------*/
 
 t_shell	*ms(void);
+void	execute(void);
 
 //lexer
 void	lexer(char *input);
@@ -97,10 +99,13 @@ void	init(char **av, char **ev);
 //env
 void	ms_setenv(char *key, char *value);
 char	*ms_getenv(char *key);
-void	print_env(void);
+t_env	*copy_env(t_env *env);
 
 //builtins
 int		ms_exit(t_process *process);
+int		ms_cd(t_process *process);
+int		ms_env(bool export);
+int		ms_pwd(void);
 
 //signals
 void	set_signals(void);
@@ -114,6 +119,7 @@ int		pipe_error(void);
 //free
 void	free_data(bool reset);
 void	free_array(char **arr);
+void	free_env(t_env *tmp);
 
 //utils
 char	**dup_arr(char **arr);

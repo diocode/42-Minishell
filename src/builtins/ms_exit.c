@@ -18,16 +18,16 @@ static void	exit_code(char **code)
 {
 	int	exit_code;
 
-	if (!code[1])
+	if (!code || !code[0])
 		exit_code = 0;
-	else if (is_digit(code[1]) || ft_atoi(code[1]))
-		exit_code = ft_atoi(code[1]);
-	else if (code[1][0] && code[1][0] == '-' && is_digit(code[1] + 1))
-		exit_code = 256 - ft_atoi(code[1] + 1);
+	else if (is_digit(code[0]) || ft_atoi(code[0]))
+		exit_code = ft_atoi(code[0]);
+	else if (code[0][0] && code[0][0] == '-' && is_digit(code[0] + 1))
+		exit_code = 256 - ft_atoi(code[0] + 1);
 	else
 	{
 		ft_putstr_fd("exit: ", STDERR_FILENO);
-		ft_putstr_fd(code[1], STDERR_FILENO);
+		ft_putstr_fd(code[0], STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 		exit_code = 2;
 	}
@@ -46,7 +46,7 @@ int	ms_exit(t_process *process)
 	}
 	if (!process->prev)
 		ft_putendl_fd("exit", STDOUT_FILENO);
-	if (process->args[0] && process->args[1])
+	if (process->args && process->args[0] && process->args[1])
 	{
 		if (is_digit(process->args[0]))
 		{

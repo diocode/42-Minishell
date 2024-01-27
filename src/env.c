@@ -12,16 +12,43 @@
 
 #include "../includes/minishell.h"
 
-void	print_env(void)
+static t_env	*create_node(char *key, char *value)
 {
-	t_env	*tmp;
+	t_env	*new_node;
 
-	tmp = ms()->env;
-	while (tmp)
+	new_node = malloc(sizeof(t_env));
+	if (!new_node)
+		return (ms_error(1), NULL);
+	new_node->key = ft_strdup(key);
+	new_node->value = ft_strdup(value);
+	new_node->next = NULL;
+	return (new_node);
+}
+
+t_env	*copy_env(t_env *env)
+{
+	t_env 	*sorted;
+	t_env	*new_node;
+	t_env	*last_node;
+
+	sorted = NULL;
+	while (env)
 	{
-		printf("%s=%s\n", tmp->key, tmp->value);
-		tmp = tmp->next;
+		new_node = create_node(env->key, env->value);
+		if (!new_node)
+			return (NULL);
+		if (!sorted)
+			sorted = new_node;
+		else
+		{
+			last_node = sorted;
+			while (last_node->next)
+				last_node = last_node->next;
+			last_node->next = new_node;
+		}
+		env = env->next;
 	}
+	return (sorted);
 }
 
 char	*ms_getenv(char *key)

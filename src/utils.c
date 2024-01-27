@@ -33,6 +33,8 @@ char	**dup_arr(char **arr)
 	char	**dup;
 	int		i;
 
+	if (!arr)
+		return (NULL);
 	i = 0;
 	while (arr[i])
 		i++;
