@@ -26,7 +26,7 @@ NAME = minishell
 SRC = src/main.c src/init.c src/free.c src/signals.c src/utils.c src/error.c \
 	src/expander_str.c src/trim_quotes.c \
 	src/env.c src/lexer.c src/parser.c src/expander.c src/execute.c \
-	src/builtins/ms_exit.c src/builtins/ms_cd.c src/builtins/ms_export.c src/builtins/ms_env.c src/builtins/ms_pwd.c src/builtins/ms_unset.c
+	src/builtins/ms_exit.c src/builtins/ms_cd.c src/builtins/ms_export.c src/builtins/ms_env.c src/builtins/ms_pwd.c src/builtins/ms_unset.c src/builtins/ms_echo.c
 
 OBJ = $(SRC:.c=.o)
 

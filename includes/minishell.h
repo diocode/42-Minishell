@@ -108,8 +108,9 @@ int		ms_cd(t_process *process);
 int		ms_env(bool export);
 int		ms_pwd(void);
 int		ms_export(t_process *process);
-bool	existing_key(t_env	*env, char *str);
 int		ms_unset(t_process *process);
+int		ms_echo(t_process *process);
+bool	existing_key(t_env	*env, char *str);
 
 //signals
 void	set_signals(void);

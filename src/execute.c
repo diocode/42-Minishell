@@ -29,8 +29,8 @@ static int	builtin(t_process *process)
 		status = ms_export(process);
 	else if (!ft_strncmp(cmd, "unset", 6))
 		status = ms_unset(process);
-	/*else if (!ft_strncmp(cmd, "echo", 5))
-		status = ms_echo(process);*/
+	else if (!ft_strncmp(cmd, "echo", 5))
+		status = ms_echo(process);
 	else if (!ft_strncmp(cmd, "env", 4))
 		status = ms_env(false);
 	else if (!ft_strncmp(cmd, "pwd", 4))
@@ -48,11 +48,6 @@ static void	single_cmd(t_process *process)
 	cmd = process->builtin;
 	if (cmd && (!ft_strncmp(cmd, "exit", 5) || !ft_strncmp(cmd, "cd", 3)
 		|| !ft_strncmp(cmd, "export", 7) || !ft_strncmp(cmd, "unset", 6)))
-	{
-		g_exit_code = builtin(process);
-		return ;
-	}
-	if (!ft_strncmp(cmd, "env", 4))
 	{
 		g_exit_code = builtin(process);
 		return ;
