@@ -12,97 +12,114 @@
 
 #include "../../includes/minishell.h"
 
-/*static int	is_variable(t_prompt *prompt, char *str)
-{
-	int	i;
+extern int	g_exit_code;
 
-	if (str[equal_sign(str)] == '\"')
-		delquotes(str, '\"');
-	if (str[equal_sign(str)] == '\'')
-		delquotes(str, '\'');
-	i = -1;
-	while (prompt->env[++i])
+static bool	existing_key(t_env	*env, char *str)
+{
+	int	size;
+
+	size = 0;
+	while (str && str[size] && str[size] != '=')
+		size++;
+	if (ft_strlen(env->key) != size)
+		return (false);
+	if (!ft_strncmp(env->key, str, size))
+		return (true);
+	return (false);
+}
+
+static int	is_variable(char *str)
+{
+	t_env	*tmp;
+
+	if (str[equal_sign(str) + 1] == '\"')
+		clean_quotes(str, '\"');
+	if (str[equal_sign(str) + 1] == '\'')
+		clean_quotes(str, '\'');
+	tmp = ms()->env;
+	while (tmp)
 	{
-		if (existing_var(prompt->env[i], str))
+		if (existing_key(tmp, str))
 		{
 			if (!equal_sign(str))
 				return (1);
-			free(prompt->env[i]);
-			prompt->env[i] = ft_strdup(str);
+			if (tmp->value)
+				free(tmp->value);
+			tmp->value = ft_strdup(str + equal_sign(str) + 1);
+			if (!tmp->value)
+				return (g_exit_code = 1, 1);
 			return (1);
 		}
+		tmp = tmp->next;
 	}
 	return (0);
 }
 
-static char	**copy_arr(char **arr, char **res, char *str)
+static void	add_var(char *str)
+{
+	t_env	*tmp;
+
+	if (str[equal_sign(str)] == '\"')
+		clean_quotes(str, '\"');
+	if (str[equal_sign(str)] == '\'')
+		clean_quotes(str, '\'');
+	tmp = ms()->env;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = create_node(NULL, NULL);
+	free(tmp->next->key);
+	free(tmp->next->value);
+	if (equal_sign(str))
+	{
+		tmp->next->key = ft_substr(str, 0, equal_sign(str));
+		tmp->next->value = ft_strdup(str + equal_sign(str) + 1);
+		return ;
+	}
+	tmp->next->key = ft_strdup(str);
+	tmp->next->value = NULL;
+}
+
+int	check_arg(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (arr[i] != NULL)
+	if (!str[0] || ft_isdigit(str[0]) || str[0] == '=')
+		return (export_error(str));
+	if (!ft_strncmp(str, "_", 2))
+		return (EXIT_FAILURE);
+	while (str[i] && str[i] != '=')
 	{
-		if (arr[i + 1] == NULL)
-		{
-			res[i] = ft_strdup(str);
-			res[i + 1] = ft_strdup(arr[i]);
-		}
-		else
-			res[i] = ft_strdup(arr[i]);
-		if (res[i] == NULL)
-		{
-			free_array(res);
-			return (res);
-		}
+		if (is_identifier(str[i]))
+			return (export_error(str));
 		i++;
 	}
-	return (res);
-}
-
-static char	**add_var(char **arr, char *str)
-{
-	char	**res;
-	size_t	i;
-
-	i = 0;
-	if (str[equal_sign(str)] == '\"')
-		delquotes(str, '\"');
-	if (str[equal_sign(str)] == '\'')
-		delquotes(str, '\'');
-	while (arr[i] != NULL)
-		i++;
-	res = ft_calloc(i + 2, sizeof(char *));
-	if (!res)
-		return (NULL);
-	res = copy_arr(arr, res, str);
-	return (res);
+	return (EXIT_SUCCESS);
 }
 
 int	ms_export(t_process *process)
 {
-	char	**tmp;
 	int		i;
 
-	i = 0;
-	if (!simple_cmds->str[1])
-		ms_env(prompt, 1);
+	if (!process->args || !process->args[0])
+	{
+		if (ms_env(true))
+			return (EXIT_FAILURE);
+	}
 	else
 	{
-		while (simple_cmds->str[++i])
+		i = -1;
+		while (process->args[++i])
 		{
-			if (!check_param(simple_cmds->str[i]))
+			if (!check_arg(process->args[i]))
 			{
-				if (!is_variable(prompt, simple_cmds->str[i])
-					&& simple_cmds->str[i])
-				{
-					tmp = add_var(prompt->env, simple_cmds->str[i]);
-					free_array(prompt->env);
-					prompt->env = tmp;
-				}
+				if (!is_variable(process->args[i])
+					&& process->args[i])
+					add_var(process->args[i]);
 			}
 			else
 				return (EXIT_FAILURE);
 		}
 	}
 	return (EXIT_SUCCESS);
-}*/
+}

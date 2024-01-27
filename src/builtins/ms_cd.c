@@ -36,9 +36,9 @@ static int	change_path(char *path)
 	return (decree);
 }
 
-static void	add_path()
+static void	add_path(void)
 {
-	t_env 	*env;
+	t_env	*env;
 	char	*tmp;
 	char	*oldpath;
 
@@ -65,7 +65,7 @@ static void	add_path()
 	free(oldpath);
 }
 
-static void	ms_cd_utils()
+static void	ms_cd_utils(void)
 {
 	char	*tmp;
 
@@ -93,7 +93,7 @@ int	ms_cd(t_process *process)
 	int		decree;
 
 	if (!process->args || !process->args[0] || (process->args[0]
-		&& !ft_strncmp(process->args[0], "~", 2) && !process->args[1]))
+			&& !ft_strncmp(process->args[0], "~", 2) && !process->args[1]))
 		decree = change_path("HOME");
 	else if (!ft_strncmp(process->args[0], "-", 1))
 	{

@@ -43,7 +43,7 @@ static void	free_token(t_token *lst)
 	}
 }
 
-static void free_process(void)
+static void	free_process(void)
 {
 	t_process	*tmp;
 

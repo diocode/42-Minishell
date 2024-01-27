@@ -25,9 +25,9 @@ static int	builtin(t_process *process)
 		return (ms_exit(process));
 	else if (!ft_strncmp(cmd, "cd", 3))
 		status = ms_cd(process);
-	/*else if (!ft_strncmp(cmd, "export", 7))
+	else if (!ft_strncmp(cmd, "export", 7))
 		status = ms_export(process);
-	else if (!ft_strncmp(cmd, "unset", 6))
+	/*else if (!ft_strncmp(cmd, "unset", 6))
 		status = ms_unset(process);
 	else if (!ft_strncmp(cmd, "echo", 5))
 		status = ms_echo(process);*/
@@ -52,7 +52,11 @@ static void	single_cmd(t_process *process)
 		g_exit_code = builtin(process);
 		return ;
 	}
-	ms_pwd();
+	if (!ft_strncmp(cmd, "env", 4))
+	{
+		g_exit_code = builtin(process);
+		return ;
+	}
 	/*send_heredoc(prompt, prompt->simple_cmds);
 	pid = fork();
 	if (pid < 0)

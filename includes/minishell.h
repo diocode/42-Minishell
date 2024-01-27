@@ -100,12 +100,14 @@ void	init(char **av, char **ev);
 void	ms_setenv(char *key, char *value);
 char	*ms_getenv(char *key);
 t_env	*copy_env(t_env *env);
+t_env	*create_node(char *key, char *value);
 
 //builtins
 int		ms_exit(t_process *process);
 int		ms_cd(t_process *process);
 int		ms_env(bool export);
 int		ms_pwd(void);
+int		ms_export(t_process *process);
 
 //signals
 void	set_signals(void);
@@ -115,6 +117,7 @@ void	ms_error(int error);
 int		redirection_error(void);
 int		token_error(void);
 int		pipe_error(void);
+int		export_error(char *c);
 
 //free
 void	free_data(bool reset);
@@ -123,11 +126,14 @@ void	free_env(t_env *tmp);
 
 //utils
 char	**dup_arr(char **arr);
+char	*clean_quotes(char *str, char c);
 void	skip_spaces(char **line);
 bool	valid_quotes(char *str);
 int		count_pipes(t_token *lx);
+int		equal_sign(const char *str);
 int		is_whitespace(char c);
 int		is_digit(char *str);
+int		is_identifier(char c);
 bool	in_quotes(char c);
 bool	is_operator(char *str);
 bool	is_builtin(char *str);

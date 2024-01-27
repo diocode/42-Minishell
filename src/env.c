@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-static t_env	*create_node(char *key, char *value)
+t_env	*create_node(char *key, char *value)
 {
 	t_env	*new_node;
 
@@ -21,13 +21,18 @@ static t_env	*create_node(char *key, char *value)
 		return (ms_error(1), NULL);
 	new_node->key = ft_strdup(key);
 	new_node->value = ft_strdup(value);
+	if (!value)
+	{
+		free(new_node->value);
+		new_node->value = NULL;
+	}
 	new_node->next = NULL;
 	return (new_node);
 }
 
 t_env	*copy_env(t_env *env)
 {
-	t_env 	*sorted;
+	t_env	*sorted;
 	t_env	*new_node;
 	t_env	*last_node;
 

@@ -14,6 +14,19 @@
 
 extern int	g_exit_code;
 
+int	export_error(char *c)
+{
+	ft_putstr_fd("export: ", STDERR_FILENO);
+	if (c)
+	{
+		ft_putchar_fd('\'', STDERR_FILENO);
+		ft_putstr_fd(c, STDERR_FILENO);
+		ft_putstr_fd("\': ", STDERR_FILENO);
+	}
+	ft_putendl_fd("not a valid identifier", STDERR_FILENO);
+	return (EXIT_FAILURE);
+}
+
 int	token_error(void)
 {
 	t_token		*tmp;

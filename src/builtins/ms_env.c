@@ -12,41 +12,41 @@
 
 #include "../../includes/minishell.h"
 
-static void swap_env_nodes(t_env *node1, t_env *node2)
+static void	swap_env_nodes(t_env *node1, t_env *node2)
 {
-    char	*tmp_key;
-    char	*tmp_value;
+	char	*tmp_key;
+	char	*tmp_value;
 
 	tmp_key = node1->key;
 	tmp_value = node1->value;
-    node1->key = node2->key;
-    node1->value = node2->value;
-    node2->key = tmp_key;
-    node2->value = tmp_value;
+	node1->key = node2->key;
+	node1->value = node2->value;
+	node2->key = tmp_key;
+	node2->value = tmp_value;
 }
 
-static t_env *sort_env(t_env *env)
+static t_env	*sort_env(t_env *env)
 {
-    t_env	*sorted;
+	t_env	*sorted;
 	t_env	*tmp;
 	t_env	*tmp_next;
 
 	sorted = copy_env(env);
-    if (!sorted)
-        return (NULL);
-    tmp = sorted;
-    while (tmp != NULL)
+	if (!sorted)
+		return (NULL);
+	tmp = sorted;
+	while (tmp != NULL)
 	{
-        tmp_next = tmp->next;
-        while (tmp_next)
+		tmp_next = tmp->next;
+		while (tmp_next)
 		{
-            if (ft_strcmp(tmp->key, tmp_next->key) > 0)
-                swap_env_nodes(tmp, tmp_next);
-            tmp_next = tmp_next->next;
-        }
-        tmp = tmp->next;
-    }
-    return sorted;
+			if (ft_strcmp(tmp->key, tmp_next->key) > 0)
+				swap_env_nodes(tmp, tmp_next);
+			tmp_next = tmp_next->next;
+		}
+		tmp = tmp->next;
+	}
+	return (sorted);
 }
 
 static void	print_env(t_env *env, bool export)
@@ -55,11 +55,13 @@ static void	print_env(t_env *env, bool export)
 	{
 		write(STDOUT_FILENO, "declare -x ", 11);
 		write(STDOUT_FILENO, env->key, ft_strlen(env->key));
-		write(STDOUT_FILENO, "=", 1);
-		write(STDOUT_FILENO, "\"", 1);
 		if (env->value)
+		{
+			write(STDOUT_FILENO, "=", 1);
+			write(STDOUT_FILENO, "\"", 1);
 			write(STDOUT_FILENO, env->value, ft_strlen(env->value));
-		write(STDOUT_FILENO, "\"", 1);
+			write(STDOUT_FILENO, "\"", 1);
+		}
 		write(STDOUT_FILENO, "\n", 1);
 		env = env->next;
 	}

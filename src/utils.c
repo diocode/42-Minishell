@@ -60,6 +60,16 @@ int	is_whitespace(char c)
 	return (c == ' ' || (c > 8 && c < 14));
 }
 
+int	is_identifier(char c)
+{
+	return (c == '|' || c == '<' || c == '>' || c == '[' || c == ']'
+			|| c == '\'' || c == '\"' || c == ' ' || c == ',' || c == '.'
+			|| c == ':' || c == '/' || c == '{' || c == '}' || c == '+'
+			|| c == '^' || c == '%' || c == '#' || c == '@' || c == '!'
+			|| c == '~'
+			|| c == '=' || c == '-' || c == '?' || c == '&' || c == '*');
+}
+
 void	skip_spaces(char **line)
 {
 	while (**line && is_whitespace(**line))
@@ -139,4 +149,38 @@ bool	is_builtin(char *str)
 		|| !ft_strncmp(str, "exit", 5))
 		return (true);
 	return (false);
+}
+
+int	equal_sign(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (str[i] == '=')
+			return (i);
+		i++;
+	}
+	return (0);
+}
+
+char	*clean_quotes(char *str, char c)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+		{
+			j = 0;
+			while (str[i + j] == c)
+				j++;
+			ft_strlcpy(&str[i], &str[i + j], strlen(str) - i);
+		}
+		i++;
+	}
+	return (str);
 }

@@ -57,10 +57,8 @@ static char	**get_args(void)
 		tmp = tmp->next;
 	}
 	args = ft_calloc(i + 1, sizeof(char *));
-	if (!args)
-		return (g_exit_code = 1, ms_exit(NULL), NULL);
 	i = -1;
-	while (ms()->lexer && ms()->lexer->type == OTHER)
+	while (args && ms()->lexer && ms()->lexer->type == OTHER)
 	{
 		if (ms()->lexer->content[0])
 		{
@@ -123,12 +121,12 @@ static int	generate_process(void)
 
 int	parser(void)
 {
-	t_token *start_lexer;
+	t_token		*start_lexer;
 	int			pipes;
 
 	if (expander())
 		return (1);
-	if(pipe_error() || token_error() || redirection_error())
+	if (pipe_error() || token_error() || redirection_error())
 		return (1);
 	trim_quotes();
 	start_lexer = ms()->lexer;
