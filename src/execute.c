@@ -27,9 +27,9 @@ static int	builtin(t_process *process)
 		status = ms_cd(process);
 	else if (!ft_strncmp(cmd, "export", 7))
 		status = ms_export(process);
-	/*else if (!ft_strncmp(cmd, "unset", 6))
+	else if (!ft_strncmp(cmd, "unset", 6))
 		status = ms_unset(process);
-	else if (!ft_strncmp(cmd, "echo", 5))
+	/*else if (!ft_strncmp(cmd, "echo", 5))
 		status = ms_echo(process);*/
 	else if (!ft_strncmp(cmd, "env", 4))
 		status = ms_env(false);

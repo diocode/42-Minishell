@@ -14,7 +14,7 @@
 
 extern int	g_exit_code;
 
-static bool	existing_key(t_env	*env, char *str)
+bool	existing_key(t_env	*env, char *str)
 {
 	int	size;
 
