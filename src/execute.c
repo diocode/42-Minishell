@@ -52,8 +52,8 @@ static void	single_cmd(t_process *process)
 		g_exit_code = builtin(process);
 		return ;
 	}
-	/*send_heredoc(prompt, prompt->simple_cmds);
-	pid = fork();
+	send_heredoc(process);
+	/*pid = fork();
 	if (pid < 0)
 		ms_error(5);
 	if (pid == 0)

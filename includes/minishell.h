@@ -112,6 +112,9 @@ int		ms_unset(t_process *process);
 int		ms_echo(t_process *process);
 bool	existing_key(t_env	*env, char *str);
 
+//heredoc
+int		send_heredoc(t_process *process);
+
 //signals
 void	set_signals(void);
 

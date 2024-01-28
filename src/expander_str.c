@@ -23,9 +23,9 @@ static char	*create_newstr(char *str, size_t i, char *key, char *value)
 	new_str = ft_calloc(size, sizeof(char));
 	if (!new_str)
 		return (ms_error(1), NULL);
-	strncpy(new_str, str, i);
-	strcat(new_str, value);
-	strcat(new_str, str + i + ft_strlen(key));
+	ft_strncpy(new_str, str, i);
+	ft_strcat(new_str, value);
+	ft_strcat(new_str, str + i + ft_strlen(key));
 	free(str);
 	return (new_str);
 }
