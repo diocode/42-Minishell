@@ -184,3 +184,55 @@ char	*clean_quotes(char *str, char c)
 	}
 	return (str);
 }
+
+static char *get_value(char	**array, int i, char *value)
+{
+	array[i] = ft_strjoin(array[i], value);
+	if (!array[i])
+	{
+		free_array(array);
+		return (NULL);
+	}
+	return (array[i]);
+}
+static int	list_size(t_env *list)
+{
+	int	i;
+
+	i = 0;
+	while (list)
+	{
+		list = list->next;
+		i++;
+	}
+	return (i);
+}
+
+char	**list_to_array(t_env *list)
+{
+	char	**array;
+	int		i;
+
+	array = ft_calloc(list_size(list) + 1, sizeof(char *));
+	if (!array)
+		return (NULL);
+	i = 0;
+	while (list)
+	{
+		array[i] = ft_strjoin(list->key, "=");
+		if (!array[i])
+		{
+			free_array(array);
+			return (NULL);
+		}
+		if (list->value)
+		{
+			array[i] = get_value(array, i, list->value);
+			if (!array[i])
+				return (NULL);
+		}
+		list = list->next;
+		i++;
+	}
+	return (array);
+}

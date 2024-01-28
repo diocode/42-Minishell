@@ -12,6 +12,29 @@
 
 #include "../includes/minishell.h"
 
+int	init_execute(void)
+{
+	t_process	*process;
+	int			n_processes;
+
+	process = ms()->process;
+	n_processes = 0;
+	while (process)
+	{
+		n_processes++;
+		process = process->next;
+	}
+	if (!n_processes)
+		return (1);
+	ms()->pid = ft_calloc(n_processes, sizeof(int));
+	if (!ms()->pid)
+		return (ms_error(1), 1);
+	ms()->tmp_env = list_to_array(ms()->env);
+	if (!ms()->tmp_env)
+		return (ms_error(1), 1);
+	return (0);
+}
+
 static void	init_env_vars(char **av)
 {
 	char	*value;
@@ -65,12 +88,14 @@ void	init(char **av, char **ev)
 	ft_bzero(ms(), sizeof(t_shell));
 	ms()->env = init_env(ev);
 	init_env_vars(av);
+	ms()->tmp_env  = NULL;
 	ms()->lexer = NULL;
 	ms()->process = NULL;
 	ms()->input = NULL;
-	ms()->pid = 0;
+	ms()->pid = NULL;
 	ms()->interact = false;
 	ms()->heredoc = false;
+	ms()->reset = false;
 	ms()->quote[0] = false;
 	ms()->quote[1] = false;
 }

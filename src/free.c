@@ -87,17 +87,24 @@ void	free_data(bool reset)
 		return ;
 	if (ms()->input)
 		free(ms()->input);
+	if (ms()->tmp_env)
+		free_array(ms()->tmp_env);
 	if (ms()->lexer)
 		free_token(ms()->lexer);
 	if (ms()->process)
 		free_process();
+	if (ms()->pid)
+		free(ms()->pid);
 	if (reset)
 	{
 		ms()->input = NULL;
+		ms()->tmp_env = NULL;
 		ms()->lexer = NULL;
 		ms()->process = NULL;
-		ms()->pid = 0;
+		ms()->pid = NULL;
 		ms()->interact = false;
+		ms()->heredoc = false;
+		ms()->reset = true;
 		ms()->quote[0] = false;
 		ms()->quote[1] = false;
 	}

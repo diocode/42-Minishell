@@ -125,3 +125,47 @@ void	ms_error(int error)
 	else if (error == 8)
 		ft_putendl_fd("Path does not exist\n", STDERR_FILENO);
 }
+
+static char	*file_dir_error(char *tmp)
+{
+	struct stat	st;
+	char		*str;
+
+	if (stat(tmp, &st) == 0)
+	{
+		if (S_ISDIR(st.st_mode))
+			str = ft_strjoin(tmp, ": Is a directory");
+		else if (S_IXUSR)
+			str = ft_strjoin(tmp, ": Permission denied");
+	}
+	else
+		str = ft_strjoin(tmp, ": No such file or directory");
+	return (str);
+}
+
+int	error_cmd_not_found(t_process *process)
+{
+	struct stat	st;
+	char		*str;
+	char		*tmp;
+	int			status;
+
+	status = 127;
+	if (!process->args && !process->args[0])
+		return (1);
+	if (process->args[0][0])
+		tmp = ft_strdup(process->args[0]);
+	else
+		tmp = ft_strdup("\'\'");
+	if ((process->args[0][0] == '/' || process->args[0][0] == '.'))
+		str = file_dir_error(tmp);
+	else
+		str = ft_strjoin(tmp, ": command not found");
+	ft_putendl_fd(str, STDERR_FILENO);
+	if ((process->args[0][0] == '/' || process->args[0][0] == '.')
+		&& stat(tmp, &st) == 0 && (S_ISDIR(st.st_mode) | S_IXUSR))
+		status = 126;
+	free(tmp);
+	free(str);
+	return (status);
+}

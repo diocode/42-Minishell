@@ -68,11 +68,13 @@ typedef struct s_shell
 {
 	char			*input;
 	t_env			*env;
+	char 			**tmp_env;
 	t_token			*lexer;
 	t_process		*process;
-	pid_t			pid;
+	int				*pid;
 	bool			interact;
 	bool			heredoc;
+	bool			reset;
 	bool			quote[2];
 }	t_shell;
 
@@ -95,6 +97,7 @@ void	trim_quotes(void);
 
 //init
 void	init(char **av, char **ev);
+int		init_execute(void);
 
 //env
 void	ms_setenv(char *key, char *value);
@@ -114,6 +117,10 @@ bool	existing_key(t_env	*env, char *str);
 
 //heredoc
 int		send_heredoc(t_process *process);
+char	*expand_heredoc(char *input);
+
+//redirect
+int		setup_redirect(t_process *process);
 
 //signals
 void	set_signals(void);
@@ -124,6 +131,7 @@ int		redirection_error(void);
 int		token_error(void);
 int		pipe_error(void);
 int		export_error(char *c);
+int		error_cmd_not_found(t_process *process);
 
 //free
 void	free_data(bool reset);
@@ -143,5 +151,6 @@ int		is_identifier(char c);
 bool	in_quotes(char c);
 bool	is_operator(char *str);
 bool	is_builtin(char *str);
+char	**list_to_array(t_env *list);
 
 #endif

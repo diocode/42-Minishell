@@ -13,7 +13,7 @@
 #include "../includes/minishell.h"
 
 int	g_exit_code;
-
+/*
 int	dev_mod(void)
 {
 	printf("\033[32;1m=========== DEV MOD ==========\033[0m\n");
@@ -87,7 +87,7 @@ int	dev_mod(void)
 	printf("\n\n");
 	printf("\033[32;1m==============================\033[0m\n");
 	return (1);
-}
+}*/
 
 /* ============================  dev mod ============================ */
 
@@ -116,8 +116,11 @@ static void ms_loop(void)
 			add_history(ms()->input);
 			lexer(ms()->input);
 			if (ms()->lexer)
-				if (!parser() && dev_mod())
+				if (!parser() && !init_execute())
+				{
+					//dev_mod();
 					execute();
+				}
 		}
 		free_data(true);
 	}
