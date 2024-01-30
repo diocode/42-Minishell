@@ -14,6 +14,28 @@
 
 extern int	g_exit_code;
 
+static int	file_error(char *str)
+{
+	struct stat	st;
+	char		*tmp;
+
+	tmp = ": No such file or directory";
+	if ((str[0] == '/' || str[0] == '.'))
+	{
+		if (stat(str, &st) == 0)
+		{
+			if (S_ISDIR(st.st_mode))
+				tmp = ": Is a directory";
+			else if (S_IXUSR)
+				tmp = ": Permission denied";
+		}
+	}
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putendl_fd(tmp, STDERR_FILENO);
+	return (1);
+}
+
 static int	ft_outfile(t_token *redir)
 {
 	int	fd;
@@ -23,7 +45,7 @@ static int	ft_outfile(t_token *redir)
 	else
 		fd = open(redir->content, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
-		return (ms_error(6), 1);
+		return (file_error(redir->content));
 	if (dup2(fd, STDOUT_FILENO) < 0)
 		return (ms_error(4), 1);
 	close(fd);
@@ -36,7 +58,7 @@ static int	ft_infile(char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		return (ms_error(7), 1);
+		return (file_error(file));
 	if (dup2(fd, STDIN_FILENO) < 0)
 		return (ms_error(4), 1);
 	close(fd);

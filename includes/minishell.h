@@ -68,7 +68,6 @@ typedef struct s_shell
 {
 	char			*input;
 	t_env			*env;
-	char 			**tmp_env;
 	t_token			*lexer;
 	t_process		*process;
 	int				*pid;
@@ -81,7 +80,6 @@ typedef struct s_shell
 /*---------- FUNCTIONS ----------*/
 
 t_shell	*ms(void);
-void	execute(void);
 
 //lexer
 void	lexer(char *input);
@@ -94,10 +92,13 @@ int		expand_str(t_token *lx, size_t i);
 //parser
 int		parser(void);
 void	trim_quotes(void);
+char	**get_args(void);
 
-//init
-void	init(char **av, char **ev);
-int		init_execute(void);
+//execute
+void	execute(void);
+void	single_cmd(t_process *process);
+int		handle_cmd(t_process *process);
+int		system_cmd(t_process *process);
 
 //env
 void	ms_setenv(char *key, char *value);
@@ -106,6 +107,7 @@ t_env	*copy_env(t_env *env);
 t_env	*create_node(char *key, char *value);
 
 //builtins
+int		builtin(t_process *process);
 int		ms_exit(t_process *process);
 int		ms_cd(t_process *process);
 int		ms_env(bool export);
@@ -133,6 +135,10 @@ int		pipe_error(void);
 int		export_error(char *c);
 int		error_cmd_not_found(t_process *process);
 
+//init
+void	init(char **av, char **ev);
+int		init_pid(void);
+
 //free
 void	free_data(bool reset);
 void	free_array(char **arr);
@@ -152,5 +158,7 @@ bool	in_quotes(char c);
 bool	is_operator(char *str);
 bool	is_builtin(char *str);
 char	**list_to_array(t_env *list);
+bool	solo_doll_sign(const char *str);
+int		array_len(char **array);
 
 #endif

@@ -55,7 +55,7 @@ long	ft_atol(const char *nptr);
 char	*ft_strchr(const char *str, int c);
 char	*ft_strrchr(const char *str, int c);
 char	*ft_strnstr(const char *big, const char *little, size_t len);
-char 	*ft_strcpy(char *dest, const char *src);
+char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strncpy(char *dst, char *src, size_t len);
 char	*ft_strcat(char *dest, const char *src);
 char	*ft_strdup(const char *src);

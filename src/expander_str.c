@@ -23,9 +23,9 @@ static char	*create_newstr(char *str, size_t i, char *key, char *value)
 	new_str = ft_calloc(size, sizeof(char));
 	if (!new_str)
 		return (ms_error(1), NULL);
-	ft_strncpy(new_str, str, i);
+	ft_strlcpy(new_str, str, i + 1);
 	ft_strcat(new_str, value);
-	ft_strcat(new_str, str + i + ft_strlen(key));
+	ft_strcat(new_str, str + i + ft_strlen(key) + 1);
 	free(str);
 	return (new_str);
 }
@@ -41,15 +41,7 @@ static void	expand_handle_value(t_token *lx, size_t i, char *key, size_t len)
 		value = ms_getenv(key);
 	if (value)
 	{
-		if ((ft_strlen(value) + ft_strlen(lx->content) - ft_strlen(key) - 1)
-			> ft_strlen(lx->content))
-			lx->content = create_newstr(lx->content, i, key, value);
-		else
-		{
-			ft_memmove(lx->content + i, value, ft_strlen(value));
-			ft_memmove(lx->content + i + ft_strlen(value),
-				lx->content + i + len, ft_strlen(lx->content + i + len) + 1);
-		}
+		lx->content = create_newstr(lx->content, i, key, value);
 		free(value);
 	}
 	else
@@ -80,9 +72,10 @@ int	expand_str(t_token *lx, size_t i)
 	char	*key;
 	size_t	len;
 
-	if (ft_strlen(lx->content) < 2)
-		return (1);
 	len = 1;
+	if (ft_strlen(lx->content) < 2 || is_whitespace(lx->content[i + len])
+		|| solo_doll_sign(lx->content))
+		return (1);
 	while (lx->content[i + len] && (isalnum(lx->content[i + len])
 			|| lx->content[i + len] == '_' || lx->content[i + len] == '?'))
 	{

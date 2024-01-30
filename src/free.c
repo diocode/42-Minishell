@@ -60,7 +60,10 @@ static void	free_process(void)
 		if (ms()->process->builtin)
 			free(ms()->process->builtin);
 		if (ms()->process->hd_file)
+		{
+			unlink(ms()->process->hd_file);
 			free(ms()->process->hd_file);
+		}
 		tmp = ms()->process;
 		ms()->process = ms()->process->next;
 		free(tmp);
@@ -87,8 +90,6 @@ void	free_data(bool reset)
 		return ;
 	if (ms()->input)
 		free(ms()->input);
-	if (ms()->tmp_env)
-		free_array(ms()->tmp_env);
 	if (ms()->lexer)
 		free_token(ms()->lexer);
 	if (ms()->process)
@@ -98,7 +99,6 @@ void	free_data(bool reset)
 	if (reset)
 	{
 		ms()->input = NULL;
-		ms()->tmp_env = NULL;
 		ms()->lexer = NULL;
 		ms()->process = NULL;
 		ms()->pid = NULL;

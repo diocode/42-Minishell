@@ -42,35 +42,6 @@ static int	get_redirect(void)
 	return (0);
 }
 
-static char	**get_args(void)
-{
-	t_token	*tmp;
-	char	**args;
-	size_t	i;
-
-	tmp = ms()->lexer;
-	i = 0;
-	while (tmp && tmp->type == OTHER)
-	{
-		if (tmp->content[0])
-			i++;
-		tmp = tmp->next;
-	}
-	args = ft_calloc(i + 1, sizeof(char *));
-	i = -1;
-	while (args && ms()->lexer && ms()->lexer->type == OTHER)
-	{
-		if (ms()->lexer->content[0])
-		{
-			args[++i] = ft_strdup(ms()->lexer->content);
-			if (!args[i])
-				return (g_exit_code = 1, free_array(args), ms_exit(NULL), NULL);
-		}
-		ms()->lexer = ms()->lexer->next;
-	}
-	return (args);
-}
-
 static void	parse_content(void)
 {
 	while (ms()->lexer && ms()->lexer->type != PIPE)
@@ -130,20 +101,20 @@ int	parser(void)
 		return (1);
 	trim_quotes();
 	start_lexer = ms()->lexer;
-	pipes = count_pipes(ms()->lexer);
-	while (pipes >= 0)
-	{
+	pipes = count_pipes(ms()->lexer) + 1;
+	while (--pipes >= 0)
 		if (generate_process())
 			return (1);
-		pipes--;
-	}
 	ms()->lexer = start_lexer;
-	while (ms()->process && ms()->process->prev)
+	while (ms()->process)
 	{
 		if (ms()->process->redirect)
 			while (ms()->process->redirect->prev)
 				ms()->process->redirect = ms()->process->redirect->prev;
-		ms()->process = ms()->process->prev;
+		if (ms()->process->prev)
+			ms()->process = ms()->process->prev;
+		else
+			break ;
 	}
 	return (0);
 }

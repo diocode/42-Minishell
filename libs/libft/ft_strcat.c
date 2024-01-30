@@ -17,7 +17,7 @@ char	*ft_strcat(char *dest, const char *src)
 	char	*dest_orig;
 
 	if (dest == NULL || src == NULL)
-		return NULL;
+		return (NULL);
 	dest_orig = dest;
 	while (*dest != '\0')
 		dest++;
