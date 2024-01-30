@@ -1,4 +1,5 @@
-![banner_minishell-12](https://github.com/diocode/42-Minishell/assets/107859177/a7d89350-81ee-4159-9d51-d0212461784a)
+![296512556-a7d89350-81ee-4159-9d51-d0212461784a](https://github.com/diocode/42-Minishell/assets/107859177/b934a795-bd43-4029-9adf-f868d3825754)
+
 
 <p align="center">
 	<img src="https://img.shields.io/badge/status-finished-success?color=%2312bab9&style=flat-square"/>
