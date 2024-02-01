@@ -16,7 +16,7 @@ extern int	g_exit_code;
 
 int	export_error(char *c)
 {
-	ft_putstr_fd("export: ", STDERR_FILENO);
+	ft_putstr_fd("minishell: export: ", STDERR_FILENO);
 	if (c)
 	{
 		ft_putchar_fd('\'', STDERR_FILENO);

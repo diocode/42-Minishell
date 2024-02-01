@@ -27,8 +27,13 @@ static int	error(t_process *process)
 	int		i;
 
 	i = 0;
-	if (!process->args || !process->args[0])
+	if (!process->args)
 		return (EXIT_FAILURE);
+	if (!process->args[0])
+	{
+		ft_putstr_fd("minishell: unset: `': not a valid identifier\n", 2);
+		return (2);
+	}
 	while (process->args[0][i])
 	{
 		if (is_digit(process->args[0])
@@ -51,9 +56,9 @@ int	ms_unset(t_process *process)
 	t_env	*tmp_prev;
 	int		i;
 
-	if (error(process) == 1)
-		return (0);
-	else
+	if (error(process) == 2)
+		return (1);
+	else if (error(process) == EXIT_SUCCESS)
 	{
 		i = -1;
 		while (process->args[++i])

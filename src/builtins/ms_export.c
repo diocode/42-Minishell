@@ -84,7 +84,7 @@ int	check_arg(char *str)
 	int	i;
 
 	i = 0;
-	if (!str[0] || ft_isdigit(str[0]) || str[0] == '=')
+	if (!str || !str[0] || ft_isdigit(str[0]) || str[0] == '=')
 		return (export_error(str));
 	if (!ft_strncmp(str, "_", 2))
 		return (EXIT_FAILURE);
@@ -101,7 +101,7 @@ int	ms_export(t_process *process)
 {
 	int		i;
 
-	if (!process->args || !process->args[0])
+	if (!process->args)
 	{
 		if (ms_env(true))
 			return (EXIT_FAILURE);
@@ -109,6 +109,8 @@ int	ms_export(t_process *process)
 	else
 	{
 		i = -1;
+		if (check_arg(process->args[0]))
+			return (EXIT_FAILURE);
 		while (process->args[++i])
 		{
 			if (!check_arg(process->args[i]))

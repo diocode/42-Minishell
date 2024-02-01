@@ -26,7 +26,7 @@ int	init_pid(void)
 	}
 	if (!n_processes)
 		return (1);
-	ms()->pid = ft_calloc(n_processes, sizeof(int));
+	ms()->pid = malloc(n_processes * sizeof(int));
 	if (!ms()->pid)
 		return (ms_error(1), 1);
 	return (0);

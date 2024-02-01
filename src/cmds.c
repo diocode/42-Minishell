@@ -41,12 +41,18 @@ int	system_cmd(t_process *process)
 	struct stat	st;
 	char		*path;
 	char		**paths;
+	char		**env;
 	int			i;
 
 	if (!stat(process->args[0], &st) && S_ISDIR(st.st_mode))
 		return (error_cmd_not_found(process));
 	if (!access(process->args[0], F_OK))
-		execve(process->args[0], process->args, list_to_array(ms()->env));
+	{
+		env = list_to_array(ms()->env);
+		execve(process->args[0], process->args, env);
+		free_array(env);
+		return (127);
+	}
 	paths = get_paths();
 	if (!paths)
 		return (error_cmd_not_found(process));
@@ -55,7 +61,12 @@ int	system_cmd(t_process *process)
 	{
 		path = ft_strjoin(paths[i], process->args[0]);
 		if (!access(path, F_OK))
-			execve(path, process->args, list_to_array(ms()->env));
+		{
+			env = list_to_array(ms()->env);
+			execve(path, process->args, env);
+			free_array(env);
+			return (127);
+		}
 		free(path);
 	}
 	free_array(paths);
