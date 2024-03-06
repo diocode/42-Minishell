@@ -99,6 +99,7 @@ void	execute(void);
 void	single_cmd(t_process *process);
 int		handle_cmd(t_process *process);
 int		system_cmd(t_process *process);
+char	**get_paths(void);
 
 //env
 void	ms_setenv(char *key, char *value);

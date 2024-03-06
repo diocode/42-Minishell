@@ -14,7 +14,7 @@
 
 extern int	g_exit_code;
 
-static char	**get_paths(void)
+char	**get_paths(void)
 {
 	char	*path;
 	char	*tmp;
@@ -34,43 +34,6 @@ static char	**get_paths(void)
 		paths[i] = tmp;
 	}
 	return (paths);
-}
-
-int	system_cmd(t_process *process)
-{
-	struct stat	st;
-	char		*path;
-	char		**paths;
-	char		**env;
-	int			i;
-
-	if (!stat(process->args[0], &st) && S_ISDIR(st.st_mode))
-		return (error_cmd_not_found(process));
-	if (!access(process->args[0], F_OK))
-	{
-		env = list_to_array(ms()->env);
-		execve(process->args[0], process->args, env);
-		free_array(env);
-		return (127);
-	}
-	paths = get_paths();
-	if (!paths)
-		return (error_cmd_not_found(process));
-	i = -1;
-	while (paths[++i])
-	{
-		path = ft_strjoin(paths[i], process->args[0]);
-		if (!access(path, F_OK))
-		{
-			env = list_to_array(ms()->env);
-			execve(path, process->args, env);
-			free_array(env);
-			return (127);
-		}
-		free(path);
-	}
-	free_array(paths);
-	return (error_cmd_not_found(process));
 }
 
 static void	exit_cmd(void)
