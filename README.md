@@ -85,6 +85,11 @@ $ ./make
 $ ./minishell
 ```
 
+> (optional) Launch the program using valgrind
+```bash
+valgrind -s --suppressions=readline_leaks.txt --leak-check=full --show-leak-kinds=all ./minishell
+```
+
 <br>
 
 #### MAKEFILE COMMANDS
